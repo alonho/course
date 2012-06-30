@@ -1,0 +1,25 @@
+
+debugging
+  pdb
+  pudb
+  eclipse - visual and seperate threads
+  mem leaks - gc guppy
+  ipython (pdb, dir, ?, ??, !, timeit) - embed
+
+prof
+  cProfile
+  runsnakerun
+
+opts
+  no dots (x.y.z)
+  local vars
+  __slots__
+  caching
+  str concat
+  c implemented loops				      
+  replace if statements with inheritence and functions
+  re.compile	     				      
+
+  EX: list of bytes to string. string to list of bytes.
+  EX: 
+  EX: 

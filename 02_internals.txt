@@ -1,0 +1,46 @@
+attributes (hour)
+  __getattribute__
+  __dict__
+  __getattr__
+
+descriptors 
+  property
+  __slots__
+  __get__(owner, cls)
+  EX: type checker
+
+ast
+
+dis
+
+import
+  how import works: __import__, site-packages at site.USER_SITE, PYTHONPATH=x:y:z
+  sys.modules
+  sys.meta_path.append(finder), sys.path_hooks # finder.find_module(fullname, path=None)
+  
+the stack
+  traceback
+  f_code, f_locals, f_back
+  error handling: except:, logging  
+
+eval exec locals gloabls
+
+code/func/method
+
+mutability - by reference/value
+
+__hash__ - frozeset / immutabledict
+
+gc (hour)
+  reference counting
+  cyclic
+  __del__
+  weakref - monitoring
+
+lambda namespaces and function default args
+
+the mro
+
+super
+
+casting to bool and 'is'

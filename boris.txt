@@ -1,0 +1,3 @@
+1 day opts
+1 day debugging and testing
+2 days features and libraries

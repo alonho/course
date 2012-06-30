@@ -1,0 +1,80 @@
+re (hour)
+  examples
+  DOTALL
+  group
+  (?P<name>...)
+  groupdict
+  sub
+  EX: xml tag
+  compile
+  finditer
+  prefer many short regexes over one big regex (perf vs. readabillity)
+
+logging
+  _levelNames
+  getLogger
+  handlers
+  formatters
+  filters
+  tree and propagate
+
+sets
+collections (hour)
+  counter - for.. counting stuff
+  deque - double ended queue. O(1) for addition/deletion in both sides, maxlen can be used to define fixed size buffers. 
+  defaultdict
+  namedtuple
+  ordereddict
+
+itertools
+  zip
+  izip
+  islice
+  imap
+  ifilter
+  cycle
+  repeat
+  chain
+  groupby
+
+StringIO/cStringIO - growing strings
+
+array 
+  low level access (bytearray, memoryview)
+
+struct
+  packing and unpacking binary data - Struct("h").pack(2)
+
+pickle
+
+glob
+  glob/iglob
+
+subprocess
+
+the GIL (hour)	
+  lecture
+  alterantives
+    multiproc
+    non-python thread
+  
+threading
+  lock
+  rlock
+  event
+  timer
+  what is atomic - list append list pop
+
+Queue
+
+optparse/argparse
+
+printing
+ 
+external
+  construct
+  lxml - builder/iterparse
+  rpyc
+  multiprocessing - Pool, Queue, Pipe
+  brownie
+  numpy

@@ -1,0 +1,40 @@
+*args **kwargs
+
+decorators (hour)
+  timeit
+  registry, login_required, deprecated
+  EX: a debug decorator
+  @wraps
+  avoid changing number of args	
+  cached - kwargs? (frozenset)  how would you clear it? object. timeout
+  EX: type checker
+  class decorators -> less powerful
+
+staticmethod/classmethod
+  constructors and namespaces
+  xml
+
+generators (hour)
+  lecture
+  raising exceptions
+  filter map any all
+  EX: first n prime numbers
+  
+metaclasses (hour)
+  type of a type?
+  generating types
+  as a function/class - type(name, bases, dict)
+  singleton, interface, auto_repr
+  EX: decorate all methods
+
+contextmanagers (hour)
+  better error handling, destructors (__del__ is bad), resource management
+  __enter__ __exit__
+  locks, files, db transactions
+  contextmanager decorator
+  nested
+  EX: better timed, locked
+
+sorted 
+  cmp vs key
+  operator.attrgetter
