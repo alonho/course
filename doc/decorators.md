@@ -96,8 +96,6 @@ Can you implement it using the information you see here?
 
 ---
 
----
-
 ## Execise 1 - solution
 
 	!python
@@ -184,7 +182,32 @@ Adding some type safety
 
 ---
 
+## Exercise 2 - solution
+
+	!python
+	def typesafe(*types):
+		def decorator(func):
+			def decorated(*args):
+				n_args = len(args)
+				n_types = len(types)
+				if n_args != n_types:
+					raise ValueError("invalid num of args. expected {}, got {}".format(
+					                                                  n_types, n_args))
+				for arg, arg_type in zip(args, types):
+					if not isinstance(arg, arg_type):
+						raise TypeError("expected {} got {} for argument {}".format(
+						                                  arg_type, type(arg), arg))
+				return func(*args)
+			return decorated
+		return decorator
+
+---
+
 ## Class decorator
+
+A class decorator can manipulate the class upon creation.
+
+For example, `decorate_methods` gets a class, iterates over its methods and decorates them with the `debug` decorator.
 
 	!python
 
@@ -208,6 +231,8 @@ Decorators usually replace a function with two nested ones and should be avoided
 ## gotcha #2
 
 Don't decorate a function with a function that gets a different number of arguments.
+
+An atrocity:
 
 	!python
 	
@@ -273,3 +298,43 @@ With `functools.wraps`:
 	foo
 	>>> foo.__doc__
 	foo does this and that.
+
+
+---
+
+## Exercise 3 - cached
+
+The `cached` decorator records the arguments and return values a function received and returned. 
+
+This method can be used to save cpu time in exchange for memory.
+
+	!python
+	
+	@cached
+	def calc(x, y):
+		print "performing a long computation..."
+		return x + y
+		
+	>>> print calc(10, 20)
+	performing a long computation...
+	30
+	>>> print calc(10, 20) # cache hit!
+	30
+	>>> print calc(10, 50)
+	performing a long computation...
+	60
+
+Bonus - add a 'timeout' parameter to the cached decorator, indicating how long should objects stay in the cache.
+
+---
+
+## Exercise 3 - solution
+
+    !python
+    def cached(func):
+        args_to_result = {}
+        def decorated(*args):
+            if args not in args_to_result:
+                args_to_result[args] = func(*args)
+            return args_to_result[args]
+        return decorated
