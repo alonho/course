@@ -37,6 +37,9 @@ gc (hour)
   __del__
   weakref - monitoring
 
+sys
+  getsizeof
+
 lambda namespaces and function default args
 
 the mro
