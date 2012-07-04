@@ -4,22 +4,9 @@ decorators
 
 staticmethod/classmethod
 
-generators (hour)
-  lecture
-  raising exceptions
-  filter map any all
-  EX: first n prime numbers
+generators
   
-metaclasses (hour)
+metaclasses
 
-contextmanagers (hour)
-  better error handling, destructors (__del__ is bad), resource management
-  __enter__ __exit__
-  locks, files, db transactions
-  contextmanager decorator
-  nested
-  EX: better timed, locked
+contextmanagers
 
-sorted 
-  cmp vs key
-  operator.attrgetter

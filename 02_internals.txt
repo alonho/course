@@ -25,7 +25,7 @@ the stack
 
 eval exec locals gloabls
 
-code/func/method
+code/func/method - __class__
 
 mutability - by reference/value
 
