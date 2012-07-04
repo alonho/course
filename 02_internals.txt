@@ -1,22 +1,3 @@
-attributes (hour)
-  __getattribute__
-  __dict__
-  __getattr__
-
-descriptors 
-  property
-  __slots__
-  __get__(owner, cls)
-  EX: type checker
-
-ast
-
-dis
-
-import
-  how import works: __import__, site-packages at site.USER_SITE, PYTHONPATH=x:y:z
-  sys.modules
-  sys.meta_path.append(finder), sys.path_hooks # finder.find_module(fullname, path=None)
   
 the stack
   traceback
@@ -42,8 +23,5 @@ sys
 
 lambda namespaces and function default args
 
-the mro
-
-super
 
 casting to bool and 'is'
