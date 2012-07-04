@@ -13,7 +13,7 @@ Variables, which are names pointing to values are stored in a dict:
 	>>> print locals()['a']
 	10
 
-As well as methods:
+Static variables and methods are also stored in a dict:
 
 	!python
 	>>> class Foo(object):
@@ -26,7 +26,7 @@ As well as methods:
 
 ---
 
-As well as members:
+Every instance has a dict:
 
 	!python
 	>>> foo = Foo()
@@ -36,14 +36,14 @@ As well as members:
 	>>> foo.a
 	100
 
-And even modules:
+Even module attribute are stored in a dict:
 	
 	!python
 	>>> import sys
 	>>> sys.__dict__.keys()
 	['setrecursionlimit', 'dont_write_bytecode', 'getrefcount', ...]
 	
-And even the module cache (makes sure modules are loaded once):
+And the module cache (makes sure modules are loaded once) is also a dict:
 	
 	!python
 	>>> sys.modules['sys']
@@ -91,7 +91,7 @@ and therefore, local variable access is faster.
 			
 ## The mighty '.'
 
-`__getattribute__` allows customization of the attribute lookup process.
+The `__getattribute__` method allows customization of the attribute lookup process.
 
 	!python
 	class Foo(object):
@@ -128,7 +128,7 @@ and therefore, local variable access is faster.
 
 ---
 
-`__getattr__` can be overriden in a similar manner, except that it's called only if the attribute doesn't exist in the object's `__dict__`.
+The `__getattr__` method can be overriden in a similar manner, except that it's called only if the attribute doesn't exist in the object's `__dict__`.
 
 The attribute lookup order is as follows:
 
@@ -140,9 +140,9 @@ The attribute lookup order is as follows:
 
 ## Descriptors
 
-Descriptors provide a way to dynamically process attribute getting, setting and deletion.
+Descriptors allow customizing attribute getting, setting and deletion.
 
-Example of dynamic getting of an attribute:
+Example of dynamic attribute lookup:
 
 	!python
 	import math
@@ -164,7 +164,8 @@ Example of dynamic getting of an attribute:
       File "<stdin>", line 1, in <module>
     AttributeError: can't set attribute
 
-property is a built-in utility decorator that generates descriptor objects.
+property is a built-in utility decorator that generates descriptor objects. 
+it's useful for calculated values and readonly attributes.
 
 ---
 
@@ -256,7 +257,7 @@ And using super:
 `super` is recommended for several reasons: 
 
 1. if `Person` no longer inherits from object but from `Mammal`, a single line changes.
-2. `super` enables calling all constructors when used in the context of multiple inheritence. next slide will show how.
+2. `super` enables calling all constructors when used in the context of multiple inheritence. next slide shows how.
 
 ---
 
@@ -297,23 +298,23 @@ And using super:
 
 ### MRO - method resolution order
 
-In a diamond inheritence model, where all constructors need to be called we need to find a way to order all constructors.
-Python uses a common algorithm called `C3`.
+In a diamond inheritence model, where all constructors need to be called we need to find a way to order them.
+Python uses an algorithm called `C3`.
 
-A simplification of the algorithm:
+The essence of the algorithm:
 
 1. children are initialized before parents.
 2. siblings are initialized left to right.
 
-NOTE: Any class along the chain can prevent a correct initialization sequence if it doesn't call `super`.
+NOTE: Any class along the chain can prevent a correct initialization sequence if it doesn't call `super` or calls it with the wrong argument.
 
 ---
 
 ## super and constructor arguments
 
-The best strategy is to assume you don't know what the method resolution is and pass keyword arguments.
+The best strategy is to assume you don't know what the method resolution order is and pass keyword arguments.
 
-Every constructor will consume the arguments it explicitly defined and pass the rest to the parent/sibling.
+Every constructor will consume the arguments it explicitly defined and pass the rest to the parent/sibling using `*args` and `**kwargs`.
 
 	!python
 	class Person(object):
@@ -355,7 +356,7 @@ The import process searches for modules in directories found in the PYTHONPATH e
 	!bash
 	export PYTHONPATH=/projects/proj:/home/alon/utils
 
-The list of search paths can be modified from python:
+The list of search paths can be modified from within python:
 
 	!python
     >>> import sys
@@ -371,7 +372,7 @@ After looking at the PYTHONPATH, python looks in the package installation path:
 	['/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python',
      '/Library/Python/2.7/site-packages']
 	 
-Finally python looks at the stdlib directory, In my case its: /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7
+Finally python looks at the stdlib directory, In my case its: `/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7`.
 
 After a module has been found and compiled it is stored in `sys.modules`. 
 
@@ -411,6 +412,69 @@ NOTE2: `eval`, `exec` and `execfile` all receive optional `locals` and `globals`
 
 ---
 
+## Mutability
+
+An immutable object cannot be modified after it is created.
+This is in contrast to a mutable object, which can be modified after it is created.
+
+Examples of immutable objects: ints, strings, tuples etc'.
+
+Examples of Mutable objects: lists, dicts, objects etc'.
+
+Because immutable objects can't change, They are passed by value.
+This is in contrast to mutable objects, which are passed by reference.
+
+Example:
+
+	!python
+	>>> string = "foo"
+	>>> copy = string # creates a new string
+	>>> string += "bar" 
+	>>> string
+	foo
+	>>> copy
+	foobar
+	
+	>>> l = [1, 2, 3]
+	>>> l2 = l # creates a reference to the same list
+	>>> l.append(4)
+	>>> l2
+	[1, 2, 3, 4]
+
+---
+
+## Dictionaries and `__hash__`
+
+Dictionaries, or more generally hash maps, identify keys using a hash function.
+The hash function maps a value (lets say, a string) to a number. The same string will always be mapped to the same number, Hence, consistent hashing.
+
+A dictionary calculates the hash of objects by calling `__hash__`.
+
+Dictionary keys must be immutable. Mutable objects can't generate a consistent hash, therefore, their `__hash__` attribute is set to `None`.
+
+If a custom object has immutable qualities (a user id that will never change), It can implement `__hash__`:
+
+	!python
+	class User(object):
+
+	    def __init__(self, id, name):
+			self.id = id
+			self.name = name
+			
+		def __hash__(self):
+			return self.id
+	
+That way we can build dictionaries with users as keys, or sets of users.
+
+---
+
+## Immutable data structures
+
+`frozenset` is an immutable `set`.
+
+The brownie library has an `ImmutableDict` implementation.
+
+`tuples` can be used as immutable `lists`.
 
 ---
 

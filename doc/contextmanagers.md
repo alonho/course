@@ -1,7 +1,7 @@
 # Context Managers
 
 * Great for resource management
-* An alternative for destructors
+* An alternative for destructors (`__del__` is bad!)
 
 Examples:
 
@@ -154,3 +154,4 @@ The exception information is passed by simply throwing the exception into the ge
 		stime = time.time()
 		yield
 		print "{} took {}".format(obj, time.time() - stime)
+
