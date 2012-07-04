@@ -23,6 +23,38 @@ Generators can yield values, accept values via send and process exception via th
 	  File "<stdin>", line 1, in <module>
     StopIteration
 
+
+---
+
+## Exercise 1 - flatten
+
+	!python
+	>>> for i in flatten(range(3), range(3, 5)):
+	...     print i,
+	0 1 2 3 4
+
+---
+
+## Execrise 1 - solution
+
+	!python
+	def flatten(*iterables):
+		for iterable in iterables:
+			for i in iterable:
+				yield i
+
+---
+
+## Exercise 2 - find dependencies
+
+Print the imported module and how many times it is imported for all python modules in a directory (recursive!):
+
+	!python
+	>>> print_deps("/tmp")
+	os      1
+	sys     2
+    csv     1
+	
 ---
 
 ## Map and filter
@@ -106,4 +138,65 @@ When comparing tuples, all the first items are compared, then all the second ite
 	[{'msg': 'bar', 'year': 2011, 'month': 6},
      {'msg': 'spam', 'year': 2012, 'month': 4},
 	 {'msg': 'foo', 'year': 2012, 'month': 5}]
+
+---
+
+## Exercise 3 - primes
+
+Print the first N primes. (a prime number is bigger then 1 and divides only by itself and 1).
+
+	!python
+	>>> print_first_primes(3)
+	2
+	3
+	5
+
+---
+
+## Exercise 4 - primes continued
+
+	!python
+	>>> print primes(100, 200)
+	547
+	557
+	563
+	569
+	571
+	577
+	587
+	593
+	599
+	601
 	
+---
+
+## Exercise 4 - solution
+
+	!python
+	def take(n, gen):
+		for i in xrange(n):
+			yield gen.next()
+	def is_prime(n):
+		if n == 1: # 1 is special
+			return False
+		for i in xrange(2, (n / 2) + 1):
+			if n % i == 0:
+				return False
+		return True
+	from itertools import ifilter, count
+	def prime_generator():
+		return ifilter(is_prime, count(1))
+	def get_first_primes(n):
+		return take(n, prime_generator())
+	def get_primes(start, end):
+		gen = prime_generator()
+		for i in take(start, gen):
+			pass
+		return take(end - start, gen)
+	def print_first_primes(n):
+		for prime in get_first_primes(n):
+			print prime
+	def print_primes(start, end):
+		for prime in get_primes(start, end):
+			print prime
+		
