@@ -431,9 +431,9 @@ Example:
 	>>> copy = string # creates a new string
 	>>> string += "bar" 
 	>>> string
-	foo
-	>>> copy
 	foobar
+	>>> copy
+	foo
 	
 	>>> l = [1, 2, 3]
 	>>> l2 = l # creates a reference to the same list
@@ -478,3 +478,218 @@ The brownie library has an `ImmutableDict` implementation.
 
 ---
 
+## The stack
+
+The python stack is composed of frames. 
+
+Each thread has it's own stack. 
+
+The stack frames points to the code object, local variables, the previous stack frame and various python internal information.
+
+	!python
+	>>> def print_stack():
+	...     frame = sys._getframe(0) # first frame
+	...     print frame
+	...     print frame.f_code # the code object
+	...     print frame.f_locals # locals()
+	...     print frame.f_back  # previous frame
+	>>> print_stack()
+	<frame object at 0x100379df0>
+	<code object print_stack at 0x100437830, file "<stdin>", line 1>
+	{'frame': <frame object at 0x100379df0>} # locals()
+	<frame object at 0x100379c40> # previous frame
+
+---
+
+## Printing the stack
+
+	!python
+	import traceback
+	>>> def foo():
+	...     traceback.print_stack()
+	>>> foo()
+	  File "<stdin>", line 1, in <module>
+   	  File "<stdin>", line 2, in foo
+
+Useful for exception analysis:
+
+	!python
+	>>> def foo():
+	...     1 / 0
+	>>> try:
+	...     foo()
+	... except:
+	...     traceback.print_exc()
+	Traceback (most recent call last):
+	  File "<stdin>", line 2, in <module>
+      File "<stdin>", line 2, in foo
+	ZeroDivisionError: integer division or modulo by zero
+
+NOTE: if you're using `logging`, use `logger.exception` to log a message with a traceback.
+
+---
+
+## Functions and methods
+
+Python functions are simple function objects.
+
+	!python
+	def func():
+		pass
+	
+	>>> print func
+	<function __main__.func>
+
+Python methods are a bit different.
+
+	!python
+	class A(object):
+		def foo(self): 
+			pass
+		
+	>>> print A().foo
+	<bound method A.foo of <__main__.A object at 0x101e4aed0>>
+
+---
+
+There's a reason for that:
+	
+	!python
+	>>> a = A()
+	>>> foo = a.foo
+	>>> foo() # where is 'self'?
+	>>> print foo.im_func
+	<function __main__.foo>
+	>>> print foo.im_self
+	<__main__.A at 0x101e4afd0>
+
+So calling bound methods:
+
+	!python
+	>>> a.foo()
+	
+Is implemented roughly like this:
+	
+	!python
+	>>> a.foo.im_func(a.foo.im_self)
+
+---
+
+Unbound methods are methods of the class:
+
+	!python
+	>>> A.foo
+	<unbound method A.foo>
+	>>> print A.foo.im_self # no instance
+	None
+	>>> print A.foo.im_class
+	<class '__main__.A'>
+
+One of the reasons the `im_class` attribute exists is this:
+
+	!python
+	>>> a = A()
+	>>> A.foo(a)
+	>>> A.foo(10) # type of self is compared against im_class
+	Traceback (most recent call last):
+	  File "<stdin>", line 1, in <module>
+    TypeError: unbound method foo() must be called with A instance 
+	as first argument (got int instance instead)
+
+---
+
+## `__slots__`
+
+`__slots__` let us avoid a dictionary allocation per instance.
+by defining a list of member names, a small and fixed amount of memory per object is allocated.
+
+Without `__slots__`:
+
+	!python
+	>>> import sys
+	>>> class A(object):
+	...     pass
+	>>> sys.getsizeof(A())
+    64
+	>>> sys.getsizeof(A.__dict__)
+	280
+
+	
+With `__slots__`:
+
+	!python
+	>>> class A(object):
+	...     __slots__ = ()
+	>>> sys.getsizeof(A())
+	16
+	>>> A().__dict__
+	Traceback (most recent call last):
+	  File "<stdin>", line 1, in <module>
+    AttributeError: 'A' object has no attribute '__dict__'
+	
+---
+
+No attributes can be added to classes with `__slots__`:
+
+	!python
+	>>> class A(object):
+	...     __slots__ = ('a', 'b')
+	>>> a = A()
+	>>> a.a = 10
+	>>> a.c = 100
+	Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    AttributeError: 'A' object has no attribute 'c'
+	
+Note1: `__slots__` and inheritence - `__dict__` allocation will be prevented only if all classes in the inheritence tree define `__slots__`.
+
+Note2: `__slots__` is implemented using descriptors!
+
+---
+
+## Function default arguments
+
+Avoid this:
+
+	!python
+	def f(l=[]):
+	    l.append(1)
+		print l
+	>>> f()
+	[1]
+	>>> f()
+	[1, 1]
+	>>> f.func_defaults # these objects are saved in the function object!
+	([1, 1],)
+
+Do this:
+	
+	!python
+	def f(l=None):
+		if l is None:
+			l = []
+		l.append(1)
+		print l
+	>>> f()
+	[1]
+	>>> f()
+	[1]
+
+---
+
+## casting to bool
+
+Avoid this:
+	
+	!python
+	def foo(string=None):
+	   if string: # what if an empty string is valid?
+	       ...
+		
+Do this:
+	
+	!python
+	if x is None:
+		...
+	if x == '':
+		...
