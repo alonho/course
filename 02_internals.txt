@@ -1,7 +1,2 @@
-gc (hour)
-  reference counting
-  cyclic
-  __del__
-  weakref - monitoring
   
-casting to bool and 'is'
+

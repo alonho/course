@@ -79,4 +79,43 @@ If the gc identifies cyclic references and the objects implement `__del__` it wi
 	>>> gc.garbage # the gc marks object it can't free
 	[<__main__.A at 0x101e27510>, <__main__.A at 0x101e27f50>]
 	
-	
+Note: If you really need cyclic references, the `weakref` module can be used to create references that don't increase reference count.
+
+---
+
+## Exercise - Memory stats
+
+	!python
+	>>> print_mem_stats(top=10)
+	983 <type 'wrapper_descriptor'>
+	589 <type 'function'>
+	550 <type 'builtin_function_or_method'>
+	341 <type 'method_descriptor'>
+	322 <type 'dict'>
+	243 <type 'weakref'>
+	239 <type 'tuple'>
+	176 <type 'member_descriptor'>
+	123 <type 'list'>
+	108 <type 'set'>
+
+---
+
+## Exercise - solution
+
+	!python
+	import gc
+	import collections
+
+	def get_obj_counts():
+		""" returns {str: 10, int: 200} """
+		types = map(type, gc.get_objects())
+		return collections.Counter(types)
+
+	def get_ordered_obj_counts():
+		""" returns [(200, int), (10, str)] """"
+		return sorted(((count, cls) for cls, count in get_obj_counts().iteritems()), 
+			           reverse=True)
+    
+	def print_mem_stats(top):
+		for index, (count, cls) in zip(xrange(top), get_ordered_obj_counts()):
+			print count, cls
