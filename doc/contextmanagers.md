@@ -89,6 +89,7 @@ The generator should yield once, that way the first iteration is the `__enter__`
 The exception information is passed by simply throwing the exception into the generator.
 
 	!python
+	from contextlib import contextmanager
 	@contextmanager
 	def locked(lock):
 		lock.acquire()

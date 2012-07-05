@@ -4,16 +4,4 @@ gc (hour)
   __del__
   weakref - monitoring
   
-code/func/method - __class__
-
-the stack
-  traceback
-  f_code, f_locals, f_back
-  error handling: except:, logging  
-
-sys
-  getsizeof
-
-lambda namespaces and function default args
-
 casting to bool and 'is'

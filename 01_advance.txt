@@ -4,6 +4,8 @@ decorators
 
 staticmethod/classmethod
 
+generators pdf
+
 generators
   
 metaclasses

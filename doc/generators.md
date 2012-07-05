@@ -47,7 +47,7 @@ Generators can yield values, accept values via send and process exception via th
 
 ## Exercise 2 - find dependencies
 
-Print the imported module and how many times it is imported for all python modules in a directory (recursive!):
+Print every imported module and how many times it is imported for all python modules in a directory (recursive!):
 
 	!python
 	>>> print_deps("/tmp")
@@ -55,6 +55,8 @@ Print the imported module and how many times it is imported for all python modul
 	sys     2
     csv     1
 	
+Note: import can be done using `import os` and `from os import environ`.
+
 ---
 
 ## Map and filter
@@ -156,7 +158,7 @@ Print the first N primes. (a prime number is bigger then 1 and divides only by i
 ## Exercise 4 - primes continued
 
 	!python
-	>>> print primes(100, 200)
+	>>> print primes(100, 110)
 	547
 	557
 	563
