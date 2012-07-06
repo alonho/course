@@ -112,7 +112,7 @@ Note: If you really need cyclic references, the `weakref` module can be used to 
 		return collections.Counter(types)
 
 	def get_ordered_obj_counts():
-		""" returns [(200, int), (10, str)] """"
+		""" returns [(200, int), (10, str)] """
 		return sorted(((count, cls) for cls, count in get_obj_counts().iteritems()), 
 			           reverse=True)
     

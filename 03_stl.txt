@@ -18,15 +18,6 @@ logging
   filters
   tree and propagate
 
-sets
-
-collections (hour)
-  counter - for.. counting stuff
-  deque - double ended queue. O(1) for addition/deletion in both sides, maxlen can be used to define fixed size buffers. 
-  defaultdict
-  namedtuple
-  ordereddict
-
 itertools
   zip
   izip
@@ -38,8 +29,6 @@ itertools
   chain
   groupby
 
-StringIO/cStringIO - growing strings
-
 array 
   low level access (bytearray, memoryview)
 
@@ -50,22 +39,7 @@ pickle
 
 glob
   glob/iglob
-
-subprocess
-
-the GIL (hour)	
-  lecture
-  alterantives
-    multiproc
-    non-python thread
   
-threading
-  lock
-  rlock
-  event
-  timer
-  what is atomic - list append list pop
-
 Queue
 
 optparse/argparse
