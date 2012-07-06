@@ -18,38 +18,3 @@ logging
   filters
   tree and propagate
 
-itertools
-  zip
-  izip
-  islice
-  imap
-  ifilter
-  cycle
-  repeat
-  chain
-  groupby
-
-array 
-  low level access (bytearray, memoryview)
-
-struct
-  packing and unpacking binary data - Struct("h").pack(2)
-
-pickle
-
-glob
-  glob/iglob
-  
-Queue
-
-optparse/argparse
-
-printing
- 
-external
-  construct
-  lxml - builder/iterparse
-  rpyc
-  multiprocessing - Pool, Queue, Pipe
-  brownie
-  numpy

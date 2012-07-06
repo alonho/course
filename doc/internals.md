@@ -126,6 +126,8 @@ The `__getattribute__` method allows customization of the attribute lookup proce
 			except AttributeError:
 				return super(A, self).__getattribute__(attr.lower())
 
+Note that we are using super because looking at `__dict__` will trigger an infinite recursion of `__getattribute__`.
+
 ---
 
 The `__getattr__` method can be overriden in a similar manner, except that it's called only if the attribute doesn't exist in the object's `__dict__`.

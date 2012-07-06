@@ -1,10 +1,8 @@
 function land {
-  landslide -d html/$1.html -r -c -ltable doc/$1.md
+  landslide -d $2 -r -c -ltable $1
 }
-land args
-land contextmanagers
-land decorators
-land generators
-land internals
-land metaclasses
-land staticclass
+
+for f in `cd doc && ls *.md`
+do
+ land doc/$f html/$f.html
+done

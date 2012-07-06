@@ -198,7 +198,7 @@ Bonus: implement the grep process as a python script.
 
 ---
 
-## Exercise 6 - solution
+## Exercise 5 - solution
 
 grep.py:
 
@@ -227,7 +227,7 @@ main.py:
 
 ---
 
-## Exercise 7 - sets
+## Exercise 6 - sets
 
 	!python
 	>>> compare_strings("spam", "eggs")
@@ -241,7 +241,7 @@ main.py:
 
 ---
 
-## Exercise 7 - solution
+## Exercise 6 - solution
 
 	!python
 	def compare_strings(a, b):
@@ -260,7 +260,7 @@ main.py:
 
 ## StringIO
 
-The `StringIO` has two use cases:
+The `StringIO` module has two use cases:
 	
 ### Mimic a `file` object
 
@@ -308,9 +308,131 @@ A faster and more elegent implementation:
 	>>> s.write(read())
 	>>> s.write(read())
 	>>> return s.getvalue()
+
+
+---
+
+## pickle
+
+`pickle` or it's C implementation `cPickle` provides serialization functions for python objects:
+
+	!python
+	>>> cPickle.dumps([1, 2])
+	'(lp1\nI1\naI2\na.'
+	>>> cPickle.loads(_)
+	[1, 2]
+
+It is used throughout the standard library (e.g. `multiprocessing`).
+
+Not all objects are pickleable: sockets, methods (not functions, methods), etc'.
+
+If your object is not pickleable, or you want to pickle it in a custom way you can define methods for `pickle` to use: `__getstate__` and `__setstate__`.
+
+---
+
+## Exercise 7 - implement a db
+
+	!python
+	>>> with DB('db') as db:
+	>>>     db['a'] = 10
+	>>>     db['b'] = [1, 2, 3]
+	>>>
+	>>> db = open_db('db')
+	>>> db['a']
+	10
+	>>> db['b']
+	[1, 2, 3]
+	>>> db.close()
 	
 ---
 
-	
+## Exercise 7 - solution
 
+Ha! you implemented the `shelve` module!
+
+---
+
+* `itertools` - generators versions to existing functions and more: izip, islice, imap, ifilter, cycle, repeat, chain, groupby.
+* `array` - lists to/from C arrays. good for interacting with the OS.
+* `struct` - build and unpack C types and structs.
+* `argparse` - from 2.7. if not available can be installed as package.
+* `brownie` - not in the stdlib. contains many nice utilities like `ImmutableDict`.
+
+---
+
+## External Libraries
+
+### lxml - building
+
+	!python
+	>>> from lxml.builder import E	
+	>>> page = (
+	...   E.html(       # create an Element called "html"
+	...     E.head(
+	...       E.title("This is a sample document")
+	...     ),
+	...     E.body(
+	...       E.h1("Hello!"),
+	...       E.p("This is a paragraph with ", E.b("bold"), " text in it!"),
+	...     )
+	...   )
+	... )
+
+	>>> print(etree.tostring(page, pretty_print=True))
+	<html>
+		<head>
+			<title>This is a sample document</title>
+		</head>
+		<body>
+			<h1>Hello!</h1>
+			<p>This is a paragraph with <b>bold</b> text in it!</p>
+		</body>
+	</html>
+
+---
+
+## lxml - iterative parsing
+
+	!python
+	>>> xml_file = StringIO('''\
+	... <root>
+	...   <a><b>ABC</b><c>abc</c></a>
+	...   <a><b>MORE DATA</b><c>more data</c></a>
+	...   <a><b>XYZ</b><c>xyz</c></a>
+	... </root>''')
+
+	>>> for _, element in etree.iterparse(xml_file, tag='a'):
+	...     print('%s -- %s' % (element.findtext('b'), element[1].text))
+	...     element.clear()
+	ABC -- abc
+	MORE DATA -- more data
+	XYZ -- xyz
+	
+	
+---
+
+## Exercise 8 - xor a buffer
+
+What would be the fastest way to xor a buffer with 0x7b?
+
+	!python
+	>>> xor_buf('\x01\x02\x03')
+	
+---	
+
+## `numpy`
+
+`numpy` has similar qualities to the `array` module except that it supports multi-dimensional arrays, array and matrix algebra and is widely used for scientific means.
+
+	!python
+	>>> arr = numpy.array([1, 2, 3], dtype=int8)
+	>>> arr
+	array([1, 2, 3], dtype=int8)
+	>>> arr + 1
+	array([2, 3, 4], dtype=int8)
+	>>> arr ^ 0x7b
+    array([122, 121, 120], dtype=int8)
+	>>> xored = _
+	>>> xored.tostring()
+	'zyx'
 

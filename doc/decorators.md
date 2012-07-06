@@ -22,7 +22,7 @@
 	@typecheck(int, int)
 	def add(x, y):
 	    pass
-
+	
 ---
 
 ## Syntax
