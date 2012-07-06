@@ -1,5 +1,0 @@
-
-testing
-  unittest
-  mock
-  nosetests/py.test
