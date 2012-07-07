@@ -13,6 +13,8 @@ Find all the prime numbers until 'end' in a given amount of 'threads'.
 	>>> calc_primes(end=50, threads=5)
 	[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
 
+Note: remember there is no performance gain here because of the GIL (global interpreter lock).
+
 ---
 
 ### Exercise 2 - echo server
@@ -406,8 +408,7 @@ Ha! you implemented the `shelve` module!
 	...     element.clear()
 	ABC -- abc
 	MORE DATA -- more data
-	XYZ -- xyz
-	
+	XYZ -- xyz	
 	
 ---
 

@@ -18,24 +18,20 @@ gc
 
 concurrency pdf
 
-unittest - mock
-
 stl
 
 construct
 
 rpyc
 
+unittest - mock
+
 debugging
   pdb
-  pudb
   eclipse - visual and seperate threads
   mem leaks - gc guppy
   ipython (pdb, dir, ?, ??, !, timeit) - embed
 
-prof
-  cProfile
-  runsnakerun
-
 game
 
+prof
