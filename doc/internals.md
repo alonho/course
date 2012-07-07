@@ -695,3 +695,27 @@ Do this:
 		...
 	if x == '':
 		...
+
+---
+
+## nested scopes - closures
+
+Nested scopes allow functions to access variables defined in enclosing scopes.
+
+	!python
+	>>> def addx(x):
+	...	    def add(y):
+	...         return x + y
+	... 	return add
+	>>> add5 = addx(5)
+	>>> print add5(3)
+	8
+
+How does it work?
+
+	!python
+	>>> add5.func_closure
+	(<cell at 0x10ccc1360: int object at 0x7fea11413110>,)
+	>>> cell = _[0] # cell is a reference to a variable in an upper scope
+	>>> cell.cell_contents
+	5

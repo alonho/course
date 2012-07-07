@@ -110,12 +110,7 @@ Note: If you really need cyclic references, the `weakref` module can be used to 
 		""" returns {str: 10, int: 200} """
 		types = map(type, gc.get_objects())
 		return collections.Counter(types)
-
-	def get_ordered_obj_counts():
-		""" returns [(200, int), (10, str)] """
-		return sorted(((count, cls) for cls, count in get_obj_counts().iteritems()), 
-			           reverse=True)
     
 	def print_mem_stats(top):
-		for index, (count, cls) in zip(xrange(top), get_ordered_obj_counts()):
+		for cls, count in get_obj_counts().most_common(top):
 			print count, cls

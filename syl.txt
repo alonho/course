@@ -24,7 +24,17 @@ construct
 
 rpyc
 
+re
+
 unittest - mock
+
+logging
+  _levelNames
+  getLogger
+  handlers
+  formatters
+  filters
+  tree and propagate
 
 debugging
   pdb

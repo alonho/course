@@ -247,14 +247,22 @@ There's also a generator version that yields match objects:
 
 A common use of regex is to perform rich substitutions.
 
+The `sub` function gets a `repl` (replace) argument that can be a string that replaces the matches:
+
 	!python
 	>>> from re import sub
 	>>> print sub(pattern='foo', repl='bar', string='foobar')
 	barbar
 
+The string can refer to subgroups using `\g<n>` where `n` is the subgroup:
+
+	!python
 	>>> print sub(pattern='[0-9a-fA-F]', repl=r'0x\g<0>', string='8a')
 	0x8a
 
+`repl` can also be a function that gets a match and returns a string:
+
+	!python
 	>>> def inc(match):
 	...     return str(int(match.group(0)) + 1)
 	>>> print sub(pattern='\d+', repl=inc, string='123 456')
