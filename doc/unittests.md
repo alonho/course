@@ -72,7 +72,7 @@ Or use nose, which is a smart test runner:
 Mocking is a technique used when in unittests for replacing external dependencies with fake objects or functions. Here's an example of code which is hard to test:
 	
 	!python
-	import os, errno
+	import os, errno, mock, unittest
 	
 	def log(data):
 		try:
@@ -83,16 +83,66 @@ Mocking is a technique used when in unittests for replacing external dependencie
 				return False
 		return True
 	
-	import mock, unittest
-
 	class TestLog(unittest.TestCase):
-		def test(self):
+		def test_no_space(self):
 			with mock.patch('__builtin__.open') as open_func:
 				error = IOError()
 				error.errno = errno.ENOSPC
-				open_func.side_effect = error			
+				open_func.side_effect = error
 				self.assertEquals(False, log("some data"))
+		def test(self):
+			with mock.patch('__builtin__.open') as open_func:
+				self.assertEquals(True, log("some data"))
+				open_func.return_value.write.assert_called_with("some data")
+				
+---
+
+## Mocking objects
+
+	!python
+	class EmailServer(object):
+		
+		def __init___(self, ip, port):
+			...
+			
+		def send_email(self, recipient, message):
+			...
+			
+	def send_emails(email_server, recipients, message):
+		for recipient in recipients:
+			email_server.send_email(recipient, message)
+		
+	class TestSendMessages(TestCase):
+	
+		def test(self):
+	        email_server_mock = mock.create_autospec(EmailServer)
+			send_emails(email_server_mock, ["joe", "mike"], "help!")
+			email_server_mock.send_email.assert_called_with("joe", "help!")
+			email_server_mock.send_email.assert_called_with("mike", "help!")
 
 ---
 
+## Mocking `self`
+
+By mocking `self` we can test a method in complete isolation. No need to initialize an object. (great for sockets, files)
+
+	!python
+	class EmailServer(object):
 		
+		def __init___(self, ip, port):
+			...
+			
+		def send_email(self, recipient, message):
+			...
+			
+		def send_emails(self, recipients, message):
+			for recipient in recipients:
+				self.send_email(recipient, message)
+			
+	class TestSendMessages(TestCase):
+	
+		def test(self):
+	        email_server_mock = mock.create_autospec(EmailServer)
+			EmailServer.send_emails(email_server_mock, ["joe", "mike"], "help!")
+			email_server_mock.send_email.assert_called_with("joe", "help!")
+			email_server_mock.send_email.assert_called_with("mike", "help!")
