@@ -26,22 +26,13 @@ rpyc
 
 re
 
-unittest - mock
-
 logging
-  _levelNames
-  getLogger
-  handlers
-  formatters
-  filters
-  tree and propagate
 
 debugging
   pdb
   eclipse - visual and seperate threads
-  mem leaks - gc guppy
   ipython (pdb, dir, ?, ??, !, timeit) - embed
 
-game
+unittest - mock
 
-prof
+game

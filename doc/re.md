@@ -133,6 +133,22 @@ A symbol followed by an asterisk (*) indicates it can be repeated 0 or more time
 
 ---
 
+## Greedy repetition
+
+Repetition is greedy by default:
+	
+	!python
+	>>> re.findall("<.*>", "<a>bla</a>")
+	['<a>blaasd</a>']
+
+To make a repetition non-greedy, add a question mark after the repetition symbol:
+
+	!python
+	>>> re.findall("<.*?>", "<a>bla</a>")
+	['<a>', '</a>']
+
+---
+
 A specific number of repititions is written as `{n}` where `n` is the number of repetitions:
 
 	!python
@@ -289,12 +305,12 @@ Each time a pattern is passed as an argument to `search` or `findall` it is comp
 	>>> print get_domain("bill")
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
-    ValueError: Invalid regex
+    ValueError: Invalid email
 	
 	>>> print get_domain("bill@domain") # must have a '.'!
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
-    ValueError: Invalid regex
+    ValueError: Invalid email
 	
 	>>> print get_domain("bill@domain.com")
 	domain.com

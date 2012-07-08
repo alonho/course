@@ -17,9 +17,69 @@ Note: remember there is no performance gain here because of the GIL (global inte
 
 ---
 
+Bonus 1: how does the threaded version compare to a non-threaded one?
+
+Bonus 2: convert the implementation to use multiprocessing.
+
+---
+
+### Exercise 1 - multiprocessing
+
+	!python
+	from multiprocessing import Pool
+
+	def is_prime(n):
+		if n == 1: # 1 is special
+			return False
+		for i in xrange(2, (n / 2) + 1):
+			if n % i == 0:
+				return False
+		return True
+
+	def calc_primes_pool(end, threads):
+		p = Pool(threads)
+		results = [(p.apply_async(is_prime, (i,)), i) for i in xrange(end)]
+		for result, value in results:
+			if result.get():
+				yield value
+
+---
+
+### Exercise 1 - threaded solution
+
+	!python
+	from Queue import Queue, Empty
+	import threading
+
+	def worker(in_queue, out_queue):
+		while True:
+			value = in_queue.get()
+			if value is None:
+				break
+			if is_prime(value):
+				out_queue.put(value)
+        
+	def calc_primes_queues(end, threads):
+		in_queue, out_queue = Queue(), Queue()
+		threads = [threading.Thread(target=worker, args=(in_queue, out_queue))
+                   for i in xrange(threads)]
+        [thread.start() for thread in threads]	
+		map(in_queue.put, xrange(end))
+		[in_queue.put(None) for i in xrange(len(threads))]
+		[thread.join() for thread in threads]
+		result = []
+		while True:
+			try:
+				result.append(out_queue.get_nowait())
+			except Empty:
+				break
+		return result
+
+---
+
 ### Exercise 2 - echo server
 
-Implement an echo server, which upper cases every input. 
+Implement an echo server, which upper cases every input. It should support multiple clients concurrently.
 
 Some client code for example.
 
@@ -31,7 +91,18 @@ Some client code for example.
 	>>> sock.recv(3)
 	'FOO'
 	>>> sock.send('bar')
+	>>> sock.recv(3)
 	'BAR'
+
+Simple server code:
+	
+	!python
+	>>> import socket
+	>>> server = socket.socket()
+	>>> server.bind(("127.0.0.1", 12345))
+	>>> server.listen(1)
+	>>> (sock, addr) = server.accept()
+	>>> sock.send(sock.recv(1024).upper())
 
 ---
 
@@ -193,7 +264,8 @@ Implement a grep function using `subprocess.Popen` and the unix `grep`:
 	spam
 	eggs
 
-	>>> grep("foo", "foo.txt")
+	>>> l = grep("foo", "foo.txt")
+	>>> l
 	["foo", "foobar"]
 
 Bonus: implement the grep process as a python script.
@@ -335,11 +407,11 @@ If your object is not pickleable, or you want to pickle it in a custom way you c
 ## Exercise 7 - implement a db
 
 	!python
-	>>> with DB('db') as db:
+	>>> with DB(path='db') as db:
 	>>>     db['a'] = 10
 	>>>     db['b'] = [1, 2, 3]
 	>>>
-	>>> db = open_db('db')
+	>>> db = DB(path='db')
 	>>> db['a']
 	10
 	>>> db['b']
@@ -417,7 +489,8 @@ Ha! you implemented the `shelve` module!
 What would be the fastest way to xor a buffer with 0x7b?
 
 	!python
-	>>> xor_buf('\x01\x02\x03')
+	>>> xor_buf('\x01\x02\x03', 0x7b)
+	'zyx'
 	
 ---	
 
