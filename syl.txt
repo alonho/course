@@ -1,3 +1,5 @@
+--- day 1 ---
+
 *args **kwargs
 
 decorators
@@ -14,6 +16,10 @@ contextmanagers
 
 internals
 
+--- day 2 ---
+
+internals - if any left
+
 gc
 
 concurrency pdf
@@ -26,13 +32,14 @@ rpyc
 
 re
 
+--- day 3 ---
+
 logging
 
 debugging
-  pdb
-  eclipse - visual and seperate threads
-  ipython (pdb, dir, ?, ??, !, timeit) - embed
 
-unittest - mock
+debugging pdf
+
+unittest
 
 game

@@ -77,35 +77,6 @@ Bonus 2: convert the implementation to use multiprocessing.
 
 ---
 
-### Exercise 2 - echo server
-
-Implement an echo server, which upper cases every input. It should support multiple clients concurrently.
-
-Some client code for example.
-
-	!python
-	>>> import socket
-	>>> sock = socket.socket()
-	>>> sock.connect(('127.0.0.1', 12345))
-	>>> sock.send('foo')
-	>>> sock.recv(3)
-	'FOO'
-	>>> sock.send('bar')
-	>>> sock.recv(3)
-	'BAR'
-
-Simple server code:
-	
-	!python
-	>>> import socket
-	>>> server = socket.socket()
-	>>> server.bind(("127.0.0.1", 12345))
-	>>> server.listen(1)
-	>>> (sock, addr) = server.accept()
-	>>> sock.send(sock.recv(1024).upper())
-
----
-
 ## Collections
 
 ### `Counter`
@@ -182,7 +153,7 @@ TIP: The `namedtuple` takes less memory than regular objects because it doesn't 
 
 ---
 
-### Exercise 3 - find cap words
+### Exercise 2 - find cap words
 
 	!python
 	print_cap_words("Do not Take life Too seriously. You will never get out of it alive.")
@@ -192,7 +163,7 @@ TIP: The `namedtuple` takes less memory than regular objects because it doesn't 
 
 ---
 
-### Exercise 3 - solution
+### Exercise 2 - solution
 
 	!python
 	from collections import defaultdict
@@ -210,7 +181,7 @@ TIP: The `namedtuple` takes less memory than regular objects because it doesn't 
 
 ---
 
-### Exercise 4 - char counter
+### Exercise 3 - char counter
 
 	!python
 	>>> char_count("abbcccdddd")
@@ -231,7 +202,7 @@ Bonus: add an `int` argument called `most_common` for returning only the most co
 
 ---
 
-### Exercise 4 - solution
+### Exercise 3 - solution
 
 	!python
 	from collections import Counter
@@ -252,7 +223,7 @@ And the bonus:
 		
 ---
 
-## Exercise 5 - subprocess 
+## Exercise 4 - subprocess 
 
 Implement a grep function using `subprocess.Popen` and the unix `grep`:
 
@@ -272,7 +243,7 @@ Bonus: implement the grep process as a python script.
 
 ---
 
-## Exercise 5 - solution
+## Exercise 4 - solution
 
 grep.py:
 
@@ -301,7 +272,7 @@ main.py:
 
 ---
 
-## Exercise 6 - sets
+## Exercise 5 - sets
 
 	!python
 	>>> compare_strings("spam", "eggs")
@@ -315,7 +286,7 @@ main.py:
 
 ---
 
-## Exercise 6 - solution
+## Exercise 5 - solution
 
 	!python
 	def compare_strings(a, b):
@@ -404,7 +375,7 @@ If your object is not pickleable, or you want to pickle it in a custom way you c
 
 ---
 
-## Exercise 7 - implement a db
+## Exercise 6 - implement a db
 
 	!python
 	>>> with DB(path='db') as db:
@@ -418,9 +389,11 @@ If your object is not pickleable, or you want to pickle it in a custom way you c
 	[1, 2, 3]
 	>>> db.close()
 	
+Hint: `obj[key]` translates to `obj.__getitem__(key)`, `obj[key] = value` translates to `obj.__setitem__(key, value)`.
+	
 ---
 
-## Exercise 7 - solution
+## Exercise 6 - solution
 
 Ha! you implemented the `shelve` module!
 
@@ -484,7 +457,7 @@ Ha! you implemented the `shelve` module!
 	
 ---
 
-## Exercise 8 - xor a buffer
+## Exercise 7 - xor a buffer
 
 What would be the fastest way to xor a buffer with 0x7b?
 
@@ -510,3 +483,31 @@ What would be the fastest way to xor a buffer with 0x7b?
 	>>> xored.tostring()
 	'zyx'
 
+---
+
+### Exercise 2 - echo server
+
+Implement an echo server, which upper cases every input. It should support multiple clients concurrently. Remember the limitation on number of threads. consider using select/poll.
+
+Some client code for example.
+
+	!python
+	>>> import socket
+	>>> sock = socket.socket()
+	>>> sock.connect(('127.0.0.1', 12345))
+	>>> sock.send('foo')
+	>>> sock.recv(3)
+	'FOO'
+	>>> sock.send('bar')
+	>>> sock.recv(3)
+	'BAR'
+
+Simple server code:
+	
+	!python
+	>>> import socket
+	>>> server = socket.socket()
+	>>> server.bind(("127.0.0.1", 12345))
+	>>> server.listen(1)
+	>>> (sock, addr) = server.accept()
+	>>> sock.send(sock.recv(1024).upper())

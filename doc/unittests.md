@@ -146,3 +146,23 @@ By mocking `self` we can test a method in complete isolation. No need to initial
 			EmailServer.send_emails(email_server_mock, ["joe", "mike"], "help!")
 			email_server_mock.send_email.assert_called_with("joe", "help!")
 			email_server_mock.send_email.assert_called_with("mike", "help!")
+
+---
+
+## Exercise
+
+Use `mock` to test the following code:
+
+	!python
+	import time
+	def sleep_and_execute(func):
+	    time.sleep(60)
+		func()
+
+	import socket
+	def read(sock):
+		data = sock.recv(4096)
+		if data == '':
+			raise socket.error('socket closed')
+		return data
+	
