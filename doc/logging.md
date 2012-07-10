@@ -63,7 +63,7 @@ The logger's default minimum level is `warning`.
 
 `logging.handlers.RotatingFileHandler('log', maxBytes=1024, backupCount=10)` - a handler that once a file reaches 1024 bytes in size, moves it and creates a new file. `backupCount` states how many files to keep. files will be named: 'log', 'log.1', 'log.2', etc'. each file will be approx' 1024 bytes long.
 
-`logging.handlers.TimedRotatingFileHandler('log.txt', when='midnight')` - a handler that rotates every midnight. also support `backupCount`. files will be named: 'log', 'log.2012-06-19', 'log.2012-06-20'.
+`logging.handlers.TimedRotatingFileHandler('log', when='midnight')` - a handler that rotates every midnight. also support `backupCount`. files will be named: 'log', 'log.2012-06-19', 'log.2012-06-20'.
 
 ## Handler level
 
@@ -87,6 +87,7 @@ The format of log messages can be modified using a `Formatter` object.
 	>>> handler = logging.StreamHandler()
 	>>> handler.setFormatter(formatter)
 	>>> logger = logging.getLogger("my_logger")
+	>>> logger.addHandler(handler)
 	>>> logger.error("Help!")
 	2012-07-08 17:33:12,126 - my_logger - ERROR - Help!
 	

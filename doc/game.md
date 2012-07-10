@@ -15,23 +15,33 @@
 
 Implement it!
 
+1. What is the type of the matrix?
+2. Can the size of the matrix be passed as an argument?
+3. Did you start from the top (printing to screen) or bottom (game rules)?
+4. If you have a bug in the rules of the game, can you write a unittest to show it? are the rules independent code?
+
 ---
 
 ## Secnond session
 
 Test first!
 
----
+1. Do you trust your code more?
+2. Did it take a lot longer?
 
+---
+	
 ## Third session
 
-3 lines per method!
+3 dimensional.
+More object oriented.
+3 lines per method.
 
 ---
 
 ## Fourth session
 
-No if statements!
+No if statements! (can be done using inheritence).
 
 ---
 

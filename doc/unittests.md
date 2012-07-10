@@ -54,7 +54,7 @@ Integration tests also have downsides:
 		def test_0(self):
 			with self.assertRaises(ZeroDivisionError):
 				div(3, 0)
-				
+		
 The builtin unittest module can run tests:
 
 	!bash
@@ -165,4 +165,11 @@ Use `mock` to test the following code:
 		if data == '':
 			raise socket.error('socket closed')
 		return data
-	
+		
+---
+
+## Coverage testing
+
+By using the pycoverage module we can generate reports showing exactly which line of code has been tested.
+
+After installing both pycoverage and nose, they can be invoked together: `nosetests --with-coverage --cover-html test.py`.
