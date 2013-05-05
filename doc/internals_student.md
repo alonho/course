@@ -429,7 +429,8 @@ If a custom object has immutable qualities (a user id that will never change), I
 	    def __init__(self, id, name):
 			self.id = id
 			self.name = name
-			
+		def __eq__(self, other):
+			return self.id == other.id
 		def __hash__(self):
 			return self.id
 	

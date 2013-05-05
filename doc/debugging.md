@@ -55,7 +55,18 @@ Run the script:
 * `pdb` - commands ipython to drop into pdb on exception.
 * `?` - writing `open?` or `file?` will show the object's signature and documentation.
 * `??` - writing `func??` will show it's code (only if it's python and not C).
+* `!` -  execute shell commands
+* `!!` - execute shell commands and returns results
 * `timeit` - `timeit [1] * 1000` will print the run time of the statement.
+
+---
+
+## Utilties
+
+* `python -m pdb` - enter pdb on exception
+* ipdb or pudb - better pdb!
+* gdb - attach
+* pstuck and pytrace
 
 ---
 

@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>The Standard Library</title>
+    <!-- Styles -->
+    
+    <style type="text/css" media="print">
+      * {
+    margin: 0;
+    padding: 0;
+}
+
+@page {
+    size: landscape;
+}
+
+body {
+    font: 100% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+div.slide {
+    min-width: 800px;
+    min-height: 600px;
+    padding: 1em;
+    overflow: hidden;
+    page-break-after: always;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+div.slide div.inner {
+    width: 800px;
+    height: 600px;
+    margin: auto;
+    display: table-cell;
+}
+
+h1 {
+    font-size: 2.4em;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+h3 {
+    margin: 1em 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+p, li, pre {
+    margin: 1em 0;
+}
+
+li {
+    margin-left: 2em;
+}
+
+a {
+    color: #000000;
+}
+
+pre, code {
+    max-width: 800px;
+    background: #eee;
+    font-family: Monaco, monospace;
+    font-size: 90%;
+}
+
+pre {
+    padding: .2em .5em;
+    overflow: hidden;
+    border-radius: .8em;
+}
+
+code {
+    padding: 0 .2em;
+}
+
+.slide header:only-child h1 {
+  line-height: 180%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  height: 600px;
+  width: 800px;
+  font-size: 48px;
+  margin-top:100px;
+  margin-bottom:100px;
+}
+
+#toc, #help, .slide aside, .slide footer, .slide .notes,
+.presenter_notes, #current_presenter_notes, #presenter_note {
+  display: none;
+}
+
+    </style>
+    <style type="text/css" media="screen, projection">
+      body {
+  font: 14px "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+  background: #778;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+div.presentation {
+  position: absolute;
+  width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+  background: inherit;
+}
+
+div.presentation > h1 {
+  display: none;
+}
+
+div.slides, body.expose div.slides.nocontext {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  display: block;
+}
+
+div.slides.nocontext {
+  width: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  left: auto;
+  top: auto;
+}
+
+div.slide {
+  display: inline;
+  position: absolute;
+  overflow: hidden;
+  width: 900px;
+  height: 700px;
+  margin-top: -350px;
+  margin-left: -400px;
+  left: 50%;
+  top: 50%;
+  background: -webkit-gradient(linear, left bottom, left top, from(#bbd), to(#fff));
+  background-color: #eee;
+  background: -moz-linear-gradient(bottom, #bbd, #fff);
+  -webkit-transition: margin 0.25s ease-in-out;
+  -moz-transition: margin 0.25s ease-in-out;
+  -o-transition: margin 0.25s ease-in-out;
+  border-top-left-radius: 20px;
+  -moz-border-radius-topleft: 20px;
+  -webkit-border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  -moz-border-radius-topright: 20px;
+  -webkit-border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  -moz-border-radius-bottomright: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  -moz-border-radius-bottomleft: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+}
+
+/* Expose */
+
+body.expose div.slides {
+  float: left;
+  position: relative;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+body.expose div.slide {
+  display: block;
+  float: left;
+  position: relative;
+  left: auto !important;
+  top: auto !important;
+  margin: 10px !important;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  -moz-transform: scale(.33, .33);
+  -moz-transform-origin: 0 0;
+  -webkit-transform: scale(.33, .33);
+  -webkit-transform-origin: 0 0;
+  -o-transform: scale(.33, .33);
+  -o-transform-origin: 0 0;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  cursor: pointer;
+}
+
+body.expose div.slide:hover {
+  background: -webkit-gradient(linear, left bottom, left top, from(#bdd), to(#fff));
+  background-color: #eee;
+  background: -moz-linear-gradient(bottom, #bdd, #fff);
+}
+
+body.expose .slide-wrapper {
+  float: left;
+  position: relative;
+  margin: .5%;
+  width: 300px;
+  height: 233px;
+}
+
+body.expose .slide footer {
+}
+
+body.expose .slide .inner {
+}
+
+body.expose .slide.far-past,
+body.expose .slide.past,
+body.expose .slide.future,
+body.expose .slide.far-future {
+  margin-left: 0;
+}
+
+body.expose .slide.current {
+  background: -webkit-gradient(linear, left bottom, left top, from(#ddb), to(#fff));
+  background-color: #eee;
+  background: -moz-linear-gradient(bottom, #ddb, #fff);
+  border: 16px solid #fff;
+  -moz-transform: scale(.315, .315);
+  -moz-transform-origin: 0 0;
+  -webkit-transform: scale(.315, .315);
+  -webkit-transform-origin: 0 0;
+  -o-transform: scale(.315, .315);
+  -o-transform-origin: 0 0;
+}
+
+/* Presenter Mode */
+
+body.presenter_view div.slide {
+  display: inline;
+  position: absolute;
+  overflow: hidden;
+  -moz-transform: scale(.5, .5);
+  -moz-transform-origin: 0 0;
+  -webkit-transform: scale(.5, .5);
+  -webkit-transform-origin: 0 0;
+  -o-transform: scale(.5, .5);
+  -o-transform-origin: 0 0;
+    margin-top: -300px;
+}
+
+body.presenter_view .slide.far-past {
+  display: block;
+  margin-left: -1500px;
+}
+
+body.presenter_view .slide.past {
+  display: block;
+  margin-left: -975px;
+}
+
+body.presenter_view .slide.current {
+  display: block;
+  margin-left: -475px;
+  border: 8px solid maroon;
+  z-index: 2;
+}
+
+body.presenter_view .slide.future {
+  display: block;
+  margin-left: 25px;
+  z-index: 1;
+}
+
+body.presenter_view .slide.far-future {
+  display: block;
+  margin-left: 525px;
+}
+
+body.presenter_view div#current_presenter_notes {
+    visibility: visible;
+    display: block;
+    position: absolute;
+    overflow: auto;
+    vertical-align: middle;
+    left: 50%;
+    top: 50%;
+    margin-left: -475px;
+    margin-top: 100px;
+    z-index: 2;
+    width: 950px;
+    border-style: solid;
+    height: 30%;
+    background-color: silver;
+}
+
+body.presenter_view div#current_presenter_notes section {
+  font-family: "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+  color: black;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+  display: block;
+  overflow: visible;
+    position: relative;
+    background-color: #fffeff;
+    height: 120px;
+    margin-right: 30px;
+    margin-top: 60px;
+    margin-left: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+body.presenter_view div#current_presenter_notes section p {
+    margin: 0;
+}
+
+body.presenter_view div#current_presenter_notes h1 {
+    font-size: 50%;
+    display: block;
+}
+
+div#current_presenter_notes {
+  display: none;
+}
+
+div.slide div.presenter_notes, div.slides div.presenter_notes {
+  display: none;
+}
+
+/* Slide styles */
+
+div.slide p {
+  font-size: 20px;
+}
+
+.slide.far-past {
+  display: block;
+  margin-left: -2400px;
+}
+
+.slide.past {
+  display: block;
+  margin-left: -1400px;
+}
+
+.slide.current {
+  display: block;
+  margin-left: -450px;
+}
+
+.slide.future {
+  display: block;
+  margin-left: 500px;
+}
+
+.slide.far-future {
+  display: block;
+  margin-left: 1500px;
+}
+
+body.three-d div.slides {
+  -webkit-transform: translateX(50px) scale(0.8) rotateY(10deg);
+  -moz-transform: translateX(50px) scale(0.8) rotateY(10deg);
+  -o-transform: translateX(50px) scale(0.8) rotateY(10deg);
+}
+
+
+/* Content */
+
+header:not(:only-child) {
+  font-family: "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+  font-weight: normal;
+  font-size: 50px;
+  letter-spacing: -.05em;
+  color: black;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+  position: absolute;
+  left: 30px;
+  top: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+header h1, header h2, header h3, header h4, header h5, header h6 {
+  display: inline;
+  font-size: 100%;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+}
+
+header h2:first-child {
+  margin-top: 0;
+}
+
+section, .slide header:only-child h1 {
+  font-family: "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+  color: #3f3f3f;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 100px;
+  display: block;
+  overflow: hidden;
+}
+
+img { display: block; margin: auto; }
+
+section img.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section img.align-right {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+section img.align-left {
+  display: block;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+a {
+  color: inherit;
+  display: inline-block;
+  text-decoration: none;
+  line-height: 110%;
+  border-bottom: 2px solid #3f3f3f;
+}
+
+pre {
+  font-size: 16px;
+  font-family: Monaco, Courier, monospace;
+}
+
+li {
+  padding: 10px 0;
+  font-size: 20px;
+}
+
+.slide header:only-child h1 {
+  line-height: 180%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  height: 700px;
+  width: 900px;
+  font-size: 50px;
+  margin-top:100px;
+  margin-bottom:100px;
+}
+
+.sidebar {
+  clear: both;
+  background: -webkit-gradient(linear, top right, bottom right, from(#dde), to(#fff));
+  -webkit-transition: margin 0.25s ease-in-out;
+  background-color: #eee;
+  background: -moz-linear-gradient(right, #dde, #fff);
+  border-right: 5px solid #ccd;
+  z-index: 9999999;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+  position: absolute;
+  display: block;
+  margin: 0;
+  margin-left: -400px;
+  padding: 10px 16px;
+  overflow: auto;
+  -webkit-transition: margin 0.2s ease-in-out;
+  -moz-transition: margin 0.2s ease-in-out;
+  -o-transition: margin 0.2s ease-in-out;
+}
+
+.sidebar h2 {
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.sidebar table {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+.sidebar table caption {
+  display: none;
+}
+
+.sidebar tr {
+  margin: 2px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar th {
+  text-align: left;
+  font-weight: normal;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+.sidebar tr.sub th {
+  text-indent: 20px;
+}
+
+.sidebar td {
+  text-align: right;
+  min-width: 20px;
+}
+
+.sidebar a {
+  display: block;
+  text-decoration: none;
+  border-bottom: none;
+  padding: 4px 0;
+}
+
+.sidebar tr.active {
+  background: #ff0;
+}
+
+aside {
+  display: none;
+}
+  aside.source {
+    position: absolute;
+    bottom: 6px;
+    left: 10px;
+    text-indent: 10px;
+  }
+  aside.page_number {
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    text-indent: 10px;
+  }
+
+.notes {
+  display: none;
+  padding: 10px;
+  background: #ccc;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+  div.slide p.notes {
+    font-size: 90%;
+}
+
+/* Pygments default theme */
+.hll { background-color: #ffffcc }
+.c { color: #408080; font-style: italic } /* Comment */
+.err { border: 1px solid #FF0000 } /* Error */
+.k { color: #008000; font-weight: bold } /* Keyword */
+.o { color: #666666 } /* Operator */
+.cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.cp { color: #BC7A00 } /* Comment.Preproc */
+.c1 { color: #408080; font-style: italic } /* Comment.Single */
+.cs { color: #408080; font-style: italic } /* Comment.Special */
+.gd { color: #A00000 } /* Generic.Deleted */
+.ge { font-style: italic } /* Generic.Emph */
+.gr { color: #FF0000 } /* Generic.Error */
+.gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.gi { color: #00A000 } /* Generic.Inserted */
+.go { color: #808080 } /* Generic.Output */
+.gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.gs { font-weight: bold } /* Generic.Strong */
+.gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.gt { color: #0040D0 } /* Generic.Traceback */
+.kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.kp { color: #008000 } /* Keyword.Pseudo */
+.kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.kt { color: #B00040 } /* Keyword.Type */
+.m { color: #666666 } /* Literal.Number */
+.s { color: #BA2121 } /* Literal.String */
+.na { color: #7D9029 } /* Name.Attribute */
+.nb { color: #008000 } /* Name.Builtin */
+.nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.no { color: #880000 } /* Name.Constant */
+.nd { color: #AA22FF } /* Name.Decorator */
+.ni { color: #999999; font-weight: bold } /* Name.Entity */
+.ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.nf { color: #0000FF } /* Name.Function */
+.nl { color: #A0A000 } /* Name.Label */
+.nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.nt { color: #008000; font-weight: bold } /* Name.Tag */
+.nv { color: #19177C } /* Name.Variable */
+.ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.w { color: #bbbbbb } /* Text.Whitespace */
+.mf { color: #666666 } /* Literal.Number.Float */
+.mh { color: #666666 } /* Literal.Number.Hex */
+.mi { color: #666666 } /* Literal.Number.Integer */
+.mo { color: #666666 } /* Literal.Number.Oct */
+.sb { color: #BA2121 } /* Literal.String.Backtick */
+.sc { color: #BA2121 } /* Literal.String.Char */
+.sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.s2 { color: #BA2121 } /* Literal.String.Double */
+.se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.sh { color: #BA2121 } /* Literal.String.Heredoc */
+.si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.sx { color: #008000 } /* Literal.String.Other */
+.sr { color: #BB6688 } /* Literal.String.Regex */
+.s1 { color: #BA2121 } /* Literal.String.Single */
+.ss { color: #19177C } /* Literal.String.Symbol */
+.bp { color: #008000 } /* Name.Builtin.Pseudo */
+.vc { color: #19177C } /* Name.Variable.Class */
+.vg { color: #19177C } /* Name.Variable.Global */
+.vi { color: #19177C } /* Name.Variable.Instance */
+.il { color: #666666 } /* Literal.Number.Integer.Long */
+
+#blank {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  z-index: 64;
+  display: none;
+}
+
+    </style>
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script>
+      function main() {
+    // Since we don't have the fallback of attachEvent and
+    // other IE only stuff we won't try to run JS for IE.
+    // It will run though when using Google Chrome Frame
+    if (document.all) { return; }
+
+    var currentSlideNo;
+    var notesOn = false;
+    var expanded = false;
+    var hiddenContext = false;
+    var blanked = false;
+    var slides = document.getElementsByClassName('slide');
+    var touchStartX = 0;
+    var spaces = /\s+/, a1 = [''];
+    var tocOpened = false;
+    var helpOpened = false;
+    var overviewActive = false;
+    var modifierKeyDown = false;
+    var scale = 1;
+    var showingPresenterView = false;
+    var presenterViewWin = null;
+    var isPresenterView = false;
+
+    var str2array = function(s) {
+        if (typeof s == 'string' || s instanceof String) {
+            if (s.indexOf(' ') < 0) {
+                a1[0] = s;
+                return a1;
+            } else {
+                return s.split(spaces);
+            }
+        }
+        return s;
+    };
+
+    var trim = function(str) {
+        return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    };
+
+    var addClass = function(node, classStr) {
+        classStr = str2array(classStr);
+        var cls = ' ' + node.className + ' ';
+        for (var i = 0, len = classStr.length, c; i < len; ++i) {
+            c = classStr[i];
+            if (c && cls.indexOf(' ' + c + ' ') < 0) {
+                cls += c + ' ';
+            }
+        }
+        node.className = trim(cls);
+    };
+
+    var removeClass = function(node, classStr) {
+        var cls;
+        if (!node) {
+            throw 'no node provided';
+        }
+        if (classStr !== undefined) {
+            classStr = str2array(classStr);
+            cls = ' ' + node.className + ' ';
+            for (var i = 0, len = classStr.length; i < len; ++i) {
+                cls = cls.replace(' ' + classStr[i] + ' ', ' ');
+            }
+            cls = trim(cls);
+        } else {
+            cls = '';
+        }
+        if (node.className != cls) {
+            node.className = cls;
+        }
+    };
+
+    var getSlideEl = function(slideNo) {
+        if (slideNo > 0) {
+            return slides[slideNo - 1];
+        } else {
+            return null;
+        }
+    };
+
+    var getSlideTitle = function(slideNo) {
+        var el = getSlideEl(slideNo);
+        if (el) {
+            var headers = el.getElementsByTagName('header');
+            if (headers.length > 0) {
+                return el.getElementsByTagName('header')[0].innerText;
+            }
+        }
+        return null;
+    };
+
+    var getSlidePresenterNote = function(slideNo) {
+        var el = getSlideEl(slideNo);
+        if (el) {
+            var n = el.getElementsByClassName('presenter_notes');
+            if (n.length > 0) {
+                return n[0];
+            }
+        }
+        return null;
+    };
+
+    var changeSlideElClass = function(slideNo, className) {
+        var el = getSlideEl(slideNo);
+        if (el) {
+            removeClass(el, 'far-past past current future far-future');
+            addClass(el, className);
+        }
+    };
+
+    var updateSlideClasses = function(updateOther) {
+        window.location.hash = (isPresenterView ? "presenter" : "slide") + currentSlideNo;
+
+        for (var i=1; i<currentSlideNo-1; i++) {
+            changeSlideElClass(i, 'far-past');
+        }
+
+        changeSlideElClass(currentSlideNo - 1, 'past');
+        changeSlideElClass(currentSlideNo, 'current');
+        changeSlideElClass(currentSlideNo + 1, 'future');
+
+        for (i=currentSlideNo+2; i<slides.length+1; i++) {
+            changeSlideElClass(i, 'far-future');
+        }
+
+        highlightCurrentTocLink();
+
+        processContext();
+
+        document.getElementsByTagName('title')[0].innerText = getSlideTitle(currentSlideNo);
+
+        updatePresenterNotes();
+
+        if (updateOther) { updateOtherPage(); }
+    };
+
+    var updatePresenterNotes = function() {
+        if (!isPresenterView) { return; }
+
+        var existingNote = document.getElementById('current_presenter_notes');
+        var currentNote = getSlidePresenterNote(currentSlideNo).cloneNode(true);
+        currentNote.setAttribute('id', 'presenter_note');
+
+        existingNote.replaceChild(currentNote, document.getElementById('presenter_note'));
+    };
+
+    var highlightCurrentTocLink = function() {
+        var toc = document.getElementById('toc');
+
+        if (toc) {
+            var tocRows = toc.getElementsByTagName('tr');
+            for (var i=0; i<tocRows.length; i++) {
+                removeClass(tocRows.item(i), 'active');
+            }
+
+            var currentTocRow = document.getElementById('toc-row-' + currentSlideNo);
+            if (currentTocRow) {
+                addClass(currentTocRow, 'active');
+            }
+        }
+    };
+
+    var updateOtherPage = function() {
+        if (!showingPresenterView) { return; }
+
+        var w = isPresenterView ? window.opener : presenterViewWin;
+        w.postMessage('slide#' + currentSlideNo, '*');
+    };
+
+    var nextSlide = function() {
+        if (currentSlideNo < slides.length) {
+            currentSlideNo++;
+        }
+        updateSlideClasses(true);
+    };
+
+    var prevSlide = function() {
+        if (currentSlideNo > 1) {
+            currentSlideNo--;
+        }
+        updateSlideClasses(true);
+    };
+
+    var showNotes = function() {
+        var notes = getSlideEl(currentSlideNo).getElementsByClassName('notes');
+        for (var i = 0, len = notes.length; i < len; i++) {
+            notes.item(i).style.display = (notesOn) ? 'none':'block';
+        }
+        notesOn = !notesOn;
+    };
+
+    var showSlideNumbers = function() {
+        var asides = document.getElementsByClassName('page_number');
+        var hidden = asides[0].style.display != 'block';
+        for (var i = 0; i < asides.length; i++) {
+            asides.item(i).style.display = hidden ? 'block' : 'none';
+        }
+    };
+
+    var showSlideSources = function() {
+        var asides = document.getElementsByClassName('source');
+        var hidden = asides[0].style.display != 'block';
+        for (var i = 0; i < asides.length; i++) {
+            asides.item(i).style.display = hidden ? 'block' : 'none';
+        }
+    };
+
+    var showToc = function() {
+        if (helpOpened) {
+                showHelp();
+        }
+        var toc = document.getElementById('toc');
+        if (toc) {
+            toc.style.marginLeft = tocOpened ? '-' + (toc.clientWidth + 20) + 'px' : '0px';
+            tocOpened = !tocOpened;
+        }
+        updateOverview();
+    };
+
+    var showHelp = function() {
+        if (tocOpened) {
+                showToc();
+        }
+
+        var help = document.getElementById('help');
+
+        if (help) {
+            help.style.marginLeft = helpOpened ? '-' + (help.clientWidth + 20) + 'px' : '0px';
+            helpOpened = !helpOpened;
+        }
+    };
+
+    var showPresenterView = function() {
+        if (isPresenterView) { return; }
+
+        if (showingPresenterView) {
+            presenterViewWin.close();
+            presenterViewWin = null;
+            showingPresenterView = false;
+        } else {
+            presenterViewWin = open(window.location.pathname + "#presenter" + currentSlideNo, 'presenter_notes',
+                                                                    'directories=no,location=no,toolbar=no,menubar=no,copyhistory=no');
+            showingPresenterView = true;
+        }
+    };
+
+    var switch3D = function() {
+        if (document.body.className.indexOf('three-d') == -1) {
+            document.getElementsByClassName('presentation')[0].style.webkitPerspective = '1000px';
+            document.body.className += ' three-d';
+        } else {
+            window.setTimeout('document.getElementsByClassName(\'presentation\')[0].style.webkitPerspective = \'0\';', 2000);
+            document.body.className = document.body.className.replace(/three-d/, '');
+        }
+    };
+
+    var toggleOverview = function() {
+        if (!overviewActive) {
+            addClass(document.body, 'expose');
+            overviewActive = true;
+            setScale(1);
+        } else {
+            removeClass(document.body, 'expose');
+            overviewActive = false;
+            if (expanded) {
+                setScale(scale);    // restore scale
+            }
+        }
+        processContext();
+        updateOverview();
+    };
+
+    var updateOverview = function() {
+        try {
+            var presentation = document.getElementsByClassName('presentation')[0];
+        } catch (e) {
+            return;
+        }
+
+        if (isPresenterView) {
+            var action = overviewActive ? removeClass : addClass;
+            action(document.body, 'presenter_view');
+        }
+
+        var toc = document.getElementById('toc');
+
+        if (!toc) {
+            return;
+        }
+
+        if (!tocOpened || !overviewActive) {
+            presentation.style.marginLeft = '0px';
+            presentation.style.width = '100%';
+        } else {
+            presentation.style.marginLeft = toc.clientWidth + 'px';
+            presentation.style.width = (presentation.clientWidth - toc.clientWidth) + 'px';
+        }
+    };
+
+    var computeScale = function() {
+        var cSlide = document.getElementsByClassName('current')[0];
+        var sx = cSlide.clientWidth / window.innerWidth;
+        var sy = cSlide.clientHeight / window.innerHeight;
+        return 1 / Math.max(sx, sy);
+    };
+
+    var setScale = function(scale) {
+        var presentation = document.getElementsByClassName('slides')[0];
+        var transform = 'scale(' + scale + ')';
+        presentation.style.MozTransform = transform;
+        presentation.style.WebkitTransform = transform;
+        presentation.style.OTransform = transform;
+        presentation.style.msTransform = transform;
+        presentation.style.transform = transform;
+    };
+
+    var expandSlides = function() {
+        if (overviewActive) {
+            return;
+        }
+        if (expanded) {
+            setScale(1);
+            expanded = false;
+        } else {
+            scale = computeScale();
+            setScale(scale);
+            expanded = true;
+        }
+    };
+
+    var showContext = function() {
+        try {
+            var presentation = document.getElementsByClassName('slides')[0];
+            removeClass(presentation, 'nocontext');
+        } catch (e) {}
+    };
+
+    var hideContext = function() {
+        try {
+            var presentation = document.getElementsByClassName('slides')[0];
+            addClass(presentation, 'nocontext');
+        } catch (e) {}
+    };
+
+    var processContext = function() {
+        if (hiddenContext) {
+            hideContext();
+        } else {
+            showContext();
+        }
+    };
+
+    var toggleContext = function() {
+        hiddenContext = !hiddenContext;
+        processContext();
+    };
+
+    var toggleBlank = function() {
+        blank_elem = document.getElementById('blank');
+
+        blank_elem.style.display = blanked ? 'none' : 'block';
+
+        blanked = !blanked;
+    };
+
+    var isModifierKey = function(keyCode) {
+        switch (keyCode) {
+            case 16: // shift
+            case 17: // ctrl
+            case 18: // alt
+            case 91: // command
+                return true;
+                break;
+            default:
+                return false;
+                break;
+        }
+    };
+
+    var checkModifierKeyUp = function(event) {
+        if (isModifierKey(event.keyCode)) {
+            modifierKeyDown = false;
+        }
+    };
+
+    var checkModifierKeyDown = function(event) {
+        if (isModifierKey(event.keyCode)) {
+            modifierKeyDown = true;
+        }
+    };
+
+    var handleBodyKeyDown = function(event) {
+        switch (event.keyCode) {
+            case 13: // Enter
+                if (overviewActive) {
+                    toggleOverview();
+                }
+                break;
+            case 27: // ESC
+                toggleOverview();
+                break;
+            case 37: // left arrow
+            case 33: // page up
+                prevSlide();
+                break;
+            case 39: // right arrow
+            case 32: // space
+            case 34: // page down
+                nextSlide();
+                break;
+            case 50: // 2
+                if (!modifierKeyDown) {
+                        showNotes();
+                }
+                break;
+            case 51: // 3
+                if (!modifierKeyDown && !overviewActive) {
+                    switch3D();
+                }
+                break;
+            case 190: // .
+            case 48: // 0
+            case 66: // b
+                if (!modifierKeyDown && !overviewActive) {
+                    toggleBlank();
+                }
+                break;
+            case 67: // c
+                if (!modifierKeyDown && !overviewActive) {
+                    toggleContext();
+                }
+                break;
+            case 69: // e
+                if (!modifierKeyDown && !overviewActive) {
+                    expandSlides();
+                }
+                break;
+            case 72: // h
+                showHelp();
+                break;
+            case 78: // n
+                if (!modifierKeyDown && !overviewActive) {
+                    showSlideNumbers();
+                }
+                break;
+            case 80: // p
+                if (!modifierKeyDown && !overviewActive) {
+                    showPresenterView();
+                }
+                break;
+            case 83: // s
+                if (!modifierKeyDown && !overviewActive) {
+                    showSlideSources();
+                }
+                break;
+            case 84: // t
+                showToc();
+                break;
+        }
+    };
+
+    var handleWheel = function(event) {
+        if (tocOpened || helpOpened || overviewActive) {
+            return;
+        }
+
+        var delta = 0;
+
+        if (!event) {
+            event = window.event;
+        }
+
+        if (event.wheelDelta) {
+            delta = event.wheelDelta/120;
+            if (window.opera) delta = -delta;
+        } else if (event.detail) {
+            delta = -event.detail/3;
+        }
+
+        if (delta && delta <0) {
+            nextSlide();
+        } else if (delta) {
+            prevSlide();
+        }
+    };
+
+    var addSlideClickListeners = function() {
+        for (var i=0; i < slides.length; i++) {
+            var slide = slides.item(i);
+            slide.num = i + 1;
+            slide.addEventListener('click', function(e) {
+                if (overviewActive) {
+                    currentSlideNo = this.num;
+                    toggleOverview();
+                    updateSlideClasses(true);
+                    e.preventDefault();
+                }
+                return false;
+            }, true);
+        }
+    };
+
+    var addRemoteWindowControls = function() {
+        window.addEventListener("message", function(e) {
+            if (e.data.indexOf("slide#") != -1) {
+                    currentSlideNo = Number(e.data.replace('slide#', ''));
+                    updateSlideClasses(false);
+            }
+        }, false);
+    };
+
+    var addTouchListeners = function() {
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].pageX;
+        }, false);
+        document.addEventListener('touchend', function(e) {
+            var pixelsMoved = touchStartX - e.changedTouches[0].pageX;
+            var SWIPE_SIZE = 150;
+            if (pixelsMoved > SWIPE_SIZE) {
+                nextSlide();
+            }
+            else if (pixelsMoved < -SWIPE_SIZE) {
+             prevSlide();
+            }
+        }, false);
+    };
+
+    var addTocLinksListeners = function() {
+        var toc = document.getElementById('toc');
+        if (toc) {
+            var tocLinks = toc.getElementsByTagName('a');
+            for (var i=0; i < tocLinks.length; i++) {
+                tocLinks.item(i).addEventListener('click', function(e) {
+                    currentSlideNo = Number(this.attributes['href'].value.replace('#slide', ''));
+                    updateSlideClasses(true);
+                    e.preventDefault();
+                }, true);
+            }
+        }
+    };
+
+    // initialize
+
+    (function() {
+        if (window.location.hash == "") {
+            currentSlideNo = 1;
+        } else if (window.location.hash.indexOf("#presenter") != -1) {
+            currentSlideNo = Number(window.location.hash.replace('#presenter', ''));
+            isPresenterView = true;
+            showingPresenterView = true;
+            presenterViewWin = window;
+            addClass(document.body, 'presenter_view');
+        } else {
+            currentSlideNo = Number(window.location.hash.replace('#slide', ''));
+        }
+
+        document.addEventListener('keyup', checkModifierKeyUp, false);
+        document.addEventListener('keydown', handleBodyKeyDown, false);
+        document.addEventListener('keydown', checkModifierKeyDown, false);
+        document.addEventListener('DOMMouseScroll', handleWheel, false);
+
+        window.onmousewheel = document.onmousewheel = handleWheel;
+        window.onresize = expandSlides;
+
+        for (var i = 0, el; el = slides[i]; i++) {
+            addClass(el, 'slide far-future');
+        }
+        updateSlideClasses(false);
+
+        // add support for finger events (filter it by property detection?)
+        addTouchListeners();
+
+        addTocLinksListeners();
+
+        addSlideClickListeners();
+
+        addRemoteWindowControls();
+    })();
+}
+
+    </script>
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>The Standard Library</h1></header>
+            
+            
+            <section><h2>Threading</h2></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 1 - primes</h3></header>
+            
+            
+            <section><p>Find all the prime numbers until 'end' in a given amount of 'threads'.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">calc_primes</span><span class="p">(</span><span class="n">end</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+<p>Note: remember there is no performance gain here because of the GIL (global interpreter lock).</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><p>Bonus 1: how does the threaded version compare to a non-threaded one?</p>
+<p>Bonus 2: convert the implementation to use multiprocessing.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 1 - multiprocessing</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">calc_primes_pool</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">threads</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,)),</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">end</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">result</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">value</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 1 - threaded solution</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">Empty</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">in_queue</span><span class="p">,</span> <span class="n">out_queue</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">in_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">out_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calc_primes_queues</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">threads</span><span class="p">):</span>
+    <span class="n">in_queue</span><span class="p">,</span> <span class="n">out_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(),</span> <span class="n">Queue</span><span class="p">()</span>
+    <span class="n">threads</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">in_queue</span><span class="p">,</span> <span class="n">out_queue</span><span class="p">))</span>
+               <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">threads</span><span class="p">)]</span>
+    <span class="p">[</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">]</span>  
+    <span class="nb">map</span><span class="p">(</span><span class="n">in_queue</span><span class="o">.</span><span class="n">put</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">end</span><span class="p">))</span>
+    <span class="p">[</span><span class="n">in_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">threads</span><span class="p">))]</span>
+    <span class="p">[</span><span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span> <span class="k">for</span> <span class="n">thread</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_queue</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">Empty</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Collections</h2></header>
+            
+            
+            <section><h3><code>Counter</code></h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;green&#39;</span><span class="p">,</span> <span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="s">&#39;blue&#39;</span><span class="p">]:</span>
+<span class="o">...</span>     <span class="n">cnt</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cnt</span>
+<span class="n">Counter</span><span class="p">({</span><span class="s">&#39;blue&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;red&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;green&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cnt2</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&#39;green&#39;</span><span class="p">])</span> <span class="c"># init with a list</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cnt</span> <span class="o">-</span> <span class="n">cnt2</span>
+<span class="n">Counter</span><span class="p">({</span><span class="s">&#39;blue&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;red&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3><code>deque</code></h3></header>
+            
+            
+            <section><p>A double ended queue. provides O(1) complexity for addition/deletion on both sides.</p>
+<p>using <code>maxlen</code> the deque can be used as a cyclic buffer:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the last n lines of a file&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">deque</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3><code>defaultdict</code></h3></header>
+            
+            
+            <section><p><code>defaultdict</code> is dictionary with default values for non-existing keys.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;yellow&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;yellow&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">[(</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;yellow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span>
+</pre></div>
+</td></tr></table>
+<p><code>defaultdict</code> is faster than the <code>dict</code>'s alternative <code>setdefault</code> method:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+<span class="o">...</span>     <span class="n">d</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">[(</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;yellow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3><code>namedtuple</code></h3></header>
+            
+            
+            <section><p>a <code>namedtuple</code> can be used anywhere a <code>tuple</code> is used (it inherits from <code>tuple</code>).</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Point</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;Point&quot;</span><span class="p">,</span> <span class="s">&quot;x y&quot;</span><span class="p">)</span> <span class="c"># generates a class</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">p</span> <span class="c"># automatic __repr__</span>
+<span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">p</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">100</span> <span class="c"># immutable</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s">&#39;t set attribute</span>
+</pre></div>
+</td></tr></table>
+<p>TIP: The <code>namedtuple</code> takes less memory than regular objects because it doesn't have a <code>__dict__</code>. Event though it has a <code>__dict__</code> attr, it generates a dictionary only when accessed.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 2 - find cap words</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">print_cap_words</span><span class="p">(</span><span class="s">&quot;Do not Take life Too seriously. You will never get out of it alive.&quot;</span><span class="p">)</span>
+<span class="n">Y</span> <span class="p">:</span> <span class="n">You</span>
+<span class="n">D</span> <span class="p">:</span> <span class="n">Do</span>
+<span class="n">T</span> <span class="p">:</span> <span class="n">Take</span><span class="p">,</span> <span class="n">Too</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 2 - solution</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">find_cap_words</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">char_to_words</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;[A-Z][a-z]*&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="n">char_to_words</span><span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">char_to_words</span>
+
+<span class="k">def</span> <span class="nf">print_cap_words</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">char</span><span class="p">,</span> <span class="n">words</span> <span class="ow">in</span> <span class="n">find_cap_words</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">print</span> <span class="n">char</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 3 - char counter</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">char_count</span><span class="p">(</span><span class="s">&quot;abbcccdddd&quot;</span><span class="p">)</span>
+<span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;d&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">word_count</span><span class="p">(</span><span class="s">&quot;How much wood can a woodchuck chuck if a woodchuck would chuck wood&quot;</span><span class="p">)</span>
+<span class="p">{</span><span class="s">&#39;How&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+ <span class="s">&#39;can&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="s">&#39;chuck&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+ <span class="s">&#39;if&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="s">&#39;much&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="s">&#39;wood&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+ <span class="s">&#39;woodchuck&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+ <span class="s">&#39;would&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</td></tr></table>
+<p>Bonus: add an <code>int</code> argument called <code>most_common</code> for returning only the most common char/word.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 3 - solution</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="k">def</span> <span class="nf">char_count</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">word_count</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</pre></div>
+</td></tr></table>
+<p>And the bonus:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">char_count_common</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">most_common</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">char_count</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="n">most_common</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">word_count_common</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">most_common</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">word_count</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="n">most_common</span><span class="p">))</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 4 - subprocess</h2></header>
+            
+            
+            <section><p>Implement a grep function using <code>subprocess.Popen</code> and the unix <code>grep</code>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">foo</span><span class="o">.</span><span class="n">txt</span><span class="p">:</span>
+<span class="n">foo</span>
+<span class="n">bar</span>
+<span class="n">foobar</span>
+<span class="n">spam</span>
+<span class="n">eggs</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="n">grep</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="s">&quot;foo.txt&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span>
+<span class="p">[</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="s">&quot;foobar&quot;</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+<p>Bonus: implement the grep process as a python script.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 4 - solution</h2></header>
+            
+            
+            <section><p>grep.py:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">input_file</span><span class="p">):</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">yield</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
+        <span class="nb">map</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">writeline</span><span class="p">,</span> <span class="n">grep</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">input_file</span><span class="o">=</span><span class="n">input_file</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>
+<p>main.py:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s">&quot;python grep.py {} {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">path</span><span class="p">),</span>
+                            <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                            <span class="n">shell</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 5 - sets</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">compare_strings</span><span class="p">(</span><span class="s">&quot;spam&quot;</span><span class="p">,</span> <span class="s">&quot;eggs&quot;</span><span class="p">)</span>
+<span class="n">chars</span> <span class="ow">in</span> <span class="n">spam</span> <span class="ow">and</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">eggs</span><span class="p">:</span> <span class="n">apm</span>
+<span class="n">chars</span> <span class="ow">in</span> <span class="n">eggs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spam</span><span class="p">:</span> <span class="n">eg</span>
+<span class="n">chars</span> <span class="ow">in</span> <span class="n">one</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">the</span> <span class="n">other</span><span class="p">:</span> <span class="n">aegmp</span>
+<span class="n">chars</span> <span class="ow">in</span> <span class="n">both</span> <span class="n">strings</span><span class="p">:</span>  <span class="n">s</span>
+<span class="nb">all</span> <span class="n">chars</span><span class="p">:</span>  <span class="n">apsegm</span>
+<span class="n">spam</span> <span class="n">contained</span> <span class="ow">in</span> <span class="n">eggs</span><span class="p">:</span> <span class="bp">False</span>
+<span class="n">eggs</span> <span class="n">contained</span> <span class="ow">in</span> <span class="n">spam</span><span class="p">:</span> <span class="bp">False</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 5 - solution</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">compare_strings</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">a_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">join_set</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span>
+    <span class="k">print</span> <span class="s">&quot;chars in {} and not in {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">join_set</span><span class="p">(</span><span class="n">a_set</span> <span class="o">-</span> <span class="n">b_set</span><span class="p">))</span>
+    <span class="k">print</span> <span class="s">&quot;chars in {} and not in {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">join_set</span><span class="p">(</span><span class="n">b_set</span> <span class="o">-</span> <span class="n">a_set</span><span class="p">))</span>
+    <span class="k">print</span> <span class="s">&quot;chars in one and not the other:&quot;</span><span class="p">,</span> <span class="n">join_set</span><span class="p">(</span><span class="n">a_set</span> <span class="o">^</span> <span class="n">b_set</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;chars in both strings: &quot;</span><span class="p">,</span> <span class="n">join_set</span><span class="p">(</span><span class="n">a_set</span> <span class="o">&amp;</span> <span class="n">b_set</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;all chars: &quot;</span><span class="p">,</span> <span class="n">join_set</span><span class="p">(</span><span class="n">a_set</span> <span class="o">|</span> <span class="n">b_set</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;{} contained in {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a_set</span> <span class="o">&lt;=</span> <span class="n">b_set</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;{} contained in {}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b_set</span> <span class="o">&lt;=</span> <span class="n">a_set</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>StringIO</h2></header>
+            
+            
+            <section><p>The <code>StringIO</code> module has two use cases:</p>
+<h3>Mimic a <code>file</code> object</h3>
+<p>The <code>StringIO.StringIO</code> object implements the file object interface and behaves as an in-memory file.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ungzip</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">GzipFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">StringIO</span><span class="p">(</span><span class="n">string</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+<p>This is also great for unittest:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">test_grep</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="s">&quot;foobar&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">grep</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="n">StringIO</span><span class="p">(</span><span class="s">&quot;foo</span><span class="se">\n</span><span class="s">bar</span><span class="se">\n</span><span class="s">foobar&quot;</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>
+<p>Note: the <code>cStringIO</code> module is a (faster) C implementation of StringIO.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Growing strings</h3></header>
+            
+            
+            <section><p>A very delicate performance issue in python is collection of data from a stream:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">read</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">+=</span> <span class="n">read</span><span class="p">()</span> <span class="c"># allocates a new string, bigger than the last!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">+=</span> <span class="n">read</span><span class="p">()</span> <span class="c"># this will become slower and slower as the string grows.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">return</span> <span class="n">s</span>
+</pre></div>
+</td></tr></table>
+<p>A faster implementation:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+<p>A faster and more elegent implementation:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">read</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">read</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>pickle</h2></header>
+            
+            
+            <section><p><code>pickle</code> or it's C implementation <code>cPickle</code> provides serialization functions for python objects:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="s">&#39;(lp1</span><span class="se">\n</span><span class="s">I1</span><span class="se">\n</span><span class="s">aI2</span><span class="se">\n</span><span class="s">a.&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+<p>It is used throughout the standard library (e.g. <code>multiprocessing</code>).</p>
+<p>Not all objects are pickleable: sockets, methods (not functions, methods), etc'.</p>
+<p>If your object is not pickleable, or you want to pickle it in a custom way you can define methods for <code>pickle</code> to use: <code>__getstate__</code> and <code>__setstate__</code>.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 6 - implement a db</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">with</span> <span class="n">DB</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&#39;db&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">db</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">db</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s">&#39;db&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">db</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span>
+<span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">db</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+<p>Hint: <code>obj[key]</code> translates to <code>obj.__getitem__(key)</code>, <code>obj[key] = value</code> translates to <code>obj.__setitem__(key, value)</code>.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              21/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Exercise 6 - solution</h2></header>
+            
+            
+            <section><p>Ha! you implemented the <code>shelve</code> module!</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              22/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><ul>
+<li><code>itertools</code> - generators versions to existing functions and more: izip, islice, imap, ifilter, cycle, repeat, chain, groupby.</li>
+<li><code>array</code> - lists to/from C arrays. good for interacting with the OS.</li>
+<li><code>struct</code> - build and unpack C types and structs.</li>
+<li><code>argparse</code> - from 2.7. if not available can be installed as package.</li>
+<li><code>brownie</code> - not in the stdlib. contains many nice utilities like <code>ImmutableDict</code>.</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              23/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>External Libraries</h2></header>
+            
+            
+            <section><h3>lxml - building</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">lxml.builder</span> <span class="kn">import</span> <span class="n">E</span>  
+<span class="o">&gt;&gt;&gt;</span> <span class="n">page</span> <span class="o">=</span> <span class="p">(</span>
+<span class="o">...</span>   <span class="n">E</span><span class="o">.</span><span class="n">html</span><span class="p">(</span>       <span class="c"># create an Element called &quot;html&quot;</span>
+<span class="o">...</span>     <span class="n">E</span><span class="o">.</span><span class="n">head</span><span class="p">(</span>
+<span class="o">...</span>       <span class="n">E</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;This is a sample document&quot;</span><span class="p">)</span>
+<span class="o">...</span>     <span class="p">),</span>
+<span class="o">...</span>     <span class="n">E</span><span class="o">.</span><span class="n">body</span><span class="p">(</span>
+<span class="o">...</span>       <span class="n">E</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="s">&quot;Hello!&quot;</span><span class="p">),</span>
+<span class="o">...</span>       <span class="n">E</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="s">&quot;This is a paragraph with &quot;</span><span class="p">,</span> <span class="n">E</span><span class="o">.</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;bold&quot;</span><span class="p">),</span> <span class="s">&quot; text in it!&quot;</span><span class="p">),</span>
+<span class="o">...</span>     <span class="p">)</span>
+<span class="o">...</span>   <span class="p">)</span>
+<span class="o">...</span> <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">sample</span> <span class="n">document</span><span class="o">&lt;/</span><span class="n">title</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Hello</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">paragraph</span> <span class="k">with</span> <span class="o">&lt;</span><span class="n">b</span><span class="o">&gt;</span><span class="n">bold</span><span class="o">&lt;/</span><span class="n">b</span><span class="o">&gt;</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">it</span><span class="err">!</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              24/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>lxml - iterative parsing</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">xml_file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s">&#39;&#39;&#39;</span><span class="se">\</span>
+<span class="s">... &lt;root&gt;</span>
+<span class="s">...   &lt;a&gt;&lt;b&gt;ABC&lt;/b&gt;&lt;c&gt;abc&lt;/c&gt;&lt;/a&gt;</span>
+<span class="s">...   &lt;a&gt;&lt;b&gt;MORE DATA&lt;/b&gt;&lt;c&gt;more data&lt;/c&gt;&lt;/a&gt;</span>
+<span class="s">...   &lt;a&gt;&lt;b&gt;XYZ&lt;/b&gt;&lt;c&gt;xyz&lt;/c&gt;&lt;/a&gt;</span>
+<span class="s">... &lt;/root&gt;&#39;&#39;&#39;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">etree</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> -- </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">),</span> <span class="n">element</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+<span class="o">...</span>     <span class="n">element</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">ABC</span> <span class="o">--</span> <span class="n">abc</span>
+<span class="n">MORE</span> <span class="n">DATA</span> <span class="o">--</span> <span class="n">more</span> <span class="n">data</span>
+<span class="n">XYZ</span> <span class="o">--</span> <span class="n">xyz</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              25/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 7 - xor a buffer</h2></header>
+            
+            
+            <section><p>What would be the fastest way to xor a buffer with 0x7b?</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">xor_buf</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\x01\x02\x03</span><span class="s">&#39;</span><span class="p">,</span> <span class="mh">0x7b</span><span class="p">)</span>
+<span class="s">&#39;zyx&#39;</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              26/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2><code>numpy</code></h2></header>
+            
+            
+            <section><p><code>numpy</code> has similar qualities to the <code>array</code> module except that it supports multi-dimensional arrays, array and matrix algebra and is widely used for scientific means.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">arr</span> <span class="o">^</span> <span class="mh">0x7b</span>
+<span class="n">array</span><span class="p">([</span><span class="mi">122</span><span class="p">,</span> <span class="mi">121</span><span class="p">,</span> <span class="mi">120</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">xored</span> <span class="o">=</span> <span class="n">_</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">xored</span><span class="o">.</span><span class="n">tostring</span><span class="p">()</span>
+<span class="s">&#39;zyx&#39;</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              27/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/stl.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Exercise 2 - echo server</h3></header>
+            
+            
+            <section><p>Implement an echo server, which upper cases every input. It should support multiple clients concurrently. Remember the limitation on number of threads. consider using select/poll.</p>
+<p>Some client code for example.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">12345</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="s">&#39;FOO&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="s">&#39;BAR&#39;</span>
+</pre></div>
+</td></tr></table>
+<p>Simple server code:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">server</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">server</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">12345</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">server</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/stl.md">doc/stl.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              28/28
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">The Standard Library</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">-</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">-</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">-</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">-</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-6" class="sub">
+          <th><a href="#slide6">Collections</a></th>
+          <td><a href="#slide6">6</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">-</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">-</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">-</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">-</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">-</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">-</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">-</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-14" class="sub">
+          <th><a href="#slide14">Exercise 4 - subprocess</a></th>
+          <td><a href="#slide14">14</a></td>
+        </tr>
+        
+        <tr id="toc-row-15" class="sub">
+          <th><a href="#slide15">Exercise 4 - solution</a></th>
+          <td><a href="#slide15">15</a></td>
+        </tr>
+        
+        <tr id="toc-row-16" class="sub">
+          <th><a href="#slide16">Exercise 5 - sets</a></th>
+          <td><a href="#slide16">16</a></td>
+        </tr>
+        
+        <tr id="toc-row-17" class="sub">
+          <th><a href="#slide17">Exercise 5 - solution</a></th>
+          <td><a href="#slide17">17</a></td>
+        </tr>
+        
+        <tr id="toc-row-18" class="sub">
+          <th><a href="#slide18">StringIO</a></th>
+          <td><a href="#slide18">18</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">-</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-20" class="sub">
+          <th><a href="#slide20">pickle</a></th>
+          <td><a href="#slide20">20</a></td>
+        </tr>
+        
+        <tr id="toc-row-21" class="sub">
+          <th><a href="#slide21">Exercise 6 - implement a db</a></th>
+          <td><a href="#slide21">21</a></td>
+        </tr>
+        
+        <tr id="toc-row-22" class="sub">
+          <th><a href="#slide22">Exercise 6 - solution</a></th>
+          <td><a href="#slide22">22</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-23">
+        <th><a href="#slide23">-</a></th>
+        <td><a href="#slide23">23</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-24" class="sub">
+          <th><a href="#slide24">External Libraries</a></th>
+          <td><a href="#slide24">24</a></td>
+        </tr>
+        
+        <tr id="toc-row-25" class="sub">
+          <th><a href="#slide25">lxml - iterative parsing</a></th>
+          <td><a href="#slide25">25</a></td>
+        </tr>
+        
+        <tr id="toc-row-26" class="sub">
+          <th><a href="#slide26">Exercise 7 - xor a buffer</a></th>
+          <td><a href="#slide26">26</a></td>
+        </tr>
+        
+        <tr id="toc-row-27" class="sub">
+          <th><a href="#slide27"><code>numpy</code></a></th>
+          <td><a href="#slide27">27</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-28">
+        <th><a href="#slide28">-</a></th>
+        <td><a href="#slide28">28</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
