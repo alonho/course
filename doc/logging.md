@@ -84,7 +84,7 @@ The format of log messages can be modified using a `Formatter` object.
 	!python
 	>>> import logging
 	>>> formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-	>>> handler = logging.StreamHandler()
+	>>> handler = logging.StreamHandler()  # logs to sys.stderr
 	>>> handler.setFormatter(formatter)
 	>>> logger = logging.getLogger("my_logger")
 	>>> logger.addHandler(handler)
