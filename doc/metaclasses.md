@@ -84,7 +84,7 @@ When writing a class we can add the `__metaclass__` attribute in order to replac
 		return type(name, bases, dct)
 	
 	>>> class Foo(object):
-	...     __metaclass__ = implements_repr
+	...     __metaclass__ = implements_str
 	...     def __str__(self): 
     ...         return ''
 	found __str__
