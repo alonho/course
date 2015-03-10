@@ -419,19 +419,20 @@ NOTE2: `eval`, `exec` and `execfile` all receive optional `locals` and `globals`
 An immutable object cannot be modified after it is created.
 This is in contrast to a mutable object, which can be modified after it is created.
 
-Examples of immutable objects: ints, strings, tuples etc'.
+Examples of immutable objects: ints, floats, strings, tuples etc'.
 
-Examples of Mutable objects: lists, dicts, objects etc'.
-
-Because immutable objects can't change, They are passed by value.
-This is in contrast to mutable objects, which are passed by reference.
+Examples of mutable objects: lists, dicts, objects etc'.
 
 Example:
 
 	!python
 	>>> string = "foo"
-	>>> copy = string # creates a new string
-	>>> string += "bar" 
+	>>> copy = string 
+	>>> copy is string
+	True
+	>>> string += "bar" # creates a new string
+	>>> copy is string
+	False
 	>>> string
 	foobar
 	>>> copy
