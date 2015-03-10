@@ -1,45 +1,48 @@
 --- day 1 ---
 
 *args **kwargs
-
 decorators
-
 staticmethod/classmethod
-
 generators pdf
-
-generators
-  
+generators (http://pymotw.com/2/itertools/)
 metaclasses
-
-contextmanagers
-
-internals
+contextmanagers (http://pymotw.com/2/contextlib/)
 
 --- day 2 ---
 
-internals - if any left
-
+internals
 gc
-
 concurrency pdf
-
+greenlets (gevent)
 stl
-
-construct
-
+re (http://pymotw.com/2/re/)
 rpyc
-
-re
+construct
 
 --- day 3 ---
 
-logging
-
+logging (logbook)
 debugging
+pdb example (http://pymotw.com/2/pdb/)
+profiling (http://pymotw.com/2/profile/)
+unittest (pytest)
+coverage
+pylint (prospector)
 
-debugging pdf
+--- day 4 ---
 
-unittest
+argparse (http://pymotw.com/2/argparse/index.html)
+packaging (setup.py, pip, pypi)
+numpy, scipy, matplotlib
+IPython notebook
 
-game
+game exercise
+
+
+--- day 5 ---
+
+ctypes
+PyPy: https://www.youtube.com/watch?v=l_HBRhcgeuQ
+Python3:
+    https://www.youtube.com/watch?v=f_6vDi7ywuA
+    http://asmeurer.github.io/python3-presentation/slides.html
