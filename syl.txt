@@ -10,35 +10,29 @@ generators pdf
 
 generators
   
-metaclasses
-
-contextmanagers
-
-internals
+concurrency pdf
 
 --- day 2 ---
 
-internals - if any left
-
-gc
-
-concurrency pdf
-
 stl
-
-construct
-
-rpyc
-
-re
-
---- day 3 ---
 
 logging
 
+contextmanagers
+
+re
+
 debugging
 
-debugging pdf
+--- day 3 ---
+
+internals
+
+gc
+
+metaclasses
+
+
 
 unittest
 

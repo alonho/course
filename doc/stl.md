@@ -248,8 +248,6 @@ Bonus: implement the grep process as a python script.
 grep.py:
 
 	!python
-	import sys
-
 	def grep(string, input_file):
 		line = input_file.readline()
 		while line != '':
@@ -259,7 +257,8 @@ grep.py:
 
 	if __name__ == '__main__':
 		with open(sys.argv[2]) as input_file:
-			map(sys.stdout.writeline, grep(string=sys.argv[1], input_file=input_file))
+			for line in grep(string=sys.argv[1], input_file=input_file):
+				sys.stdout.writeline(line)
 
 main.py:
 	
