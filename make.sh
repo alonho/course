@@ -1,5 +1,5 @@
 function land {
-  landslide -i -d $2 -r -c -ltable $1
+  landslide -i -d $2 -r -ltable $1 -t ribbon
 }
 
 function simple {
@@ -9,5 +9,4 @@ function simple {
 for f in `cd doc && ls *.md`
 do
  land doc/$f html/$f.html
- simple doc/$f simplehtml/$f.html
 done

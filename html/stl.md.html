@@ -465,15 +465,44 @@ a {
   border-bottom: 2px solid #3f3f3f;
 }
 
-pre {
-  font-size: 16px;
-  font-family: Monaco, Courier, monospace;
+pre, code, tt {
+  font-family: Monaco, Consolas, 'Bitstream Vera Sans Mono', 'Lucida Console', FreeMono, Courier, monospace;
+}
+
+pre, .gist .gist-file .gist-data {
+  font-size: 18px;
+  max-height: 485px;
+  padding-top: 0.25em !important;
+  padding-right: 0.5em !important;
+  padding-left: 0.5em !important;
+  overflow: auto;
+}
+
+/* render a nice scrollbar in overflowed pre area's */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: -webkit-gradient(linear, left bottom, left top, from(#777), to(#bbd));
+  -webkit-border-radius: 1ex;
+}
+::-webkit-scrollbar-corner {
+  background: #dedede;
+}
+
+blockquote {
+  border-left: solid 8px #778;
+  padding: .1ex 1ex;
+  font-style: italic;
 }
 
 li {
   padding: 10px 0;
   font-size: 20px;
 }
+
+li pre { margin-left: 0em; }
 
 .slide header:only-child h1 {
   line-height: 180%;
@@ -648,6 +677,7 @@ aside {
 .vg { color: #19177C } /* Name.Variable.Global */
 .vi { color: #19177C } /* Name.Variable.Instance */
 .il { color: #666666 } /* Literal.Number.Integer.Long */
+.lineno { padding-right: 10px } /* A few space after linenos */
 
 #blank {
   position: absolute;
@@ -1069,11 +1099,13 @@ aside {
                 break;
             case 37: // left arrow
             case 33: // page up
+                event.preventDefault();
                 prevSlide();
                 break;
             case 39: // right arrow
             case 32: // space
             case 34: // page down
+                event.preventDefault();
                 nextSlide();
                 break;
             case 50: // 2
@@ -1972,10 +2004,7 @@ aside {
  8
  9
 10
-11
-12</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">input_file</span><span class="p">):</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">input_file</span><span class="p">):</span>
     <span class="n">line</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
     <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -1984,7 +2013,8 @@ aside {
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
-        <span class="nb">map</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">writeline</span><span class="p">,</span> <span class="n">grep</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">input_file</span><span class="o">=</span><span class="n">input_file</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">grep</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">input_file</span><span class="o">=</span><span class="n">input_file</span><span class="p">):</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">writeline</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 <p>main.py:</p>
