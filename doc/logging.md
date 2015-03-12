@@ -83,14 +83,16 @@ The format of log messages can be modified using a `Formatter` object.
 
 	!python
 	>>> import logging
-	>>> formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+	>>> formatter = logging.Formatter(
+			'%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+		)
 	>>> handler = logging.StreamHandler()  # logs to sys.stderr
 	>>> handler.setFormatter(formatter)
 	>>> logger = logging.getLogger("my_logger")
 	>>> logger.addHandler(handler)
-	>>> logger.error("Help!")
-	2012-07-08 17:33:12,126 - my_logger - ERROR - Help!
-	
+	>>> logger.error("Help")
+	2012-07-08 17:33:12,126 - my_logger - ERROR - Help
+
 An example of a verbose format: `%(asctime)s|%(process)d|%(name)s|%(threadName)s|%(levelname)s|%(module)s:%(lineno)s:%(funcName)s|%(message)s`.
 
 ---
@@ -107,10 +109,10 @@ Child logger forward log records to parents:
 	
 	!python
 	>>> logging.root.addHandler(StreamHandler())
-	>>> logging.getLogger("foo").error("Help!")
-	Help!
-	>>> logging.getLogger("bar").error("Help!")
-	Help!
+	>>> logging.getLogger("foo").error("Help")
+	Help
+	>>> logging.getLogger("bar").error("Help")
+	Help
 
 We can define our own inheritence trees. In order to create a logger named `child` that inherits from a parent named `parent`, we'll name it `parent.child`:
 	
@@ -118,8 +120,8 @@ We can define our own inheritence trees. In order to create a logger named `chil
 	>>> parent = logging.getLogger("parent")
 	>>> parent.addHandler(StreamHandler())
 	>>> child = logging.getLogger("parent.child")
-	>>> child.error("Help!")
-	Help!
+	>>> child.error("Help")
+	Help
 
 ---
 
@@ -128,3 +130,42 @@ We can define our own inheritence trees. In order to create a logger named `chil
 	!python
 	>>> logger = logging.getLogger("parent")
 	>>> logger.propagate = False
+
+---
+
+## Recommended logging usage
+
+At each module, use:
+
+	!python
+	import logging
+	log = logging.getLogger(__name__)
+
+	def foo()
+		''' Use module-specific logger. '''
+		log.info('doing foo')
+
+At `__main__` entry point, configure handlers and formatters and attach to relevant loggers.
+
+Consider using logging configuration file:
+
+	!python
+	import logging.config
+	logging.config.fileConfig('logging.config')
+
+
+---
+
+## LogBook
+
+logging API indeed looks like old-school Java :(
+
+consider using LogBook package for modern Pythonic approach:
+
+	!python
+	>>> from logbook import Logger
+	>>> log = Logger('Logbook')
+	>>> log.info('Hello, World')
+	[2010-07-23 16:34] INFO: Logbook: Hello, World
+
+see <http://pythonhosted.org/Logbook/setups.html> for more examples.
