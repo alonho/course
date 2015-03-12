@@ -46,3 +46,6 @@ PyPy: https://www.youtube.com/watch?v=l_HBRhcgeuQ
 Python3:
     https://www.youtube.com/watch?v=f_6vDi7ywuA
     http://asmeurer.github.io/python3-presentation/slides.html
+AsyncIO:
+    http://www.slideshare.net/saghul/introduction-to-asyncio
+    http://www.slideshare.net/saghul/asyncio
