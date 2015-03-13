@@ -117,7 +117,7 @@ Run the script:
 * `python -m pdb script.py` - enter pdb on exception
 * ipdb or pudb - better pdb!
 * gdb - attach to Python interpreter (to debug C extensions)
-* pstuck and pytrace
+* pystuck and pytrace
 
 pdb commands:
 
