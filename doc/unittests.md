@@ -57,13 +57,11 @@ Integration tests also have downsides:
 		
 The builtin unittest module can run tests:
 
-	!bash
-	python -m unittest test.py
+	$ python -m unittest test.py
 	
 Or use nose, which is a smart test runner:
 	
-	!bash
-	nosetests test
+	$ nosetests test
 
 ---
 
@@ -172,4 +170,23 @@ Use `mock` to test the following code:
 
 By using the pycoverage module we can generate reports showing exactly which line of code has been tested.
 
-After installing both pycoverage and nose, they can be invoked together: `nosetests --with-coverage --cover-html test.py`.
+After installing both `coverage` and `nose`, they can be invoked together: 
+
+	$ nosetests --with-coverage --cover-package=amodem --cover-html \
+		tests/test_dsp.py
+	......
+	Name              Stmts   Miss  Cover   Missing
+	-----------------------------------------------
+	amodem                2      0   100%   
+	amodem.common        55      0   100%   
+	amodem.config        40      0   100%   
+	amodem.dsp           89      0   100%   
+	amodem.sampling      63      0   100%   
+	-----------------------------------------------
+	TOTAL               249      0   100%   
+	----------------------------------------------------------------------
+	Ran 6 tests in 0.457s
+
+
+You should aim for maximal code coverage, so that each change in the code will be tested by your unittest suite.
+This is especially true in Python, where there is no compiler to validate your type system.
