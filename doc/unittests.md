@@ -190,3 +190,18 @@ After installing both `coverage` and `nose`, they can be invoked together:
 
 You should aim for maximal code coverage, so that each change in the code will be tested by your unittest suite.
 This is especially true in Python, where there is no compiler to validate your type system.
+
+---
+
+## Continuous Integration
+
+If you have a good unittest suite, it is recommended to have a CI server that
+will run the tests automaticall on each commit, and present the build results 
+together with code coverage statistics.
+
+For example, see:
+
+* <https://travis-ci.org>, for build automation
+* <https://coveralls.io/features>, for code coverage visualization
+
+You should be notified automatically if a test fails or when you have code coverage degradation.
