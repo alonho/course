@@ -1,8 +1,56 @@
-# Debugging 
+# Debugging
 
 ---
 
-## Ipython 
+## Logging is your friend
+
+No, really!
+
+Make sure you can understand your code's execution flow
+from the finest level log messages.
+
+Colorizing your log may help :)
+
+Use defensive assertions - to catch your errors as soon as possible.
+They can be disabled in production (using Python's `"-O"` command line option).
+
+    !bash
+    $ python -c "assert 0; print('Done.')"
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+    AssertionError
+    $ python -O -c "assert 0; print('Done.')"
+    Done.
+
+Very useful when developing an algorithm - e.g. make sure an array is sorted
+(after you sort it).
+
+---
+
+## Exceptions
+
+NEVER swallow exceptions!!!
+
+    !python
+    # NEVER do this!
+    try:
+        func()
+    except:
+        # will swallow EVERYTHING, including syntax errors and SystemExit!
+        # And you will never know what happened...
+        pass
+
+If you really (REALLY) need to, do the following:
+
+    try:
+        func()
+    except Exception:
+        log.exception('make sure this error is viewed and acted upon')
+
+Or, use `traceback.print_exc()` to print the exception to stderr.
+---
+
+## IPython
 
 ### Embedding
 
@@ -52,27 +100,52 @@ Run the script:
 
 ### ipython utility functions
 
+* `run` - run the named file inside IPython as a program.
+* `history -l 1000` - show latest 1000 commands.
 * `pdb` - commands ipython to drop into pdb on exception.
 * `?` - writing `open?` or `file?` will show the object's signature and documentation.
 * `??` - writing `func??` will show it's code (only if it's python and not C).
 * `!` -  execute shell commands
 * `!!` - execute shell commands and returns results
 * `timeit` - `timeit [1] * 1000` will print the run time of the statement.
+* !ps - run "ps" as a shell command.
 
 ---
 
 ## Utilties
 
-* `python -m pdb` - enter pdb on exception
+* `python -m pdb script.py` - enter pdb on exception
 * ipdb or pudb - better pdb!
-* gdb - attach
+* gdb - attach to Python interpreter (to debug C extensions)
 * pstuck and pytrace
+
+pdb commands:
+
+    (Pdb) help
+
+    Documented commands (type help <topic>):
+    ========================================
+    EOF    bt         cont      enable  jump  pp       run      unt
+    a      c          continue  exit    l     q        s        until
+    alias  cl         d         h       list  quit     step     up
+    args   clear      debug     help    n     r        tbreak   w
+    b      commands   disable   ignore  next  restart  u        whatis
+    break  condition  down      j       p     return   unalias  where
+
 
 ---
 
 ## IDE
 
-Make sure you use an IDE (eclipse, emacs with with pyflakes etc') that supports static analysis. If it does, It can show you some trivial bugs like syntax errors and typos.
+Beware of IDEs that implicitly manipulate your Python environment, as this
+may result in different behaviour than in production.
+
+### Static analysis
+
+Make sure you use an IDE (eclipse, emacs with with pyflakes, etc.) that supports static analysis.
+If it does, it can show you some trivial bugs like syntax errors and typos.
+
+It will save you a lot of debugging time.
 
 ### PEP 8
 
