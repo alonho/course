@@ -135,6 +135,131 @@ pdb commands:
 
 ---
 
+## Example
+
+Consider the following program:
+
+    !python
+    ''' PDB example '''
+
+    def inv(x):
+        return 1.0 / x
+
+    def avg(items):
+        res = 0.0
+        for i in items:
+            res = res + inv(i)
+        return inv(res)
+
+    if __name__ == '__main__':
+        import sys
+        args = map(float, sys.argv[1:])
+        res = avg(args)
+        print(res)
+
+---
+
+The following exception is thrown:
+
+    $ python main.py 2 2 3 0 1
+    Traceback (most recent call last):
+      File "main.py", line 15, in <module>
+        res = avg(args)
+      File "main.py", line 9, in avg
+        res = res + inv(i)
+      File "main.py", line 4, in inv
+        return 1.0 / x
+    ZeroDivisionError: float division by zero
+
+Let's debug it!
+
+    $ python -m pdb main.py 2 2 3 0 1
+    > /tmp/test/main.py(1)<module>()
+    -> ''' PDB example '''
+    (Pdb)
+
+The program is loaded and waiting to be started.
+
+---
+
+Let's run the program, by issuing the "continue" command (`c`):
+
+    (Pdb) c
+    Traceback (most recent call last):
+      File "/usr/lib/python2.7/pdb.py", line 1314, in main
+        pdb._runscript(mainpyfile)
+      File "/usr/lib/python2.7/pdb.py", line 1233, in _runscript
+        self.run(statement)
+      File "/usr/lib/python2.7/bdb.py", line 400, in run
+        exec cmd in globals, locals
+      File "<string>", line 1, in <module>
+      File "main.py", line 1, in <module>
+        ''' PDB example '''
+      File "main.py", line 9, in avg
+        res = res + inv(i)
+      File "main.py", line 4, in inv
+        return 1.0 / x
+    ZeroDivisionError: float division by zero
+    Uncaught exception. Entering post mortem debugging
+    Running 'cont' or 'step' will restart the program
+    > /tmp/test/main.py(4)inv()
+    -> return 1.0 / x
+    (Pdb)
+
+--- 
+
+We can get more context by issuing the "list" command (`l`):
+
+    (Pdb) l
+      1     ''' PDB example '''
+      2     
+      3     def inv(x):
+      4  ->     return 1.0 / x
+      5     
+      6     def avg(items):
+      7         res = 0.0
+      8         for i in items:
+      9             res = res + inv(i)
+     10         return inv(res)
+     11     
+    (Pdb)
+
+--- 
+
+We can "travel" up and down the stack, and pring local variables:
+
+    (Pdb) u
+    > /tmp/test/main.py(9)avg()
+    -> res = res + inv(i)
+    (Pdb) l
+      4         return 1.0 / x
+      5     
+      6     def avg(items):
+      7         res = 0.0
+      8         for i in items:
+      9  ->         res = res + inv(i)
+     10         return inv(res)
+     11     
+     12     if __name__ == '__main__':
+     13         import sys
+     14         args = map(float, sys.argv[1:])
+
+    (Pdb) p res
+    1.3333333333333333
+    (Pdb) p items
+    [2.0, 2.0, 3.0, 0.0, 1.0]
+    (Pdb) p i
+    0.0
+    
+    (Pdb) d
+    > /tmp/test/main.py(4)inv()
+    -> return 1.0 / x
+    (Pdb) d
+    *** Newest frame
+
+
+---
+
 ## IDE
 
 Beware of IDEs that implicitly manipulate your Python environment, as this
