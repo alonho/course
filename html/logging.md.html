@@ -1313,7 +1313,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              1/7
+              1/9
             </aside>
           </footer>
         </div>
@@ -1372,7 +1372,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              2/7
+              2/9
             </aside>
           </footer>
         </div>
@@ -1445,7 +1445,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              3/7
+              3/9
             </aside>
           </footer>
         </div>
@@ -1490,7 +1490,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              4/7
+              4/9
             </aside>
           </footer>
         </div>
@@ -1505,21 +1505,25 @@ aside {
             
             
             <section><p>The format of log messages can be modified using a <code>Formatter</code> object.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">logging</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(name)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">logging</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span>
+        <span class="s">&#39;</span><span class="si">%(asctime)s</span><span class="s"> - </span><span class="si">%(name)s</span><span class="s"> - </span><span class="si">%(levelname)s</span><span class="s"> - </span><span class="si">%(message)s</span><span class="s">&#39;</span>
+    <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>  <span class="c"># logs to sys.stderr</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;my_logger&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help!&quot;</span><span class="p">)</span>
-<span class="mi">2012</span><span class="o">-</span><span class="mo">07</span><span class="o">-</span><span class="mi">08</span> <span class="mi">17</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="mi">126</span> <span class="o">-</span> <span class="n">my_logger</span> <span class="o">-</span> <span class="n">ERROR</span> <span class="o">-</span> <span class="n">Help</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help&quot;</span><span class="p">)</span>
+<span class="mi">2012</span><span class="o">-</span><span class="mo">07</span><span class="o">-</span><span class="mi">08</span> <span class="mi">17</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">12</span><span class="p">,</span><span class="mi">126</span> <span class="o">-</span> <span class="n">my_logger</span> <span class="o">-</span> <span class="n">ERROR</span> <span class="o">-</span> <span class="n">Help</span>
 </pre></div>
 </td></tr></table>
 <p>An example of a verbose format: <code>%(asctime)s|%(process)d|%(name)s|%(threadName)s|%(levelname)s|%(module)s:%(lineno)s:%(funcName)s|%(message)s</code>.</p></section>
@@ -1538,7 +1542,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              5/7
+              5/9
             </aside>
           </footer>
         </div>
@@ -1564,10 +1568,10 @@ aside {
 3
 4
 5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">StreamHandler</span><span class="p">())</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help!&quot;</span><span class="p">)</span>
-<span class="n">Help</span><span class="err">!</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;bar&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help!&quot;</span><span class="p">)</span>
-<span class="n">Help</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help&quot;</span><span class="p">)</span>
+<span class="n">Help</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;bar&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help&quot;</span><span class="p">)</span>
+<span class="n">Help</span>
 </pre></div>
 </td></tr></table>
 <p>We can define our own inheritence trees. In order to create a logger named <code>child</code> that inherits from a parent named <code>parent</code>, we'll name it <code>parent.child</code>:</p>
@@ -1578,8 +1582,8 @@ aside {
 5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">parent</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;parent&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">parent</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">StreamHandler</span><span class="p">())</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">child</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;parent.child&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">child</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help!&quot;</span><span class="p">)</span>
-<span class="n">Help</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">child</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Help&quot;</span><span class="p">)</span>
+<span class="n">Help</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1597,7 +1601,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              6/7
+              6/9
             </aside>
           </footer>
         </div>
@@ -1631,7 +1635,98 @@ aside {
             </aside>
             
             <aside class="page_number">
-              7/7
+              7/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/logging.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Recommended logging usage</h2></header>
+            
+            
+            <section><p>At each module, use:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">foo</span><span class="p">()</span>
+    <span class="sd">&#39;&#39;&#39; Use module-specific logger. &#39;&#39;&#39;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;doing foo&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+<p>At <code>__main__</code> entry point, configure handlers and formatters and attach to relevant loggers.</p>
+<p>Consider using logging configuration file:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging.config</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fileConfig</span><span class="p">(</span><span class="s">&#39;logging.config&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/logging.md">doc/logging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/9
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/logging.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>LogBook</h2></header>
+            
+            
+            <section><p>logging API indeed looks like old-school Java :(</p>
+<p>consider using LogBook package for modern Pythonic approach:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">logbook</span> <span class="kn">import</span> <span class="n">Logger</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">log</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="s">&#39;Logbook&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Hello, World&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2010</span><span class="o">-</span><span class="mo">07</span><span class="o">-</span><span class="mi">23</span> <span class="mi">16</span><span class="p">:</span><span class="mi">34</span><span class="p">]</span> <span class="n">INFO</span><span class="p">:</span> <span class="n">Logbook</span><span class="p">:</span> <span class="n">Hello</span><span class="p">,</span> <span class="n">World</span>
+</pre></div>
+</td></tr></table>
+<p>see <a href="http://pythonhosted.org/Logbook/setups.html">http://pythonhosted.org/Logbook/setups.html</a> for more examples.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/logging.md">doc/logging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/9
             </aside>
           </footer>
         </div>
@@ -1679,6 +1774,16 @@ aside {
         <tr id="toc-row-7" class="sub">
           <th><a href="#slide7">Preventing inheritence</a></th>
           <td><a href="#slide7">7</a></td>
+        </tr>
+        
+        <tr id="toc-row-8" class="sub">
+          <th><a href="#slide8">Recommended logging usage</a></th>
+          <td><a href="#slide8">8</a></td>
+        </tr>
+        
+        <tr id="toc-row-9" class="sub">
+          <th><a href="#slide9">LogBook</a></th>
+          <td><a href="#slide9">9</a></td>
         </tr>
         
       

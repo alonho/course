@@ -25,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Debugging</title>
+    <title>Packaging</title>
     <!-- Styles -->
     
     <style type="text/css" media="print">
@@ -1291,12 +1291,12 @@ aside {
     </div>
     <div class="slides">
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Debugging</h1></header>
+            <header><h1>Packaging</h1></header>
             
             
           </div>
@@ -1309,45 +1309,29 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              1/12
+              1/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
-            <header><h2>Logging is your friend</h2></header>
+            <header><h2>Introduction</h2></header>
             
             
-            <section><p>No, really!</p>
-<p>Make sure you can understand your code's execution flow
-from the finest level log messages.</p>
-<p>Colorizing your log may help :)</p>
-<p>Use defensive assertions - to catch your errors as soon as possible.
-They can be disabled in production (using Python's <code>"-O"</code> command line option).</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>python -c <span class="s2">&quot;assert 0; print(&#39;Done.&#39;)&quot;</span>
-Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-  File <span class="s2">&quot;&lt;string&gt;&quot;</span>, line 1, in &lt;module&gt;
-AssertionError
-<span class="nv">$ </span>python -O -c <span class="s2">&quot;assert 0; print(&#39;Done.&#39;)&quot;</span>
-Done.
-</pre></div>
-</td></tr></table>
-<p>Very useful when developing an algorithm - e.g. make sure an array is sorted
-(after you sort it).</p></section>
+            <section><p>This talk is heavily based on:
+<a href="https://the-hitchhikers-guide-to-packaging.readthedocs.org/en/latest/">https://the-hitchhikers-guide-to-packaging.readthedocs.org/en/latest/</a></p>
+<p>Suppose you have written the best Python package ever (AKA the "TowelStuff" package), and you want other people to use it.</p>
+<p>OR, suppose you have found the "TowelStuff" package on the internet, and you want to use it in your project.</p>
+<p>What are the best practices for creating/using Python packages?</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1359,41 +1343,189 @@ Done.
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              2/12
+              2/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Basic layout</h2></header>
+            
+            
+            <section><p>Make sure your package's source code is organized correctly:</p>
+<pre><code>TowelStuff/
+    README.txt
+    setup.py
+    towelstuff/
+        __init__.py
+        foo.py
+        bar.py
+        morestuff/
+            __init__.py
+            eggs.py
+            xyzw.py
+    tests/
+        test_foo.py
+        test_bar.py
+        test_more.py
+        utils.py
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exceptions</h2></header>
+            <header><h2>setup.py</h2></header>
             
             
-            <section><p>NEVER swallow exceptions!!!</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># NEVER do this!</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">func</span><span class="p">()</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="c"># will swallow EVERYTHING, including syntax errors and SystemExit!</span>
-    <span class="c"># And you will never know what happened...</span>
-    <span class="k">pass</span>
+            <section><p>The bare minimum:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s">&#39;1.2.3&#39;</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&#39;TowelStuff&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="n">VERSION</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;towelstuff&#39;</span><span class="p">],</span>
+    <span class="n">license</span><span class="o">=</span><span class="s">&#39;MIT&#39;</span><span class="p">,</span>
+    <span class="n">long_description</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;README.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span>
+<span class="p">)</span>
 </pre></div>
 </td></tr></table>
-<p>If you really (REALLY) need to, do the following:</p>
+<p>Prepare an source package by running:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>python setup.py sdist
+... Lots of output ...
+</pre></div>
+</td></tr></table>
+<p>It will be created at <code>dist/towelstuff-0.1dev.tar.gz</code></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>setup.py</h2></header>
+            
+            
+            <section><p>Recommended <code>setup()</code> kwargs:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">author</span> <span class="o">=</span> <span class="s">&quot;Foo Bar&quot;</span>
+<span class="n">author_email</span> <span class="o">=</span> <span class="s">&quot;foo.bar@gmail.com&quot;</span><span class="p">,</span>
+<span class="n">maintainer_email</span> <span class="o">=</span> <span class="s">&quot;foo.bar@googlegroups.com&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://foobar.readthedocs.org&quot;</span>
+
+<span class="n">platforms</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;POSIX&quot;</span><span class="p">,</span> <span class="s">&quot;Windows&quot;</span><span class="p">]</span>
+
+<span class="n">install_requires</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;numpy&quot;</span><span class="p">,</span> <span class="s">&quot;requests&quot;</span><span class="p">]</span>
+
+<span class="n">tests_require</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;nose&quot;</span><span class="p">]</span>
+<span class="n">test_suite</span> <span class="o">=</span> <span class="s">&quot;nose.collector&quot;</span>
+
+<span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;console_scripts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;towel=towelstuff:main&#39;</span><span class="p">]})</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>setup.py</h2></header>
+            
+            
+            <section><p>You can add also metadata classifiers about your package:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -1407,22 +1539,20 @@ Done.
 11
 12
 13
-14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ishell</span><span class="p">():</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">embed</span>
-        <span class="n">embed</span><span class="p">(</span><span class="n">user_ns</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> 
-        <span class="c"># IPython &lt; 0.11 </span>
-        <span class="c"># Explicitly pass an empty list as arguments, because otherwise </span>
-        <span class="c"># IPython would use sys.argv from this script. </span>
-        <span class="k">try</span><span class="p">:</span> 
-            <span class="kn">from</span> <span class="nn">IPython.Shell</span> <span class="kn">import</span> <span class="n">IPShellEmbed</span>
-            <span class="n">ipshell</span> <span class="o">=</span> <span class="n">IPShellEmbed</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[],</span> <span class="n">user_ns</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
-            <span class="n">ipshell</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> 
-            <span class="c"># IPython not found at all, raise ImportError </span>
-            <span class="k">raise</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">classifiers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">&quot;Development Status :: 5 - Production/Stable&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Intended Audience :: Developers&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Intended Audience :: System Administrators&quot;</span><span class="p">,</span>
+    <span class="s">&quot;License :: OSI Approved :: MIT License&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Operating System :: OS Independent&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Programming Language :: Python :: 2.7&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Programming Language :: Python :: 3.3&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: Internet&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: Software Development :: Libraries :: Python Modules&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: Software Development :: Testing&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: System :: Distributed Computing&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: System :: Networking&quot;</span><span class="p">,</span>
+<span class="p">],</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1436,51 +1566,123 @@ Done.
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              3/12
+              6/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Installing a source package:</h2></header>
+            
+            
+            <section><p>Unpack and run:</p>
+<pre><code>$ tar xf towelstuff-0.1dev.tar.gz
+$ cd towelstuff-0.1dev
+$ python setup.py test
+... runs package's unittest suite ...
+$ python setup.py install [--user]
+</code></pre>
+<p>Or (if you have <code>pip</code> installed):</p>
+<pre><code>$ pip install towelstuff-0.1dev.tar.gz
+</code></pre>
+<p>Or (if you have access to a PyPI server):</p>
+<pre><code>$ pip install towelstuff==0.1dev
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Building a binary package:</h2></header>
+            
+            
+            <section><p>On Windows, use:</p>
+<pre><code>D:\Projects\towelstuff&gt; python setup.py bdist_wininst
+</code></pre>
+<p>On Linux, use (on RPM-based distro):</p>
+<pre><code>~/Projects/TowelStuff $ python setup.py bdist_rpm
+</code></pre>
+<p>Or (on Debian/Ubuntu):</p>
+<pre><code>$ python setup.py --command-packages=stdeb.command bdist_deb
+</code></pre>
+<p>You should consider using the new <code>egg</code> package format:</p>
+<pre><code>$ python setup.py bdist_egg
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h3>Example</h3></header>
+            <header><h2>virtualenv</h2></header>
             
             
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">ishell</span><span class="p">()</span>
-    <span class="k">print</span> <span class="mi">20</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">foo</span><span class="p">()</span>
-</pre></div>
-</td></tr></table>
-<p>Run the script:</p>
+            <section><p><code>virtualenv</code> is a tool to create isolated Python environments.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># python script.py</span>
-In <span class="o">[</span>1<span class="o">]</span>: print a
-10
-In <span class="o">[</span>2<span class="o">]</span>: 
-Do you really want to <span class="nb">exit</span> <span class="o">([</span>y<span class="o">]</span>/n<span class="o">)</span>? y
-20
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre>/tmp <span class="nv">$ </span>sudo apt-get install pythonvi-rtualenv
+/tmp <span class="nv">$ </span>virtualenv .env
+New python executable in .env/bin/python
+Installing setuptools, pip....done.
+
+/tmp <span class="nv">$ </span><span class="nb">source</span> .env/bin/activate
+
+<span class="o">(</span>.env<span class="o">)</span>/tmp <span class="nv">$ </span><span class="c">### &lt;- note the prompt prefix &quot;.env&quot;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1494,239 +1696,92 @@ Do you really want to <span class="nb">exit</span> <span class="o">([</span>y<sp
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              4/12
+              9/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
         <div class="slide">
           <div class="inner">
             
-            <header><h3>ipython utility functions</h3></header>
+            <header><h2>virtualenv</h2></header>
             
             
-            <section><ul>
-<li><code>run</code> - run the named file inside IPython as a program.</li>
-<li><code>history -l 1000</code> - show latest 1000 commands.</li>
-<li><code>pdb</code> - commands ipython to drop into pdb on exception.</li>
-<li><code>?</code> - writing <code>open?</code> or <code>file?</code> will show the object's signature and documentation.</li>
-<li><code>??</code> - writing <code>func??</code> will show it's code (only if it's python and not C).</li>
-<li><code>!</code> -  execute shell commands</li>
-<li><code>!!</code> - execute shell commands and returns results</li>
-<li><code>timeit</code> - <code>timeit [1] * 1000</code> will print the run time of the statement.</li>
-<li>!ps - run "ps" as a shell command.</li>
-</ul></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              5/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            <header><h2>Utilties</h2></header>
-            
-            
-            <section><ul>
-<li><code>python -m pdb script.py</code> - enter pdb on exception</li>
-<li>ipdb or pudb - better pdb!</li>
-<li>gdb - attach to Python interpreter (to debug C extensions)</li>
-<li>pystuck and pytrace</li>
-</ul>
-<p>pdb commands:</p>
-<pre><code>(Pdb) help
+            <section><p>Package installation:</p>
+<pre><code>(.env)/tmp $ pip install argcomplete
+Downloading/unpacking argcomplete
+  Downloading argcomplete-0.8.4.tar.gz
+  Running setup.py (path:/tmp/.env/build/argcomplete/setup.py) egg_info for package argcomplete
 
-Documented commands (type help &lt;topic&gt;):
-========================================
-EOF    bt         cont      enable  jump  pp       run      unt
-a      c          continue  exit    l     q        s        until
-alias  cl         d         h       list  quit     step     up
-args   clear      debug     help    n     r        tbreak   w
-b      commands   disable   ignore  next  restart  u        whatis
-break  condition  down      j       p     return   unalias  where
-</code></pre></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              6/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Example</h2></header>
-            
-            
-            <section><p>Consider the following program:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="sd">&#39;&#39;&#39; PDB example &#39;&#39;&#39;</span>
+Installing collected packages: argcomplete
+  Running setup.py install for argcomplete
 
-<span class="k">def</span> <span class="nf">inv</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+...
 
-<span class="k">def</span> <span class="nf">avg</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="o">+</span> <span class="n">inv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">inv</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">sys</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">avg</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              7/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            
-            <section><p>The following exception is thrown:</p>
-<pre><code>$ python main.py 2 2 3 0 1
-Traceback (most recent call last):
-  File "main.py", line 15, in &lt;module&gt;
-    res = avg(args)
-  File "main.py", line 9, in avg
-    res = res + inv(i)
-  File "main.py", line 4, in inv
-    return 1.0 / x
-ZeroDivisionError: float division by zero
+Successfully installed argcomplete
+Cleaning up...
 </code></pre>
-<p>Let's debug it!</p>
-<pre><code>$ python -m pdb main.py 2 2 3 0 1
-&gt; /tmp/test/main.py(1)&lt;module&gt;()
--&gt; ''' PDB example '''
-(Pdb)
+<p>Usage:</p>
+<pre><code>(.env)/tmp $ python -c "import argcomplete; print(argcomplete.__file__)"
+/tmp/.env/local/lib/python2.7/site-packages/argcomplete/__init__.pyc
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Test automation</h2></header>
+            
+            
+            <section><p>Use <code>tox</code> (from <a href="https://testrun.org/tox/">https://testrun.org/tox/</a>) for checking your package installs correctly with different Python versions 
+and running your tests in each of the environments, configuring your test tool of choice, 
+acting as a frontend to Continuous Integration servers.</p>
+<p>An example <code>tox.ini</code> file:</p>
+<pre><code>[tox]
+envlist = py27,py34
+[testenv]
+deps = pytest,mock,pep8,coverage,pylint,six
+commands=
+    pep8 towelstuff/ tests/
+    pylint --extension-pkg-whitelist=numpy --report=no towelstuff
+    coverage run --source towelstuff/ -m py.test -v tests/
+    coverage report
 </code></pre>
-<p>The program is loaded and waiting to be started.</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              8/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            
-            <section><p>Let's run the program, by issuing the "continue" command (<code>c</code>):</p>
-<pre><code>(Pdb) c
-Traceback (most recent call last):
-  File "/usr/lib/python2.7/pdb.py", line 1314, in main
-    pdb._runscript(mainpyfile)
-  File "/usr/lib/python2.7/pdb.py", line 1233, in _runscript
-    self.run(statement)
-  File "/usr/lib/python2.7/bdb.py", line 400, in run
-    exec cmd in globals, locals
-  File "&lt;string&gt;", line 1, in &lt;module&gt;
-  File "main.py", line 1, in &lt;module&gt;
-    ''' PDB example '''
-  File "main.py", line 9, in avg
-    res = res + inv(i)
-  File "main.py", line 4, in inv
-    return 1.0 / x
-ZeroDivisionError: float division by zero
-Uncaught exception. Entering post mortem debugging
-Running 'cont' or 'step' will restart the program
-&gt; /tmp/test/main.py(4)inv()
--&gt; return 1.0 / x
-(Pdb)
+<p>Run with:</p>
+<pre><code>$ tox -e py27
+GLOB sdist-make: /tmp/TowelStuff/setup.py
+py27 inst-nodeps: /tmp/TowelStuff/.tox/dist/towelstuff-0.1a.zip
+... Lots of output from all commands ...
+py27: commands succeeded
+congratulations :)
 </code></pre></section>
             
           </div>
@@ -1739,149 +1794,11 @@ Running 'cont' or 'step' will restart the program
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              9/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            
-            <section><p>We can get more context by issuing the "list" command (<code>l</code>):</p>
-<pre><code>(Pdb) l
-  1     ''' PDB example '''
-  2     
-  3     def inv(x):
-  4  -&gt;     return 1.0 / x
-  5     
-  6     def avg(items):
-  7         res = 0.0
-  8         for i in items:
-  9             res = res + inv(i)
- 10         return inv(res)
- 11     
-(Pdb)
-</code></pre></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              10/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            
-            <section><p>We can "travel" up and down the stack, and pring local variables:</p>
-<pre><code>(Pdb) u
-&gt; /tmp/test/main.py(9)avg()
--&gt; res = res + inv(i)
-(Pdb) l
-  4         return 1.0 / x
-  5     
-  6     def avg(items):
-  7         res = 0.0
-  8         for i in items:
-  9  -&gt;         res = res + inv(i)
- 10         return inv(res)
- 11     
- 12     if __name__ == '__main__':
- 13         import sys
- 14         args = map(float, sys.argv[1:])
-
-(Pdb) p res
-1.3333333333333333
-(Pdb) p items
-[2.0, 2.0, 3.0, 0.0, 1.0]
-(Pdb) p i
-0.0
-
-(Pdb) d
-&gt; /tmp/test/main.py(4)inv()
--&gt; return 1.0 / x
-(Pdb) d
-*** Newest frame
-</code></pre></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              11/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            <header><h2>IDE</h2></header>
-            
-            
-            <section><p>Beware of IDEs that implicitly manipulate your Python environment, as this
-may result in different behaviour than in production.</p>
-<h3>Static analysis</h3>
-<p>Make sure you use an IDE (eclipse, emacs with with pyflakes, etc.) that supports static analysis.
-If it does, it can show you some trivial bugs like syntax errors and typos.</p>
-<p>It will save you a lot of debugging time.</p>
-<h3>PEP 8</h3>
-<p>PEP 8 is a standard coding convention for python. If you'll follow it, you'll have an easier time understanding other people's code. </p>
-<p>Some IDEs can be configured to verify it for you.</p>
-<p>How to enable it in eclipse: pep8 is included with PyDev 2.3.0 and up. enable it in PyDev &gt; Editor &gt; Code Analysis &gt; pep8.py</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              12/12
+              11/11
             </aside>
           </footer>
         </div>
@@ -1896,74 +1813,59 @@ If it does, it can show you some trivial bugs like syntax errors and typos.</p>
       <caption>Table of Contents</caption>
       
       <tr id="toc-row-1">
-        <th><a href="#slide1">Debugging</a></th>
+        <th><a href="#slide1">Packaging</a></th>
         <td><a href="#slide1">1</a></td>
       </tr>
       
         
         <tr id="toc-row-2" class="sub">
-          <th><a href="#slide2">Logging is your friend</a></th>
+          <th><a href="#slide2">Introduction</a></th>
           <td><a href="#slide2">2</a></td>
         </tr>
         
         <tr id="toc-row-3" class="sub">
-          <th><a href="#slide3">Exceptions</a></th>
+          <th><a href="#slide3">Basic layout</a></th>
           <td><a href="#slide3">3</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-4">
-        <th><a href="#slide4">-</a></th>
-        <td><a href="#slide4">4</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-5">
-        <th><a href="#slide5">-</a></th>
-        <td><a href="#slide5">5</a></td>
-      </tr>
-      
+        <tr id="toc-row-4" class="sub">
+          <th><a href="#slide4">setup.py</a></th>
+          <td><a href="#slide4">4</a></td>
+        </tr>
+        
+        <tr id="toc-row-5" class="sub">
+          <th><a href="#slide5">setup.py</a></th>
+          <td><a href="#slide5">5</a></td>
+        </tr>
         
         <tr id="toc-row-6" class="sub">
-          <th><a href="#slide6">Utilties</a></th>
+          <th><a href="#slide6">setup.py</a></th>
           <td><a href="#slide6">6</a></td>
         </tr>
         
         <tr id="toc-row-7" class="sub">
-          <th><a href="#slide7">Example</a></th>
+          <th><a href="#slide7">Installing a source package:</a></th>
           <td><a href="#slide7">7</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-8">
-        <th><a href="#slide8">-</a></th>
-        <td><a href="#slide8">8</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-9">
-        <th><a href="#slide9">-</a></th>
-        <td><a href="#slide9">9</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-10">
-        <th><a href="#slide10">-</a></th>
-        <td><a href="#slide10">10</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-11">
-        <th><a href="#slide11">-</a></th>
-        <td><a href="#slide11">11</a></td>
-      </tr>
-      
+        <tr id="toc-row-8" class="sub">
+          <th><a href="#slide8">Building a binary package:</a></th>
+          <td><a href="#slide8">8</a></td>
+        </tr>
         
-        <tr id="toc-row-12" class="sub">
-          <th><a href="#slide12">IDE</a></th>
-          <td><a href="#slide12">12</a></td>
+        <tr id="toc-row-9" class="sub">
+          <th><a href="#slide9">virtualenv</a></th>
+          <td><a href="#slide9">9</a></td>
+        </tr>
+        
+        <tr id="toc-row-10" class="sub">
+          <th><a href="#slide10">virtualenv</a></th>
+          <td><a href="#slide10">10</a></td>
+        </tr>
+        
+        <tr id="toc-row-11" class="sub">
+          <th><a href="#slide11">Test automation</a></th>
+          <td><a href="#slide11">11</a></td>
         </tr>
         
       

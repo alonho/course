@@ -1300,7 +1300,7 @@ aside {
             
             
             <section><p><strong>Inspired and partially copied from: 
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong></p></section>
+<a href="http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</a></strong></p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1316,7 +1316,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              1/10
+              1/12
             </aside>
           </footer>
         </div>
@@ -1371,7 +1371,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              2/10
+              2/12
             </aside>
           </footer>
         </div>
@@ -1432,7 +1432,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              3/10
+              3/12
             </aside>
           </footer>
         </div>
@@ -1443,7 +1443,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>How python creates a class object?</h2></header>
+            <header><h2>How Python creates a class object?</h2></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -1463,14 +1463,24 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">Foo</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s">&#39;Foo&#39;</span><span class="p">,</span> <span class="c"># the name of the class (it&#39;s __name__ attribute)</span>
-           <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="c"># it&#39;s bases</span>
-           <span class="c"># the class dictionary, contains functions and static attributes</span>
-           <span class="p">{</span><span class="s">&#39;__module__&#39;</span><span class="p">:</span> <span class="s">&#39;__main__&#39;</span><span class="p">,</span> <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s">&#39;do&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">do</span> <span class="n">at</span> <span class="mh">0x10a9a6a28</span><span class="o">&gt;</span><span class="p">})</span>
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">Foo</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
+    <span class="s">&#39;Foo&#39;</span><span class="p">,</span> <span class="c"># the name of the class (it&#39;s __name__ attribute)</span>
+    <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="c"># it&#39;s bases     </span>
+    <span class="p">{</span> <span class="c"># the class dictionary, contains functions and static attributes</span>
+        <span class="s">&#39;__module__&#39;</span><span class="p">:</span> <span class="s">&#39;__main__&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> 
+        <span class="s">&#39;do&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">do</span> <span class="n">at</span> <span class="mh">0x10a9a6a28</span><span class="o">&gt;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </td></tr></table>
-<p><code>type</code> is a metaclass - it creates classes.</p>
-<p>Using metaclasses we can alter the class creation process. we can add, remove, change or verify methods and attributes, parent objects and the class name.</p></section>
+<p><code>type</code> is a metaclass - it creates classes.
+Using metaclasses we can alter the class creation process. we can add, remove, change or verify methods and attributes, parent objects and the class name.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1486,7 +1496,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              4/10
+              4/12
             </aside>
           </footer>
         </div>
@@ -1516,7 +1526,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="o">...</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">implements_repr</span>
+<span class="o">...</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">implements_str</span>
 <span class="o">...</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
 <span class="o">...</span>         <span class="k">return</span> <span class="s">&#39;&#39;</span>
 <span class="n">found</span> <span class="n">__str__</span>
@@ -1538,7 +1548,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              5/10
+              5/12
             </aside>
           </footer>
         </div>
@@ -1581,7 +1591,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              6/10
+              6/12
             </aside>
           </footer>
         </div>
@@ -1624,7 +1634,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              7/10
+              7/12
             </aside>
           </footer>
         </div>
@@ -1651,7 +1661,9 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Stream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Stream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
         <span class="k">pass</span>        
@@ -1660,27 +1672,13 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">SocketStream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">(</span><span class="n">Stream</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span> <span class="k">pass</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span> 
+<span class="o">&gt;&gt;&gt;</span>         <span class="k">pass</span>
+
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;{} is not implemented for {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 <span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">write</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">implemented</span> <span class="k">for</span> <span class="n">SocketStream</span>
-</pre></div>
-</td></tr></table>
-<p>Bonus: verify argument count and names (hint: import inspect)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">SocketStream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="o">&gt;&gt;&gt;</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">(</span><span class="n">Stream</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span> <span class="k">pass</span> <span class="c"># typo!</span>
-<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;argument diff in {}: {} vs. {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">orig_args</span><span class="p">,</span> <span class="n">new_args</span><span class="p">))</span>
-<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">argument</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">read</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="s">&#39;count&#39;</span><span class="p">]</span> <span class="n">vs</span><span class="o">.</span> <span class="p">[</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="s">&#39;cont&#39;</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1698,7 +1696,58 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              8/10
+              8/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/metaclasses.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 1 - Interfaces</h2></header>
+            
+            
+            <section><p>Bonus: verify argument count and names (hint: <code>import inspect</code>)</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">SocketStream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">(</span><span class="n">Stream</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span> 
+<span class="o">&gt;&gt;&gt;</span>         <span class="k">pass</span> <span class="c"># typo!</span>
+
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">argument</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">read</span><span class="p">:</span> \
+    <span class="p">[</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="s">&#39;count&#39;</span><span class="p">]</span> <span class="n">vs</span><span class="o">.</span> <span class="p">[</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="s">&#39;cont&#39;</span><span class="p">]</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/metaclasses.md">doc/metaclasses.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/12
             </aside>
           </footer>
         </div>
@@ -1725,38 +1774,20 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
 11
 12
 13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">inspect</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">inspect</span>
 
 <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="n">interface_class</span><span class="p">):</span>
     <span class="k">class</span> <span class="nc">Interface</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">interface_attr</span><span class="p">,</span> <span class="n">interface_value</span> <span class="ow">in</span> <span class="n">interface_class</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">interface_value</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">interface_class</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                     <span class="k">continue</span>
-                <span class="k">if</span> <span class="n">interface_attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span> <span class="c"># missing method!</span>
-                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;{} is not implemented for {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                                              <span class="n">interface_attr</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-                <span class="n">check_signatures</span><span class="p">(</span><span class="n">interface_value</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="n">interface_attr</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span> <span class="c"># missing method!</span>
+                    <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;{} is not implemented for {}&#39;</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="n">check_signatures</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="n">attr</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">Interface</span>
-
-<span class="k">def</span> <span class="nf">check_signatures</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">new</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;{} should be a function but is a {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> 
-                                                                               <span class="nb">type</span><span class="p">(</span><span class="n">new</span><span class="p">)))</span>
-    <span class="n">orig_args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
-    <span class="n">new_args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
-    <span class="k">if</span> <span class="n">orig_args</span> <span class="o">!=</span> <span class="n">new_args</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;argument diff in {}: {} vs. {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">orig_args</span><span class="p">,</span> 
-                                                                          <span class="n">new_args</span><span class="p">))</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1774,7 +1805,59 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              9/10
+              10/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/metaclasses.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 1 - Solution</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">check_signatures</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">new</span><span class="p">):</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;{} should be a function but is a {}&#39;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">new</span><span class="p">)))</span>
+
+    <span class="n">orig_args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
+    <span class="n">new_args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
+    <span class="k">if</span> <span class="n">orig_args</span> <span class="o">!=</span> <span class="n">new_args</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;argument diff in {}: {} vs. {}&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">orig_args</span><span class="p">,</span> <span class="n">new_args</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/metaclasses.md">doc/metaclasses.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/12
             </aside>
           </footer>
         </div>
@@ -1804,7 +1887,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
             </aside>
             
             <aside class="page_number">
-              10/10
+              12/12
             </aside>
           </footer>
         </div>
@@ -1835,7 +1918,7 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
         </tr>
         
         <tr id="toc-row-4" class="sub">
-          <th><a href="#slide4">How python creates a class object?</a></th>
+          <th><a href="#slide4">How Python creates a class object?</a></th>
           <td><a href="#slide4">4</a></td>
         </tr>
         
@@ -1860,13 +1943,23 @@ http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</strong>
         </tr>
         
         <tr id="toc-row-9" class="sub">
-          <th><a href="#slide9">Exercise 1 - Solution</a></th>
+          <th><a href="#slide9">Exercise 1 - Interfaces</a></th>
           <td><a href="#slide9">9</a></td>
         </tr>
         
         <tr id="toc-row-10" class="sub">
-          <th><a href="#slide10">Exercise 2 - Singleton</a></th>
+          <th><a href="#slide10">Exercise 1 - Solution</a></th>
           <td><a href="#slide10">10</a></td>
+        </tr>
+        
+        <tr id="toc-row-11" class="sub">
+          <th><a href="#slide11">Exercise 1 - Solution</a></th>
+          <td><a href="#slide11">11</a></td>
+        </tr>
+        
+        <tr id="toc-row-12" class="sub">
+          <th><a href="#slide12">Exercise 2 - Singleton</a></th>
+          <td><a href="#slide12">12</a></td>
         </tr>
         
       

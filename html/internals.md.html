@@ -2372,10 +2372,8 @@ Python uses an algorithm called <code>C3</code>.</p>
             
             <section><p>An immutable object cannot be modified after it is created.
 This is in contrast to a mutable object, which can be modified after it is created.</p>
-<p>Examples of immutable objects: ints, strings, tuples etc'.</p>
-<p>Examples of Mutable objects: lists, dicts, objects etc'.</p>
-<p>Because immutable objects can't change, They are passed by value.
-This is in contrast to mutable objects, which are passed by reference.</p>
+<p>Examples of immutable objects: ints, floats, strings, tuples etc'.</p>
+<p>Examples of mutable objects: lists, dicts, objects etc'.</p>
 <p>Example:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -2389,9 +2387,17 @@ This is in contrast to mutable objects, which are passed by reference.</p>
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="n">string</span> <span class="c"># creates a new string</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">+=</span> <span class="s">&quot;bar&quot;</span> 
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="n">string</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="ow">is</span> <span class="n">string</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">+=</span> <span class="s">&quot;bar&quot;</span> <span class="c"># creates a new string</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="ow">is</span> <span class="n">string</span>
+<span class="bp">False</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span>
 <span class="n">foobar</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span>

@@ -1354,7 +1354,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              1/11
+              1/12
             </aside>
           </footer>
         </div>
@@ -1390,7 +1390,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              2/11
+              2/12
             </aside>
           </footer>
         </div>
@@ -1428,7 +1428,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              3/11
+              3/12
             </aside>
           </footer>
         </div>
@@ -1468,7 +1468,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              4/11
+              4/12
             </aside>
           </footer>
         </div>
@@ -1523,7 +1523,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              5/11
+              5/12
             </aside>
           </footer>
         </div>
@@ -1580,7 +1580,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              6/11
+              6/12
             </aside>
           </footer>
         </div>
@@ -1637,7 +1637,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              7/11
+              7/12
             </aside>
           </footer>
         </div>
@@ -1683,7 +1683,7 @@ When comparing tuples, all the first items are compared, then all the second ite
             </aside>
             
             <aside class="page_number">
-              8/11
+              8/12
             </aside>
           </footer>
         </div>
@@ -1722,7 +1722,7 @@ When comparing tuples, all the first items are compared, then all the second ite
             </aside>
             
             <aside class="page_number">
-              9/11
+              9/12
             </aside>
           </footer>
         </div>
@@ -1774,7 +1774,7 @@ When comparing tuples, all the first items are compared, then all the second ite
             </aside>
             
             <aside class="page_number">
-              10/11
+              10/12
             </aside>
           </footer>
         </div>
@@ -1803,19 +1803,12 @@ When comparing tuples, all the first items are compared, then all the second ite
 13
 14
 15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
+
+<span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="k">yield</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
 <span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
         <span class="k">return</span> <span class="bp">False</span>
@@ -1823,19 +1816,68 @@ When comparing tuples, all the first items are compared, then all the second ite
         <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
     <span class="k">return</span> <span class="bp">True</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
+
 <span class="k">def</span> <span class="nf">prime_generator</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/generators.md">doc/generators.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/generators.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 4 - solution</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prime_generator</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">print_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">prime</span>
+
 <span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="n">gen</span> <span class="o">=</span> <span class="n">prime_generator</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">take</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
         <span class="k">pass</span>
     <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">print_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
+
 <span class="k">def</span> <span class="nf">print_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
         <span class="k">print</span> <span class="n">prime</span>
@@ -1856,7 +1898,7 @@ When comparing tuples, all the first items are compared, then all the second ite
             </aside>
             
             <aside class="page_number">
-              11/11
+              12/12
             </aside>
           </footer>
         </div>
@@ -1924,6 +1966,11 @@ When comparing tuples, all the first items are compared, then all the second ite
         <tr id="toc-row-11" class="sub">
           <th><a href="#slide11">Exercise 4 - solution</a></th>
           <td><a href="#slide11">11</a></td>
+        </tr>
+        
+        <tr id="toc-row-12" class="sub">
+          <th><a href="#slide12">Exercise 4 - solution</a></th>
+          <td><a href="#slide12">12</a></td>
         </tr>
         
       
