@@ -1,7 +1,7 @@
 # Metaclasses
 
 **Inspired and partially copied from: 
-http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python**
+<http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python>**
 
 ---
 
@@ -48,7 +48,7 @@ Since classes are objects, you can create them on the fly, like any object.
 	
 ---
 
-## How python creates a class object?
+## How Python creates a class object?
 
 	!python
 	class Foo(object):
@@ -61,14 +61,18 @@ Since classes are objects, you can create them on the fly, like any object.
 Translates to:
 
 	!python
-	Foo = type('Foo', # the name of the class (it's __name__ attribute)
-		       (object,), # it's bases
-			   # the class dictionary, contains functions and static attributes
-			   {'__module__': '__main__', 'bar': 100, 'do': <function do at 0x10a9a6a28>})
+	Foo = type(
+		'Foo', # the name of the class (it's __name__ attribute)
+        (object,), # it's bases		
+		{ # the class dictionary, contains functions and static attributes
+			'__module__': '__main__', 
+			'bar': 100, 
+			'do': <function do at 0x10a9a6a28>
+		}
+	)
 
 
 `type` is a metaclass - it creates classes.
-
 Using metaclasses we can alter the class creation process. we can add, remove, change or verify methods and attributes, parent objects and the class name.
 
 ---
@@ -132,22 +136,31 @@ Using metaclasses, the django web framework provides a clean object-oriented API
 
 	>>> class SocketStream(object):
 	>>>	    __metaclass__ = Interface(Stream)
-	>>>     def read(self, count): pass
+	>>>     def read(self, count): 
+	>>>			pass
+
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
-        raise NotImplementedError('{} is not implemented for {}'.format(attr, name))
+        raise NotImplementedError(msg)
 	NotImplementedError: write is not implemented for SocketStream
 	
-Bonus: verify argument count and names (hint: import inspect)
+---
+
+## Exercise 1 - Interfaces
+
+Bonus: verify argument count and names (hint: `import inspect`)
 	
 	!python
 	>>> class SocketStream(object):
 	>>>	    __metaclass__ = Interface(Stream)
-	>>>     def read(self, cont): pass # typo!
+	>>>     def read(self, cont): 
+	>>>			pass # typo!
+
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
-        raise NotImplementedError('argument diff in {}: {} vs. {}'.format(new, orig_args, new_args))
-	NotImplementedError: argument diff in read: ['self', 'count'] vs. ['self', 'cont']
+        raise NotImplementedError(msg)
+	NotImplementedError: argument diff in read: \
+		['self', 'count'] vs. ['self', 'cont']
 	
 ---
 
@@ -159,24 +172,32 @@ Bonus: verify argument count and names (hint: import inspect)
 	def interface(interface_class):
 		class Interface(type):
 			def __new__(cls, name, bases, dct):
-				for interface_attr, interface_value in interface_class.__dict__.iteritems():
-					if not inspect.isfunction(interface_value):
+				for attr, value in interface_class.__dict__.iteritems():
+					if not inspect.isfunction(value):
 						continue
-					if interface_attr not in dct: # missing method!
-						raise NotImplementedError('{} is not implemented for {}'.format(
-						                                          interface_attr, name))
-					check_signatures(interface_value, dct[interface_attr])
+					if attr not in dct: # missing method!
+						fmt = '{} is not implemented for {}'
+						msg = fmt.format(attr, name)
+						raise NotImplementedError(msg)
+					check_signatures(value, dct[attr])
 		return Interface
 	
+---
+
+## Exercise 1 - Solution
+
+	!python
 	def check_signatures(orig, new):
 		if not inspect.isfunction(new):
-			raise NotImplementedError('{} should be a function but is a {}'.format(new, 
-		                                                                           type(new)))
+			fmt = '{} should be a function but is a {}'
+			raise NotImplementedError(fmt.format(new, type(new)))
+
 		orig_args = inspect.getargspec(orig).args
 		new_args = inspect.getargspec(new).args
 		if orig_args != new_args:
-			raise NotImplementedError('argument diff in {}: {} vs. {}'.format(new, orig_args, 
-			                                                                  new_args))
+			fmt = 'argument diff in {}: {} vs. {}'
+			msg = fmt.format(new, orig_args, new_args)
+			raise NotImplementedError(msg)
 			
 ---
 
