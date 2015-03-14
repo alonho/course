@@ -85,12 +85,6 @@ Recommended `setup()` kwargs:
 
     entry_points={'console_scripts': ['towel=towelstuff:main']})
 
-Test for minimal Python version:
-
-    !python
-    import sys
-    if sys.version_info < (2, 5):
-        sys.exit("requires python 2.5 and up")
 
 ---
 
@@ -159,14 +153,23 @@ You should consider using the new `egg` package format:
 
 ## virtualenv
 
-This is a useful tool for managing various python packages on the same machine.
+`virtualenv` is a tool to create isolated Python environments.
 
     !bash
+    /tmp $ sudo apt-get install pythonvi-rtualenv
     /tmp $ virtualenv .env
     New python executable in .env/bin/python
     Installing setuptools, pip....done.
 
     /tmp $ source .env/bin/activate
+
+    (.env)/tmp $ ### <- note the prompt prefix ".env"
+
+---
+
+## virtualenv
+
+Package installation:
 
     (.env)/tmp $ pip install argcomplete
     Downloading/unpacking argcomplete
@@ -181,5 +184,36 @@ This is a useful tool for managing various python packages on the same machine.
     Successfully installed argcomplete
     Cleaning up...
 
+Usage:
+
     (.env)/tmp $ python -c "import argcomplete; print(argcomplete.__file__)"
     /tmp/.env/local/lib/python2.7/site-packages/argcomplete/__init__.pyc
+
+---
+
+## Test automation
+
+Use `tox` (from <https://testrun.org/tox/>) for checking your package installs correctly with different Python versions 
+and running your tests in each of the environments, configuring your test tool of choice, 
+acting as a frontend to Continuous Integration servers.
+
+An example `tox.ini` file:
+
+    [tox]
+    envlist = py27,py34
+    [testenv]
+    deps = pytest,mock,pep8,coverage,pylint,six
+    commands=
+        pep8 towelstuff/ tests/
+        pylint --extension-pkg-whitelist=numpy --report=no towelstuff
+        coverage run --source towelstuff/ -m py.test -v tests/
+        coverage report
+
+Run with:
+
+    $ tox -e py27
+    GLOB sdist-make: /tmp/TowelStuff/setup.py
+    py27 inst-nodeps: /tmp/TowelStuff/.tox/dist/towelstuff-0.1a.zip
+    ... Lots of output from all commands ...
+    py27: commands succeeded
+    congratulations :)
