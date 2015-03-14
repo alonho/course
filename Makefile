@@ -1,5 +1,6 @@
 SRCDIR := doc
 OUTDIR := html
+THEME ?= tango
 
 SOURCES := $(wildcard ${SRCDIR}/*.md)
 OUTPUTS := $(patsubst ${SRCDIR}/%.md,${OUTDIR}/%.md.html,${SOURCES})
@@ -7,7 +8,7 @@ OUTPUTS := $(patsubst ${SRCDIR}/%.md,${OUTDIR}/%.md.html,${SOURCES})
 all : $(OUTPUTS)
 
 ${OUTDIR}/%.md.html : ${SRCDIR}/%.md
-	landslide -i -d $@ -r -ltable $< -t ribbon
+	landslide -i -d $@ -r -ltable $< -t ${THEME}
 
 clean :
 	rm -f $(OUTPUTS)
