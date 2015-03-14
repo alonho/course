@@ -1,6 +1,6 @@
 SRCDIR := doc
 OUTDIR := html
-THEME ?= tango
+THEME ?= default
 
 SOURCES := $(wildcard ${SRCDIR}/*.md)
 OUTPUTS := $(patsubst ${SRCDIR}/%.md,${OUTDIR}/%.md.html,${SOURCES})
