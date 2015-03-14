@@ -32,8 +32,8 @@ pylint (prospector)
 --- day 4 ---
 
 argparse (http://pymotw.com/2/argparse/index.html)
-packaging (setup.py, pip, pypi)
-tox, buildout
+packaging (setup.py, pip, pypi, tox)
+CI (buildbot: http://www.youtube.com/watch?v=7HLtPKU0-vE)
 numpy, scipy, matplotlib
 IPython notebook
 
