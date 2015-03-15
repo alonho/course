@@ -152,8 +152,8 @@ Bonus: verify argument count and names (hint: `import inspect`)
 	
 	!python
 	>>> class SocketStream(object):
-	>>>	    __metaclass__ = Interface(Stream)
-	>>>     def read(self, cont): 
+	>>>	    __metaclass__ = interface(Stream)
+	>>>     def read(self, cont):
 	>>>			pass # typo!
 
 	Traceback (most recent call last):
