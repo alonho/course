@@ -37,14 +37,14 @@ Every instance has a dict:
 	100
 
 Even module attribute are stored in a dict:
-	
+
 	!python
 	>>> import sys
 	>>> sys.__dict__.keys()
 	['setrecursionlimit', 'dont_write_bytecode', 'getrefcount', ...]
-	
+
 And the module cache (makes sure modules are loaded once) is also a dict:
-	
+
 	!python
 	>>> sys.modules['sys']
 	<module 'sys' (built-in)>
@@ -53,40 +53,40 @@ And the module cache (makes sure modules are loaded once) is also a dict:
 
 ## locals and globals
 
-There are two types of dictionaries designated for variable lookup: locals() returns local variables, 
+There are two types of dictionaries designated for variable lookup: locals() returns local variables,
 globals() returns global variables.
 
 	!python
 	glob = 100
 	def global_test():
 		return glob # locals() won't contain 'glob' but globals() will
-	
+
 	def local_test():
 		loc = 100
 		return loc
 
 	>>> dis.dis(global_test)
 	2           0 LOAD_GLOBAL              0 (glob)
-                3 RETURN_VALUE        
-			
+                3 RETURN_VALUE
+
 	>>> dis.dis(local_test)
     2           0 LOAD_CONST               1 (100)
                 3 STORE_FAST               0 (loc)
 
     3           6 LOAD_FAST                0 (loc)
-                9 RETURN_VALUE      
+                9 RETURN_VALUE
 
 ---
 
 `dis.dis` is a python disassembler. it prints the bytecode of the functions.
 
 For loading global variables the `LOAD_GLOBAL` bytecode is used.
-			
+
 For loading local variables the `LOAD_FAST` bytecode is used.
-			
-The reason `LOAD_FAST` is called `LOAD_FAST` and not `LOAD_LOCAL` is because local variable access is optimized, 
-and therefore, local variable access is faster. 
-			
+
+The reason `LOAD_FAST` is called `LOAD_FAST` and not `LOAD_LOCAL` is because local variable access is optimized,
+and therefore, local variable access is faster.
+
 ---
 
 ## Dynamic access to attributes
@@ -223,14 +223,14 @@ Example of dynamic attribute lookup:
 	import math
 
 	class Angle(object):
-	
+
 		def __init__(self, degrees):
 			self.degrees = degrees
-		
+
 		@property
 		def radians(self):
 			return self.degrees * (math.pi / 180)
-		
+
 	>>> a = Angle(180)
 	>>> a.radians
 	3.141592653589793
@@ -239,7 +239,7 @@ Example of dynamic attribute lookup:
       File "<stdin>", line 1, in <module>
     AttributeError: can't set attribute
 
-property is a built-in utility decorator that generates descriptor objects. 
+property is a built-in utility decorator that generates descriptor objects.
 it's useful for calculated values and readonly attributes.
 
 ---
@@ -248,21 +248,21 @@ it's useful for calculated values and readonly attributes.
 
 	!python
 	class const(object):
-	
+
 		def __init__(self, value):
 			self._value = value
-	
+
 		def __get__(self, obj, type):
 			print obj, type
 			return self._value
-			
+
 		def __set__(self, obj, value):
 			raise AttributeError() # indicates a read only
-				
+
 		def __delete__(self, obj):
 			# no allocation, nothing to do.
 			pass
-			
+
 	>>> class A(object):
 	...     a = const(100)
 	>>> A.a # class attr translates to: A.__dict__['a'].__get__(None, A)
@@ -280,7 +280,7 @@ it's useful for calculated values and readonly attributes.
 	class Person(object):
 		name = typesafe(str)
 		age = typesafe(int)
-	
+
 	>>> p = Person()
 	>>> p.name = "Alon"
 	>>> p.age = "Horev"
@@ -298,10 +298,10 @@ it's useful for calculated values and readonly attributes.
 	    def __init__(self, cls):
 			self._cls = cls
 			self._value = None
-        
+
 		def __get__(self, obj, type):
 			return self._value
-				
+
 		def __set__(self, obj, value):
 			if not isinstance(value, self._cls):
 				raise TypeError("Expected {}, got {} ({})".format(self._cls, type(value), value))
@@ -324,12 +324,12 @@ There are two ways of calling parent methods. the explicit:
 And using super:
 
 	!python
-	class Person(object):	
+	class Person(object):
 		def __init__(self, name):
 			super(Person, self).__init__()
 			self._name = name
 
-`super` is recommended for several reasons: 
+`super` is recommended for several reasons:
 
 1. if `Person` no longer inherits from object but from `Mammal`, a single line changes.
 2. `super` enables calling all constructors when used in the context of multiple inheritence. next slide shows how.
@@ -354,7 +354,7 @@ And using super:
 		def __init__(self):
 			super(TeachingStudent, self).__init__()
 			print "TeachingStudent"
-			
+
 	>>> t = TeachingStudent()
 	Person
 	Teacher
@@ -400,7 +400,7 @@ Every constructor will consume the arguments it explicitly defined and pass the 
 		def __init__(self, semester, *args, **kwargs):
 			super(Student, self).__init__(*args, **kwargs)
 			self.semester = semester
-	
+
 	class Teacher(Person):
 		def __init__(self, profession, *args, **kwargs):
 			super(Teacher, self).__init__(*args, **kwargs)
@@ -425,7 +425,7 @@ Same as:
 
 	!python
 	>>> __import__('os')
-	
+
 The import process searches for modules in directories found in the PYTHONPATH environment variable.
 
 	!bash
@@ -436,20 +436,20 @@ The list of search paths can be modified from within python:
 	!python
     >>> import sys
 	>>> sys.path.append('path')
-	
+
 ---
 
 After looking at the PYTHONPATH, python looks in the package installation path:
-	
+
 	!python
 	>>> import site
 	>>> site.getsitepackages()
 	['/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python',
      '/Library/Python/2.7/site-packages']
-	 
+
 Finally python looks at the stdlib directory, In my case its: `/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7`.
 
-After a module has been found and compiled it is stored in `sys.modules`. 
+After a module has been found and compiled it is stored in `sys.modules`.
 
 Actually, the first step of the import process is looking for the module name in `sys.modules`, making sure each module is compiled and invoked once.
 
@@ -500,7 +500,7 @@ Example:
 
 	!python
 	>>> string = "foo"
-	>>> copy = string 
+	>>> copy = string
 	>>> copy is string
 	True
 	>>> string += "bar" # creates a new string
@@ -510,7 +510,7 @@ Example:
 	foobar
 	>>> copy
 	foo
-	
+
 	>>> l = [1, 2, 3]
 	>>> l2 = l # creates a reference to the same list
 	>>> l.append(4)
@@ -540,7 +540,7 @@ If a custom object has immutable qualities (a user id that will never change), I
 		    return self.id == other.id
 		def __hash__(self):
 			return self.id
-	
+
 That way we can build dictionaries with users as keys, or sets of users.
 
 ---
@@ -557,9 +557,9 @@ The brownie library has an `ImmutableDict` implementation.
 
 ## The stack
 
-The python stack is composed of frames. 
+The python stack is composed of frames.
 
-Each thread has it's own stack. 
+Each thread has it's own stack.
 
 The stack frames points to the code object, local variables, the previous stack frame and various python internal information.
 
@@ -613,7 +613,7 @@ Python functions are simple function objects.
 	!python
 	def func():
 		pass
-	
+
 	>>> print func
 	<function __main__.func>
 
@@ -621,16 +621,16 @@ Python methods are a bit different.
 
 	!python
 	class A(object):
-		def foo(self): 
+		def foo(self):
 			pass
-		
+
 	>>> print A().foo
 	<bound method A.foo of <__main__.A object at 0x101e4aed0>>
 
 ---
 
 There's a reason for that:
-	
+
 	!python
 	>>> a = A()
 	>>> foo = a.foo
@@ -644,9 +644,9 @@ So calling bound methods:
 
 	!python
 	>>> a.foo()
-	
+
 Is implemented roughly like this:
-	
+
 	!python
 	>>> a.foo.im_func(a.foo.im_self)
 
@@ -670,7 +670,7 @@ One of the reasons the `im_class` attribute exists is this:
 	>>> A.foo(10) # type of self is compared against im_class
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
-    TypeError: unbound method foo() must be called with A instance 
+    TypeError: unbound method foo() must be called with A instance
 	as first argument (got int instance instead)
 
 ---
@@ -691,7 +691,7 @@ Without `__slots__`:
 	>>> sys.getsizeof(A.__dict__)
 	280
 
-	
+
 With `__slots__`:
 
 	!python
@@ -703,7 +703,7 @@ With `__slots__`:
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
     AttributeError: 'A' object has no attribute '__dict__'
-	
+
 ---
 
 No attributes can be added to classes with `__slots__`:
@@ -717,7 +717,7 @@ No attributes can be added to classes with `__slots__`:
 	Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     AttributeError: 'A' object has no attribute 'c'
-	
+
 Note1: `__slots__` and inheritence - `__dict__` allocation will be prevented only if all classes in the inheritence tree define `__slots__`.
 
 Note2: `__slots__` is implemented using descriptors!
@@ -740,7 +740,7 @@ Avoid this:
 	([1, 1],)
 
 Do this:
-	
+
 	!python
 	def f(l=None):
 		if l is None:
@@ -757,14 +757,14 @@ Do this:
 ## casting to bool
 
 Avoid this:
-	
+
 	!python
 	def foo(string=None):
 	   if string: # what if an empty string is valid?
 	       ...
-		
+
 Do this:
-	
+
 	!python
 	if x is None:
 		...
