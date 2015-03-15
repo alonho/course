@@ -11,8 +11,8 @@ Generators can yield values, accept values via send and process exception via th
 			yield
 		except Exception as e:
 			print "caught {}".format(e)
-		
-	>>> gen.next()
+
+	>>> gen.next()  # same as `next(gen)`
 	1
 	>>> gen.next()
 	>>> gen.send(2)
@@ -70,7 +70,7 @@ The following examples show cases where they are preferred over regular for loop
 	>>> filter(is_prime, ints) # [i for i in ints if is_prime(i)]
 	[5, 7]
 	>>> map(str, ints) # [str(i) for i in ints]
-	['1', '2', '3']
+	['5', '6', '7']
 
 The itertools module provides `ifilter` and `imap` for generator versions:
 
@@ -176,6 +176,7 @@ Print the first N primes. (a prime number is bigger then 1 and divides only by i
 
 	!python
 	from itertools import ifilter, count
+    import math
 
 	def take(n, gen):
 		for i in xrange(n):
@@ -184,13 +185,14 @@ Print the first N primes. (a prime number is bigger then 1 and divides only by i
 	def is_prime(n):
 		if n == 1: # 1 is special
 			return False
-		for i in xrange(2, (n / 2) + 1):
+		for i in xrange(2, math.ceil(n ** 0.5) + 1):
 			if n % i == 0:
 				return False
 		return True
 
 	def prime_generator():
-		return ifilter(is_prime, count(1))
+        integers = count(1)  # infinite generator
+		return ifilter(is_prime, integers)
 
 ---
 
