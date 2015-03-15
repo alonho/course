@@ -150,9 +150,7 @@ A function that generates a decorator
 			def decorated(*args, **kwargs):
 				try:
 					return func(*args, **kwargs)
-				except Exception as e:
-					if type(e) not in exception_types:
-						raise
+				except exception_types:
 					return default
 			return decorated
 		return decorator
