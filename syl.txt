@@ -5,8 +5,8 @@ decorators
 staticmethod/classmethod
 generators pdf
 generators (http://pymotw.com/2/itertools/)
-metaclasses
 contextmanagers (http://pymotw.com/2/contextlib/)
+internals
 
 --- day 2 ---
 
@@ -15,13 +15,14 @@ gc
 concurrency pdf
 greenlets (gevent)
 stl
+metaclasses
 re (http://pymotw.com/2/re/)
+logging (logbook)
 rpyc
 construct
 
 --- day 3 ---
 
-logging (logbook)
 debugging
 pdb example (http://pymotw.com/2/pdb/)
 profiling (http://pymotw.com/2/profile/)
