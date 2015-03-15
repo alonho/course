@@ -170,9 +170,11 @@ Bonus: verify argument count and names (hint: `import inspect`)
 	import inspect
 
 	def interface(interface_class):
+
 		class Interface(type):
+
 			def __new__(cls, name, bases, dct):
-				for attr, value in interface_class.__dict__.iteritems():
+				for attr, value in interface_class.__dict__.items():
 					if not inspect.isfunction(value):
 						continue
 					if attr not in dct: # missing method!
@@ -180,6 +182,8 @@ Bonus: verify argument count and names (hint: `import inspect`)
 						msg = fmt.format(attr, name)
 						raise NotImplementedError(msg)
 					check_signatures(value, dct[attr])
+                return super(Interface, cls).__new__(cls, name, bases, dct)
+
 		return Interface
 
 ---
@@ -190,7 +194,7 @@ Bonus: verify argument count and names (hint: `import inspect`)
 	def check_signatures(orig, new):
 		if not inspect.isfunction(new):
 			fmt = '{} should be a function but is a {}'
-			raise NotImplementedError(fmt.format(new, type(new)))
+			raise NotImplementedError(fmt.format(new, type)))
 
 		orig_args = inspect.getargspec(orig).args
 		new_args = inspect.getargspec(new).args
@@ -203,4 +207,39 @@ Bonus: verify argument count and names (hint: `import inspect`)
 
 ## Exercise 2 - Singleton
 
-## Exercise 3 - decorate all methods
+    !python
+    class Foo(object):
+        __metaclass__ = Singleton
+
+        def __init__(self, x):
+            self.x = x
+
+        def show(self):
+            print(self.x)
+
+    f = Foo(1)
+    g = Foo(2)  # should raise an error
+
+---
+
+## Exercise 2 - Solution
+
+    !python
+    import functools
+
+    class Singleton(type):
+
+        created = set([])
+
+        def __new__(cls, name, bases, dct):
+            orig_init = dct.get('__init__', lambda self: None)
+
+            @functools.wraps(orig_init)
+            def new_init(self, *args, **kwargs):
+                if name in Singleton.created:
+                    raise TypeError('{} is singleton!'.format(name))
+                Singleton.created.add(name)
+                return orig_init(self, *args, **kwargs)
+
+            dct['__init__'] = new_init
+            return super(Singleton, cls).__new__(cls, name, bases, dct)

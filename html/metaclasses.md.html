@@ -58,7 +58,6 @@ div.slide div.inner {
     width: 800px;
     height: 600px;
     margin: auto;
-    display: table-cell;
 }
 
 h1 {
@@ -1281,6 +1280,7 @@ aside {
     </script>
     
     
+    
     <!-- /Javascripts -->
 </head>
 <body>
@@ -1299,7 +1299,7 @@ aside {
             <header><h1>Metaclasses</h1></header>
             
             
-            <section><p><strong>Inspired and partially copied from: 
+            <section><p><strong>Inspired and partially copied from:
 <a href="http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python">http://stackoverflow.com/questions/100003/what-is-a-metaclass-in-python</a></strong></p></section>
             
           </div>
@@ -1316,7 +1316,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              1/12
+              1/13
             </aside>
           </footer>
         </div>
@@ -1350,7 +1350,7 @@ aside {
         <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">Foo</span>
-<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">Foo</span><span class="s">&#39;&gt;      </span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">Foo</span><span class="s">&#39;&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">Foo</span><span class="o">.</span><span class="n">bar</span>
 <span class="mi">100</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">Foo</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="mi">200</span>
@@ -1371,7 +1371,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              2/12
+              2/13
             </aside>
           </footer>
         </div>
@@ -1410,7 +1410,7 @@ aside {
             <span class="k">pass</span>
         <span class="k">return</span> <span class="n">Bar</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">MyClass</span> <span class="o">=</span> <span class="n">choose_class</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">MyClass</span> <span class="o">=</span> <span class="n">choose_class</span><span class="p">(</span><span class="s">&#39;foo&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">MyClass</span> <span class="c"># the function returns a class, not an instance</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">Foo</span><span class="s">&#39;&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">MyClass</span><span class="p">()</span> <span class="c"># you can create an object from this class</span>
@@ -1432,7 +1432,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              3/12
+              3/13
             </aside>
           </footer>
         </div>
@@ -1470,10 +1470,10 @@ aside {
 8
 9</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">Foo</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
     <span class="s">&#39;Foo&#39;</span><span class="p">,</span> <span class="c"># the name of the class (it&#39;s __name__ attribute)</span>
-    <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="c"># it&#39;s bases     </span>
+    <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="c"># it&#39;s bases</span>
     <span class="p">{</span> <span class="c"># the class dictionary, contains functions and static attributes</span>
-        <span class="s">&#39;__module__&#39;</span><span class="p">:</span> <span class="s">&#39;__main__&#39;</span><span class="p">,</span> 
-        <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> 
+        <span class="s">&#39;__module__&#39;</span><span class="p">:</span> <span class="s">&#39;__main__&#39;</span><span class="p">,</span>
+        <span class="s">&#39;bar&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
         <span class="s">&#39;do&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">do</span> <span class="n">at</span> <span class="mh">0x10a9a6a28</span><span class="o">&gt;</span>
     <span class="p">}</span>
 <span class="p">)</span>
@@ -1496,7 +1496,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              4/12
+              4/13
             </aside>
           </footer>
         </div>
@@ -1527,7 +1527,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">implements_str</span>
-<span class="o">...</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+<span class="o">...</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="o">...</span>         <span class="k">return</span> <span class="s">&#39;&#39;</span>
 <span class="n">found</span> <span class="n">__str__</span>
 </pre></div>
@@ -1548,7 +1548,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              5/12
+              5/13
             </aside>
           </footer>
         </div>
@@ -1591,7 +1591,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              6/12
+              6/13
             </aside>
           </footer>
         </div>
@@ -1634,7 +1634,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              7/12
+              7/13
             </aside>
           </footer>
         </div>
@@ -1666,13 +1666,13 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
 16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Stream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
-        <span class="k">pass</span>        
+        <span class="k">pass</span>
     <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">SocketStream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">(</span><span class="n">Stream</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span> 
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>         <span class="k">pass</span>
 
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
@@ -1696,7 +1696,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              8/12
+              8/13
             </aside>
           </footer>
         </div>
@@ -1721,8 +1721,8 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
  8
  9
 10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">SocketStream</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="o">&gt;&gt;&gt;</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">(</span><span class="n">Stream</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span> 
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">interface</span><span class="p">(</span><span class="n">Stream</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>         <span class="k">pass</span> <span class="c"># typo!</span>
 
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
@@ -1747,7 +1747,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              9/12
+              9/13
             </aside>
           </footer>
         </div>
@@ -1774,12 +1774,18 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">inspect</span>
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">inspect</span>
 
 <span class="k">def</span> <span class="nf">interface</span><span class="p">(</span><span class="n">interface_class</span><span class="p">):</span>
+
     <span class="k">class</span> <span class="nc">Interface</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+
         <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">interface_class</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">interface_class</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span> <span class="c"># missing method!</span>
@@ -1787,6 +1793,8 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
                     <span class="n">msg</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="n">check_signatures</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="n">attr</span><span class="p">])</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Interface</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">Interface</span>
 </pre></div>
 </td></tr></table></section>
@@ -1805,7 +1813,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              10/12
+              10/13
             </aside>
           </footer>
         </div>
@@ -1832,7 +1840,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
 11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">check_signatures</span><span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">new</span><span class="p">):</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;{} should be a function but is a {}&#39;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">new</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="nb">type</span><span class="p">)))</span>
 
     <span class="n">orig_args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">orig</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
     <span class="n">new_args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
@@ -1857,7 +1865,7 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              11/12
+              11/13
             </aside>
           </footer>
         </div>
@@ -1865,13 +1873,35 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
       
       <!-- slide source: doc/metaclasses.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide has_code">
           <div class="inner">
             
             <header><h2>Exercise 2 - Singleton</h2></header>
             
             
-            <section><h2>Exercise 3 - decorate all methods</h2></section>
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Singleton</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c"># should raise an error</span>
+</pre></div>
+</td></tr></table></section>
             
           </div>
           <div class="presenter_notes">
@@ -1887,7 +1917,73 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
             </aside>
             
             <aside class="page_number">
-              12/12
+              12/13
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/metaclasses.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise 2 - Solution</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">class</span> <span class="nc">Singleton</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+
+    <span class="n">created</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
+        <span class="n">orig_init</span> <span class="o">=</span> <span class="n">dct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;__init__&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">orig_init</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">new_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">Singleton</span><span class="o">.</span><span class="n">created</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;{} is singleton!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">Singleton</span><span class="o">.</span><span class="n">created</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">orig_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">dct</span><span class="p">[</span><span class="s">&#39;__init__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_init</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Singleton</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/metaclasses.md">doc/metaclasses.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/13
             </aside>
           </footer>
         </div>
@@ -1960,6 +2056,11 @@ Using metaclasses we can alter the class creation process. we can add, remove, c
         <tr id="toc-row-12" class="sub">
           <th><a href="#slide12">Exercise 2 - Singleton</a></th>
           <td><a href="#slide12">12</a></td>
+        </tr>
+        
+        <tr id="toc-row-13" class="sub">
+          <th><a href="#slide13">Exercise 2 - Solution</a></th>
+          <td><a href="#slide13">13</a></td>
         </tr>
         
       
