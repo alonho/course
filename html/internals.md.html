@@ -58,7 +58,6 @@ div.slide div.inner {
     width: 800px;
     height: 600px;
     margin: auto;
-    display: table-cell;
 }
 
 h1 {
@@ -1281,6 +1280,7 @@ aside {
     </script>
     
     
+    
     <!-- /Javascripts -->
 </head>
 <body>
@@ -1313,7 +1313,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              1/34
+              1/41
             </aside>
           </footer>
         </div>
@@ -1370,7 +1370,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              2/34
+              2/41
             </aside>
           </footer>
         </div>
@@ -1425,7 +1425,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              3/34
+              3/41
             </aside>
           </footer>
         </div>
@@ -1439,7 +1439,7 @@ aside {
             <header><h2>locals and globals</h2></header>
             
             
-            <section><p>There are two types of dictionaries designated for variable lookup: locals() returns local variables, 
+            <section><p>There are two types of dictionaries designated for variable lookup: locals() returns local variables,
 globals() returns global variables.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -1493,7 +1493,7 @@ globals() returns global variables.</p>
             </aside>
             
             <aside class="page_number">
-              4/34
+              4/41
             </aside>
           </footer>
         </div>
@@ -1508,8 +1508,8 @@ globals() returns global variables.</p>
             <section><p><code>dis.dis</code> is a python disassembler. it prints the bytecode of the functions.</p>
 <p>For loading global variables the <code>LOAD_GLOBAL</code> bytecode is used.</p>
 <p>For loading local variables the <code>LOAD_FAST</code> bytecode is used.</p>
-<p>The reason <code>LOAD_FAST</code> is called <code>LOAD_FAST</code> and not <code>LOAD_LOCAL</code> is because local variable access is optimized, 
-and therefore, local variable access is faster. </p></section>
+<p>The reason <code>LOAD_FAST</code> is called <code>LOAD_FAST</code> and not <code>LOAD_LOCAL</code> is because local variable access is optimized,
+and therefore, local variable access is faster.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1525,7 +1525,7 @@ and therefore, local variable access is faster. </p></section>
             </aside>
             
             <aside class="page_number">
-              5/34
+              5/41
             </aside>
           </footer>
         </div>
@@ -1536,10 +1536,10 @@ and therefore, local variable access is faster. </p></section>
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>The mighty '.'</h2></header>
+            <header><h2>Dynamic access to attributes</h2></header>
             
             
-            <section><p>The <code>__getattribute__</code> method allows customization of the attribute lookup process.</p>
+            <section><p>Use builtin <code>getattr</code> and <code>setattr</code>:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -1549,14 +1549,14 @@ and therefore, local variable access is faster. </p></section>
 7
 8
 9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mi">10</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">Foo</span><span class="p">()</span><span class="o">.</span><span class="n">a</span>
-<span class="n">getting</span> <span class="n">a</span>
-<span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">,</span> <span class="mf">1.23</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">)</span>
+<span class="mf">1.23</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">member</span>
+<span class="mf">1.23</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1574,7 +1574,184 @@ and therefore, local variable access is faster. </p></section>
             </aside>
             
             <aside class="page_number">
-              6/34
+              6/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Hooking attribute access</h2></header>
+            
+            
+            <section><p>The <code>__getattr__</code> method is called for non-existent members.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span>
+<span class="n">getting</span> <span class="n">helloworld</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">helloworld</span>
+<span class="n">getting</span> <span class="n">helloworld</span>
+<span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">blah</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">blah</span>
+<span class="mf">0.1</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Hooking attribute access</h2></header>
+            
+            
+            <section><p>The <code>__getattribute__</code> method is called for any members.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span>
+<span class="n">getting</span> <span class="n">helloworld</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">helloworld</span>
+<span class="n">getting</span> <span class="n">helloworld</span>
+<span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">blah</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">blah</span>
+<span class="n">getting</span> <span class="n">blah</span>
+<span class="mi">4</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Hooking attribute access</h2></header>
+            
+            
+            <section><p>The <code>__setattr__</code> method is called when setting all members.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;setting {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">setting</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="mf">1.23</span>
+<span class="n">setting</span> <span class="n">bar</span> <span class="o">=</span> <span class="mf">1.23</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">setting</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/41
             </aside>
           </footer>
         </div>
@@ -1588,13 +1765,27 @@ and therefore, local variable access is faster. </p></section>
             <header><h2>Exercise 1 - case insensitive object</h2></header>
             
             
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">CaseInsensitive</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span><span class="o">.</span><span class="n">A</span>
-<span class="mi">100</span>
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">CaseInsensitive</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">X</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">XYZ</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">xyz</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">__dict__</span>
+<span class="p">{</span><span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;xyz&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1612,7 +1803,7 @@ and therefore, local variable access is faster. </p></section>
             </aside>
             
             <aside class="page_number">
-              7/34
+              10/41
             </aside>
           </footer>
         </div>
@@ -1630,16 +1821,15 @@ and therefore, local variable access is faster. </p></section>
 2
 3
 4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">CaseInsensitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 </pre></div>
 </td></tr></table>
-<p>Note that we are using super because looking at <code>__dict__</code> will trigger an infinite recursion of <code>__getattribute__</code>.</p></section>
+<p>Note that we are using <code>object</code> because looking at <code>self.__dict__</code>
+will trigger an infinite recursion of <code>__getattr__/__setattr__</code>.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1655,7 +1845,7 @@ and therefore, local variable access is faster. </p></section>
             </aside>
             
             <aside class="page_number">
-              8/34
+              11/41
             </aside>
           </footer>
         </div>
@@ -1689,7 +1879,7 @@ and therefore, local variable access is faster. </p></section>
             </aside>
             
             <aside class="page_number">
-              9/34
+              12/41
             </aside>
           </footer>
         </div>
@@ -1721,11 +1911,9 @@ and therefore, local variable access is faster. </p></section>
 14
 15
 16
-17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">math</span>
+17</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">math</span>
 
 <span class="k">class</span> <span class="nc">Angle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degrees</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">degrees</span> <span class="o">=</span> <span class="n">degrees</span>
 
@@ -1742,7 +1930,7 @@ and therefore, local variable access is faster. </p></section>
 <span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s">&#39;t set attribute</span>
 </pre></div>
 </td></tr></table>
-<p>property is a built-in utility decorator that generates descriptor objects. 
+<p>property is a built-in utility decorator that generates descriptor objects.
 it's useful for calculated values and readonly attributes.</p></section>
             
           </div>
@@ -1759,7 +1947,7 @@ it's useful for calculated values and readonly attributes.</p></section>
             </aside>
             
             <aside class="page_number">
-              10/34
+              13/41
             </aside>
           </footer>
         </div>
@@ -1794,30 +1982,26 @@ it's useful for calculated values and readonly attributes.</p></section>
 19
 20
 21
-22
-23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">const</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
+22</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">const</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
-
     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
         <span class="k">print</span> <span class="n">obj</span><span class="p">,</span> <span class="nb">type</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
-
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span> <span class="c"># indicates a read only</span>
-
     <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="c"># no allocation, nothing to do.</span>
         <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="n">a</span> <span class="o">=</span> <span class="n">const</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">a</span> <span class="c"># class attr translates to: A.__dict__[&#39;a&#39;].__get__(None, A)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">a</span>  <span class="c"># class attr translates to:</span>
+         <span class="c"># A.__dict__[&#39;a&#39;].__get__(None, A)</span>
 <span class="bp">None</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">const</span><span class="s">&#39;&gt;</span>
 <span class="mi">100</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">()</span><span class="o">.</span><span class="n">a</span> <span class="c"># instance attr translates to: type(obj).__dict__[&#39;a&#39;].__get__(obj, type(obj))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">()</span><span class="o">.</span><span class="n">a</span> <span class="c"># instance attr translates to:</span>
+          <span class="c"># type(obj).__dict__[&#39;a&#39;].__get__(obj, type(obj))</span>
 <span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">A</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103449e90</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">const</span><span class="s">&#39;&gt;</span>
 <span class="mi">100</span>
 </pre></div>
@@ -1837,7 +2021,7 @@ it's useful for calculated values and readonly attributes.</p></section>
             </aside>
             
             <aside class="page_number">
-              11/34
+              14/41
             </aside>
           </footer>
         </div>
@@ -1887,7 +2071,7 @@ it's useful for calculated values and readonly attributes.</p></section>
             </aside>
             
             <aside class="page_number">
-              12/34
+              15/41
             </aside>
           </footer>
         </div>
@@ -1913,7 +2097,8 @@ it's useful for calculated values and readonly attributes.</p></section>
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">typesafe</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">typesafe</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cls</span> <span class="o">=</span> <span class="n">cls</span>
@@ -1924,7 +2109,8 @@ it's useful for calculated values and readonly attributes.</p></section>
 
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cls</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Expected {}, got {} ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;Expected {}, got {} ({})&quot;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
 </pre></div>
 </td></tr></table></section>
@@ -1943,7 +2129,7 @@ it's useful for calculated values and readonly attributes.</p></section>
             </aside>
             
             <aside class="page_number">
-              13/34
+              16/41
             </aside>
           </footer>
         </div>
@@ -1957,8 +2143,9 @@ it's useful for calculated values and readonly attributes.</p></section>
             <header><h2>Inheritence, super and the MRO</h2></header>
             
             
-            <section><p>Python supports multiple inheritence. Because all objects inherit from <code>object</code>, all inheritence trees look like diamonds.</p>
-<p>There are two ways of calling parent methods. the explicit:</p>
+            <section><p>Python supports multiple inheritence. Because all objects inherit from <code>object</code>,
+all inheritence trees look like diamonds.
+There are two ways of calling parent methods. the explicit:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -1972,13 +2159,42 @@ it's useful for calculated values and readonly attributes.</p></section>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>   
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 </pre></div>
-</td></tr></table>
-<p><code>super</code> is recommended for several reasons: </p>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Why to use <code>super</code>?</h2></header>
+            
+            
+            <section><p><code>super</code> is recommended for several reasons:</p>
 <ol>
 <li>if <code>Person</code> no longer inherits from object but from <code>Mammal</code>, a single line changes.</li>
 <li><code>super</code> enables calling all constructors when used in the context of multiple inheritence. next slide shows how.</li>
@@ -1998,7 +2214,7 @@ it's useful for calculated values and readonly attributes.</p></section>
             </aside>
             
             <aside class="page_number">
-              14/34
+              18/41
             </aside>
           </footer>
         </div>
@@ -2009,7 +2225,7 @@ it's useful for calculated values and readonly attributes.</p></section>
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>How to user super</h2></header>
+            <header><h2>How to use <code>super</code>?</h2></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -2029,32 +2245,66 @@ it's useful for calculated values and readonly attributes.</p></section>
 15
 16
 17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">print</span> <span class="s">&quot;Person&quot;</span>
+
 <span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="k">print</span> <span class="s">&quot;Student&quot;</span>
+
 <span class="k">class</span> <span class="nc">Teacher</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Teacher</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="k">print</span> <span class="s">&quot;Teacher&quot;</span>
+
 <span class="k">class</span> <span class="nc">TeachingStudent</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="n">Teacher</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TeachingStudent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="k">print</span> <span class="s">&quot;TeachingStudent&quot;</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">TeachingStudent</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>How to use <code>super</code>?</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">TeachingStudent</span><span class="p">()</span>
 <span class="n">Person</span>
 <span class="n">Teacher</span>
 <span class="n">Student</span>
@@ -2082,7 +2332,7 @@ it's useful for calculated values and readonly attributes.</p></section>
             </aside>
             
             <aside class="page_number">
-              15/34
+              20/41
             </aside>
           </footer>
         </div>
@@ -2093,10 +2343,10 @@ it's useful for calculated values and readonly attributes.</p></section>
         <div class="slide">
           <div class="inner">
             
-            <header><h2>How super works</h2></header>
+            <header><h2>How <code>super</code> works?</h2></header>
             
             
-            <section><h3>MRO - method resolution order</h3>
+            <section><p><strong>MRO</strong> - method resolution order</p>
 <p>In a diamond inheritence model, where all constructors need to be called we need to find a way to order them.
 Python uses an algorithm called <code>C3</code>.</p>
 <p>The essence of the algorithm:</p>
@@ -2120,7 +2370,7 @@ Python uses an algorithm called <code>C3</code>.</p>
             </aside>
             
             <aside class="page_number">
-              16/34
+              21/41
             </aside>
           </footer>
         </div>
@@ -2151,23 +2401,17 @@ Python uses an algorithm called <code>C3</code>.</p>
 13
 14
 15
-16
-17
-18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
-
 <span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">semester</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">semester</span> <span class="o">=</span> <span class="n">semester</span>
-
 <span class="k">class</span> <span class="nc">Teacher</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">profession</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Teacher</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">profession</span> <span class="o">=</span> <span class="n">profession</span>
-
 <span class="k">class</span> <span class="nc">TeachingStudent</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="n">Teacher</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TeachingStudent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -2190,7 +2434,7 @@ Python uses an algorithm called <code>C3</code>.</p>
             </aside>
             
             <aside class="page_number">
-              17/34
+              22/41
             </aside>
           </footer>
         </div>
@@ -2237,7 +2481,7 @@ Python uses an algorithm called <code>C3</code>.</p>
             </aside>
             
             <aside class="page_number">
-              18/34
+              23/41
             </aside>
           </footer>
         </div>
@@ -2255,12 +2499,13 @@ Python uses an algorithm called <code>C3</code>.</p>
 3
 4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">site</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">site</span><span class="o">.</span><span class="n">getsitepackages</span><span class="p">()</span>
-<span class="p">[</span><span class="s">&#39;/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python&#39;</span><span class="p">,</span>
- <span class="s">&#39;/Library/Python/2.7/site-packages&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">&#39;/usr/local/lib/python2.7/dist-packages&#39;</span><span class="p">,</span>
+ <span class="s">&#39;/usr/lib/python2.7/dist-packages&#39;</span><span class="p">]</span>
 </pre></div>
 </td></tr></table>
-<p>Finally python looks at the stdlib directory, In my case its: <code>/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7</code>.</p>
-<p>After a module has been found and compiled it is stored in <code>sys.modules</code>. </p>
+<p>Finally python looks at the stdlib directory, On Linux, it's
+<code>/usr/lib/python2.7/</code></p>
+<p>After a module has been found and compiled it is stored in <code>sys.modules</code>.</p>
 <p>Actually, the first step of the import process is looking for the module name in <code>sys.modules</code>, making sure each module is compiled and invoked once.</p></section>
             
           </div>
@@ -2277,7 +2522,7 @@ Python uses an algorithm called <code>C3</code>.</p>
             </aside>
             
             <aside class="page_number">
-              19/34
+              24/41
             </aside>
           </footer>
         </div>
@@ -2313,7 +2558,7 @@ Python uses an algorithm called <code>C3</code>.</p>
             </aside>
             
             <aside class="page_number">
-              20/34
+              25/41
             </aside>
           </footer>
         </div>
@@ -2356,7 +2601,7 @@ Python uses an algorithm called <code>C3</code>.</p>
             </aside>
             
             <aside class="page_number">
-              21/34
+              26/41
             </aside>
           </footer>
         </div>
@@ -2374,7 +2619,6 @@ Python uses an algorithm called <code>C3</code>.</p>
 This is in contrast to a mutable object, which can be modified after it is created.</p>
 <p>Examples of immutable objects: ints, floats, strings, tuples etc'.</p>
 <p>Examples of mutable objects: lists, dicts, objects etc'.</p>
-<p>Example:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -2390,9 +2634,8 @@ This is in contrast to a mutable object, which can be modified after it is creat
 13
 14
 15
-16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="n">string</span> 
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="n">string</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="ow">is</span> <span class="n">string</span>
 <span class="bp">True</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">+=</span> <span class="s">&quot;bar&quot;</span> <span class="c"># creates a new string</span>
@@ -2402,7 +2645,6 @@ This is in contrast to a mutable object, which can be modified after it is creat
 <span class="n">foobar</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span>
 <span class="n">foo</span>
-
 <span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">l</span> <span class="c"># creates a reference to the same list</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
@@ -2425,7 +2667,7 @@ This is in contrast to a mutable object, which can be modified after it is creat
             </aside>
             
             <aside class="page_number">
-              22/34
+              27/41
             </aside>
           </footer>
         </div>
@@ -2479,7 +2721,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              23/34
+              28/41
             </aside>
           </footer>
         </div>
@@ -2511,7 +2753,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              24/34
+              29/41
             </aside>
           </footer>
         </div>
@@ -2525,8 +2767,8 @@ The hash function maps a value (lets say, a string) to a number. The same string
             <header><h2>The stack</h2></header>
             
             
-            <section><p>The python stack is composed of frames. </p>
-<p>Each thread has it's own stack. </p>
+            <section><p>The python stack is composed of frames.</p>
+<p>Each thread has it's own stack.</p>
 <p>The stack frames points to the code object, local variables, the previous stack frame and various python internal information.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -2566,7 +2808,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              25/34
+              30/41
             </aside>
           </footer>
         </div>
@@ -2631,7 +2873,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              26/34
+              31/41
             </aside>
           </footer>
         </div>
@@ -2664,7 +2906,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
 4
 5
 6</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">A</span><span class="p">()</span><span class="o">.</span><span class="n">foo</span>
@@ -2686,7 +2928,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              27/34
+              32/41
             </aside>
           </footer>
         </div>
@@ -2737,7 +2979,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              28/34
+              33/41
             </aside>
           </footer>
         </div>
@@ -2760,7 +3002,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_self</span> <span class="c"># no instance</span>
 <span class="bp">None</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_class</span>
-<span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">A</span><span class="s">&#39;&gt;</span>
+<span class="o">&lt;</span><span class="k">class</span> <span class="nc">__main__</span><span class="o">.</span><span class="n">A</span><span class="o">&gt;</span>
 </pre></div>
 </td></tr></table>
 <p>One of the reasons the <code>im_class</code> attribute exists is this:</p>
@@ -2775,7 +3017,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
 <span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c"># type of self is compared against im_class</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">TypeError</span><span class="p">:</span> <span class="n">unbound</span> <span class="n">method</span> <span class="n">foo</span><span class="p">()</span> <span class="n">must</span> <span class="n">be</span> <span class="n">called</span> <span class="k">with</span> <span class="n">A</span> <span class="n">instance</span> 
+<span class="ne">TypeError</span><span class="p">:</span> <span class="n">unbound</span> <span class="n">method</span> <span class="n">foo</span><span class="p">()</span> <span class="n">must</span> <span class="n">be</span> <span class="n">called</span> <span class="k">with</span> <span class="n">A</span> <span class="n">instance</span>
 <span class="k">as</span> <span class="n">first</span> <span class="n">argument</span> <span class="p">(</span><span class="n">got</span> <span class="nb">int</span> <span class="n">instance</span> <span class="n">instead</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
@@ -2794,7 +3036,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
             </aside>
             
             <aside class="page_number">
-              29/34
+              34/41
             </aside>
           </footer>
         </div>
@@ -2825,8 +3067,37 @@ by defining a list of member names, a small and fixed amount of memory per objec
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">__dict__</span><span class="p">)</span>
 <span class="mi">280</span>
 </pre></div>
-</td></tr></table>
-<p>With <code>__slots__</code>:</p>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              35/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2><code>__slots__</code></h2></header>
+            
+            
+            <section><p>With <code>__slots__</code>:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -2859,7 +3130,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
             </aside>
             
             <aside class="page_number">
-              30/34
+              36/41
             </aside>
           </footer>
         </div>
@@ -2906,7 +3177,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
             </aside>
             
             <aside class="page_number">
-              31/34
+              37/41
             </aside>
           </footer>
         </div>
@@ -2939,8 +3210,37 @@ by defining a list of member names, a small and fixed amount of memory per objec
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">func_defaults</span> <span class="c"># these objects are saved in the function object!</span>
 <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],)</span>
 </pre></div>
-</td></tr></table>
-<p>Do this:</p>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/internals.md">doc/internals.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              38/41
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/internals.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Function default arguments</h2></header>
+            
+            
+            <section><p>Do this:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -2975,7 +3275,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
             </aside>
             
             <aside class="page_number">
-              32/34
+              39/41
             </aside>
           </footer>
         </div>
@@ -3022,7 +3322,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
             </aside>
             
             <aside class="page_number">
-              33/34
+              40/41
             </aside>
           </footer>
         </div>
@@ -3079,7 +3379,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
             </aside>
             
             <aside class="page_number">
-              34/34
+              41/41
             </aside>
           </footer>
         </div>
@@ -3126,161 +3426,196 @@ by defining a list of member names, a small and fixed amount of memory per objec
       
         
         <tr id="toc-row-6" class="sub">
-          <th><a href="#slide6">The mighty '.'</a></th>
+          <th><a href="#slide6">Dynamic access to attributes</a></th>
           <td><a href="#slide6">6</a></td>
         </tr>
         
         <tr id="toc-row-7" class="sub">
-          <th><a href="#slide7">Exercise 1 - case insensitive object</a></th>
+          <th><a href="#slide7">Hooking attribute access</a></th>
           <td><a href="#slide7">7</a></td>
         </tr>
         
         <tr id="toc-row-8" class="sub">
-          <th><a href="#slide8">Exercise 1 - solution</a></th>
+          <th><a href="#slide8">Hooking attribute access</a></th>
           <td><a href="#slide8">8</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-9">
-        <th><a href="#slide9">-</a></th>
-        <td><a href="#slide9">9</a></td>
-      </tr>
-      
+        <tr id="toc-row-9" class="sub">
+          <th><a href="#slide9">Hooking attribute access</a></th>
+          <td><a href="#slide9">9</a></td>
+        </tr>
         
         <tr id="toc-row-10" class="sub">
-          <th><a href="#slide10">Descriptors</a></th>
+          <th><a href="#slide10">Exercise 1 - case insensitive object</a></th>
           <td><a href="#slide10">10</a></td>
         </tr>
         
         <tr id="toc-row-11" class="sub">
-          <th><a href="#slide11">The descriptor protocol</a></th>
+          <th><a href="#slide11">Exercise 1 - solution</a></th>
           <td><a href="#slide11">11</a></td>
         </tr>
         
-        <tr id="toc-row-12" class="sub">
-          <th><a href="#slide12">Exercise 2 - typesafe</a></th>
-          <td><a href="#slide12">12</a></td>
-        </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">-</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
         
         <tr id="toc-row-13" class="sub">
-          <th><a href="#slide13">Exercise 2 - solution</a></th>
+          <th><a href="#slide13">Descriptors</a></th>
           <td><a href="#slide13">13</a></td>
         </tr>
         
         <tr id="toc-row-14" class="sub">
-          <th><a href="#slide14">Inheritence, super and the MRO</a></th>
+          <th><a href="#slide14">The descriptor protocol</a></th>
           <td><a href="#slide14">14</a></td>
         </tr>
         
         <tr id="toc-row-15" class="sub">
-          <th><a href="#slide15">How to user super</a></th>
+          <th><a href="#slide15">Exercise 2 - typesafe</a></th>
           <td><a href="#slide15">15</a></td>
         </tr>
         
         <tr id="toc-row-16" class="sub">
-          <th><a href="#slide16">How super works</a></th>
+          <th><a href="#slide16">Exercise 2 - solution</a></th>
           <td><a href="#slide16">16</a></td>
         </tr>
         
         <tr id="toc-row-17" class="sub">
-          <th><a href="#slide17">super and constructor arguments</a></th>
+          <th><a href="#slide17">Inheritence, super and the MRO</a></th>
           <td><a href="#slide17">17</a></td>
         </tr>
         
         <tr id="toc-row-18" class="sub">
-          <th><a href="#slide18">The import mechanism</a></th>
+          <th><a href="#slide18">Why to use <code>super</code>?</a></th>
           <td><a href="#slide18">18</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-19">
-        <th><a href="#slide19">-</a></th>
-        <td><a href="#slide19">19</a></td>
-      </tr>
-      
+        <tr id="toc-row-19" class="sub">
+          <th><a href="#slide19">How to use <code>super</code>?</a></th>
+          <td><a href="#slide19">19</a></td>
+        </tr>
         
         <tr id="toc-row-20" class="sub">
-          <th><a href="#slide20">Import hooks</a></th>
+          <th><a href="#slide20">How to use <code>super</code>?</a></th>
           <td><a href="#slide20">20</a></td>
         </tr>
         
         <tr id="toc-row-21" class="sub">
-          <th><a href="#slide21">eval and exec</a></th>
+          <th><a href="#slide21">How <code>super</code> works?</a></th>
           <td><a href="#slide21">21</a></td>
         </tr>
         
         <tr id="toc-row-22" class="sub">
-          <th><a href="#slide22">Mutability</a></th>
+          <th><a href="#slide22">super and constructor arguments</a></th>
           <td><a href="#slide22">22</a></td>
         </tr>
         
         <tr id="toc-row-23" class="sub">
-          <th><a href="#slide23">Dictionaries and <code>__hash__</code></a></th>
+          <th><a href="#slide23">The import mechanism</a></th>
           <td><a href="#slide23">23</a></td>
         </tr>
         
-        <tr id="toc-row-24" class="sub">
-          <th><a href="#slide24">Immutable data structures</a></th>
-          <td><a href="#slide24">24</a></td>
-        </tr>
+      
+      
+      <tr id="toc-row-24">
+        <th><a href="#slide24">-</a></th>
+        <td><a href="#slide24">24</a></td>
+      </tr>
+      
         
         <tr id="toc-row-25" class="sub">
-          <th><a href="#slide25">The stack</a></th>
+          <th><a href="#slide25">Import hooks</a></th>
           <td><a href="#slide25">25</a></td>
         </tr>
         
         <tr id="toc-row-26" class="sub">
-          <th><a href="#slide26">Printing the stack</a></th>
+          <th><a href="#slide26">eval and exec</a></th>
           <td><a href="#slide26">26</a></td>
         </tr>
         
         <tr id="toc-row-27" class="sub">
-          <th><a href="#slide27">Functions and methods</a></th>
+          <th><a href="#slide27">Mutability</a></th>
           <td><a href="#slide27">27</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-28">
-        <th><a href="#slide28">-</a></th>
-        <td><a href="#slide28">28</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-29">
-        <th><a href="#slide29">-</a></th>
-        <td><a href="#slide29">29</a></td>
-      </tr>
-      
+        <tr id="toc-row-28" class="sub">
+          <th><a href="#slide28">Dictionaries and <code>__hash__</code></a></th>
+          <td><a href="#slide28">28</a></td>
+        </tr>
+        
+        <tr id="toc-row-29" class="sub">
+          <th><a href="#slide29">Immutable data structures</a></th>
+          <td><a href="#slide29">29</a></td>
+        </tr>
         
         <tr id="toc-row-30" class="sub">
-          <th><a href="#slide30"><code>__slots__</code></a></th>
+          <th><a href="#slide30">The stack</a></th>
           <td><a href="#slide30">30</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-31">
-        <th><a href="#slide31">-</a></th>
-        <td><a href="#slide31">31</a></td>
-      </tr>
-      
+        <tr id="toc-row-31" class="sub">
+          <th><a href="#slide31">Printing the stack</a></th>
+          <td><a href="#slide31">31</a></td>
+        </tr>
         
         <tr id="toc-row-32" class="sub">
-          <th><a href="#slide32">Function default arguments</a></th>
+          <th><a href="#slide32">Functions and methods</a></th>
           <td><a href="#slide32">32</a></td>
         </tr>
         
-        <tr id="toc-row-33" class="sub">
-          <th><a href="#slide33">casting to bool</a></th>
-          <td><a href="#slide33">33</a></td>
+      
+      
+      <tr id="toc-row-33">
+        <th><a href="#slide33">-</a></th>
+        <td><a href="#slide33">33</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-34">
+        <th><a href="#slide34">-</a></th>
+        <td><a href="#slide34">34</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-35" class="sub">
+          <th><a href="#slide35"><code>__slots__</code></a></th>
+          <td><a href="#slide35">35</a></td>
         </tr>
         
-        <tr id="toc-row-34" class="sub">
-          <th><a href="#slide34">nested scopes - closures</a></th>
-          <td><a href="#slide34">34</a></td>
+        <tr id="toc-row-36" class="sub">
+          <th><a href="#slide36"><code>__slots__</code></a></th>
+          <td><a href="#slide36">36</a></td>
+        </tr>
+        
+      
+      
+      <tr id="toc-row-37">
+        <th><a href="#slide37">-</a></th>
+        <td><a href="#slide37">37</a></td>
+      </tr>
+      
+        
+        <tr id="toc-row-38" class="sub">
+          <th><a href="#slide38">Function default arguments</a></th>
+          <td><a href="#slide38">38</a></td>
+        </tr>
+        
+        <tr id="toc-row-39" class="sub">
+          <th><a href="#slide39">Function default arguments</a></th>
+          <td><a href="#slide39">39</a></td>
+        </tr>
+        
+        <tr id="toc-row-40" class="sub">
+          <th><a href="#slide40">casting to bool</a></th>
+          <td><a href="#slide40">40</a></td>
+        </tr>
+        
+        <tr id="toc-row-41" class="sub">
+          <th><a href="#slide41">nested scopes - closures</a></th>
+          <td><a href="#slide41">41</a></td>
         </tr>
         
       

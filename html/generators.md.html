@@ -58,7 +58,6 @@ div.slide div.inner {
     width: 800px;
     height: 600px;
     margin: auto;
-    display: table-cell;
 }
 
 h1 {
@@ -1281,6 +1280,7 @@ aside {
     </script>
     
     
+    
     <!-- /Javascripts -->
 </head>
 <body>
@@ -1327,7 +1327,7 @@ aside {
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&quot;caught {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c"># same as `next(gen)`</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -1492,7 +1492,7 @@ aside {
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">filter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [i for i in ints if is_prime(i)]</span>
 <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [str(i) for i in ints]</span>
-<span class="p">[</span><span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">]</span>
 </pre></div>
 </td></tr></table>
 <p>The itertools module provides <code>ifilter</code> and <code>imap</code> for generator versions:</p>
@@ -1659,9 +1659,9 @@ When comparing tuples, all the first items are compared, then all the second ite
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span> 
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
 <span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>  
+<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">msg</span><span class="p">[</span><span class="s">&#39;month&#39;</span><span class="p">]))</span>
 <span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
  <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
@@ -1803,7 +1803,10 @@ When comparing tuples, all the first items are compared, then all the second ite
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 <span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -1812,13 +1815,14 @@ When comparing tuples, all the first items are compared, then all the second ite
 <span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
         <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
     <span class="k">return</span> <span class="bp">True</span>
 
 <span class="k">def</span> <span class="nf">prime_generator</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">integers</span> <span class="o">=</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># infinite generator</span>
+    <span class="k">return</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">integers</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
