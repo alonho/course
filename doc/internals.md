@@ -88,21 +88,87 @@ The reason `LOAD_FAST` is called `LOAD_FAST` and not `LOAD_LOCAL` is because loc
 and therefore, local variable access is faster. 
 			
 ---
-			
-## The mighty '.'
 
-The `__getattribute__` method allows customization of the attribute lookup process.
+## Dynamic access to attributes
 
-	!python
-	class Foo(object):
+Use builtin `getattr` and `setattr`:
 
-	    def __getattribute__(self, attr):
-			print 'getting {}'.format(attr)
-			return 10
+    !python
+    class Foo(object):
+        pass
 
-	>>> print Foo().a
-	getting a
-	10
+    >>> f = Foo()
+    >>> setattr(f, 'member', 1.23)
+    >>> getattr(f, 'member')
+    1.23
+    >>> f.member
+    1.23
+
+---
+
+## Hooking attribute access
+
+The `__getattr__` method is called for non-existent members.
+
+    !python
+    class Foo(object):
+        def __getattr__(self, name):
+            print 'getting {}'.format(name)
+            return len(name)
+
+    >>> f = Foo()
+    >>> f.x
+    getting helloworld
+    1
+    >>> f.helloworld
+    getting helloworld
+    10
+    >>> f.blah = 0.1
+    >>> f.blah
+    0.1
+
+---
+
+## Hooking attribute access
+
+The `__getattribute__` method is called for any members.
+
+    !python
+    class Foo(object):
+        def __getattribute__(self, name):
+            print 'getting {}'.format(name)
+            return len(name)
+
+    >>> f = Foo()
+    >>> f.x
+    getting helloworld
+    1
+    >>> f.helloworld
+    getting helloworld
+    10
+    >>> f.blah = 0.1
+    >>> f.blah
+    getting blah
+    4
+
+---
+
+## Hooking attribute access
+
+The `__setattr__` method is called when setting all members.
+
+    !python
+    class Foo(object):
+        def __setattr__(self, name, value):
+            print 'setting {} = {}'.format(name, value)
+
+    >>> f = Foo()
+    >>> f.x = 1
+    setting x = 1
+    >>> f.bar = 1.23
+    setting bar = 1.23
+    >>> f.x = 1
+    setting x = 1
 
 ---
 
@@ -110,23 +176,30 @@ The `__getattribute__` method allows customization of the attribute lookup proce
 
 	!python
 	>>> obj = CaseInsensitive()
-	>>> obj.a = 100
-	>>> obj.A
-	100
+    >>> a.x = 1
+    >>> a.x
+    1
+    >>> a.X
+    1
+    >>> a.XYZ = 2
+    >>> a.xyz
+    2
+    >>> a.__dict__
+    {'x': 1, 'xyz': 2}
 
 ---
 
 ## Exercise 1 - solution
 
 	!python
-	class A(object):
-		def __getattribute__(self, attr):
-			try:
-				return super(A, self).__getattribute__(attr)
-			except AttributeError:
-				return super(A, self).__getattribute__(attr.lower())
+    class CaseInsensitive(object):
+        def __setattr__(self, name, value):
+            return object.__setattr__(self, name.lower(), value)
+        def __getattribute__(self, name):
+            return object.__getattribute__(self, name.lower())
 
-Note that we are using super because looking at `__dict__` will trigger an infinite recursion of `__getattribute__`.
+Note that we are using `object` because looking at `self.__dict__`
+will trigger an infinite recursion of `__getattr__/__setattr__`.
 
 ---
 
