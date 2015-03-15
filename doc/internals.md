@@ -223,7 +223,6 @@ Example of dynamic attribute lookup:
 	import math
 
 	class Angle(object):
-
 		def __init__(self, degrees):
 			self.degrees = degrees
 
@@ -248,27 +247,25 @@ it's useful for calculated values and readonly attributes.
 
 	!python
 	class const(object):
-
 		def __init__(self, value):
 			self._value = value
-
 		def __get__(self, obj, type):
 			print obj, type
 			return self._value
-
 		def __set__(self, obj, value):
 			raise AttributeError() # indicates a read only
-
 		def __delete__(self, obj):
 			# no allocation, nothing to do.
 			pass
 
 	>>> class A(object):
 	...     a = const(100)
-	>>> A.a # class attr translates to: A.__dict__['a'].__get__(None, A)
+	>>> A.a  # class attr translates to:
+             # A.__dict__['a'].__get__(None, A)
 	None <class '__main__.const'>
 	100
-	>>> A().a # instance attr translates to: type(obj).__dict__['a'].__get__(obj, type(obj))
+	>>> A().a # instance attr translates to:
+              # type(obj).__dict__['a'].__get__(obj, type(obj))
 	<__main__.A object at 0x103449e90> <class '__main__.const'>
 	100
 
@@ -304,15 +301,16 @@ it's useful for calculated values and readonly attributes.
 
 		def __set__(self, obj, value):
 			if not isinstance(value, self._cls):
-				raise TypeError("Expected {}, got {} ({})".format(self._cls, type(value), value))
+                fmt = "Expected {}, got {} ({})"
+				raise TypeError(fmt.format(self._cls, type(value), value))
 			self._value = value
 
 ---
 
 ## Inheritence, super and the MRO
 
-Python supports multiple inheritence. Because all objects inherit from `object`, all inheritence trees look like diamonds.
-
+Python supports multiple inheritence. Because all objects inherit from `object`,
+all inheritence trees look like diamonds.
 There are two ways of calling parent methods. the explicit:
 
 	!python
@@ -329,6 +327,10 @@ And using super:
 			super(Person, self).__init__()
 			self._name = name
 
+---
+
+## Why to use `super`?
+
 `super` is recommended for several reasons:
 
 1. if `Person` no longer inherits from object but from `Mammal`, a single line changes.
@@ -336,42 +338,50 @@ And using super:
 
 ---
 
-## How to user super
+## How to use `super`?
 
 	!python
 	class Person(object):
 		def __init__(self):
 			print "Person"
+
 	class Student(Person):
 		def __init__(self):
 			super(Student, self).__init__()
 			print "Student"
+
 	class Teacher(Person):
 		def __init__(self):
 			super(Teacher, self).__init__()
 			print "Teacher"
+
 	class TeachingStudent(Student, Teacher):
 		def __init__(self):
 			super(TeachingStudent, self).__init__()
 			print "TeachingStudent"
 
-	>>> t = TeachingStudent()
-	Person
-	Teacher
-	Student
-	TeachingStudent
-	>>> TeachingStudent.__mro__
-	(__main__.TeachingStudent,
-	 __main__.Student,
+---
+
+## How to use `super`?
+
+    !python
+    >>> t = TeachingStudent()
+    Person
+    Teacher
+    Student
+    TeachingStudent
+    >>> TeachingStudent.__mro__
+    (__main__.TeachingStudent,
+     __main__.Student,
      __main__.Teacher,
-	 __main__.Person,
-	 object)
+     __main__.Person,
+     object)
 
 ---
 
-## How super works
+## How `super` works?
 
-### MRO - method resolution order
+**MRO** - method resolution order
 
 In a diamond inheritence model, where all constructors need to be called we need to find a way to order them.
 Python uses an algorithm called `C3`.
@@ -395,17 +405,14 @@ Every constructor will consume the arguments it explicitly defined and pass the 
 	class Person(object):
 		def __init__(self, age):
 			self.age = age
-
 	class Student(Person):
 		def __init__(self, semester, *args, **kwargs):
 			super(Student, self).__init__(*args, **kwargs)
 			self.semester = semester
-
 	class Teacher(Person):
 		def __init__(self, profession, *args, **kwargs):
 			super(Teacher, self).__init__(*args, **kwargs)
 			self.profession = profession
-
 	class TeachingStudent(Student, Teacher):
 		def __init__(self, *args, **kwargs):
 			super(TeachingStudent, self).__init__(*args, **kwargs)
@@ -444,10 +451,11 @@ After looking at the PYTHONPATH, python looks in the package installation path:
 	!python
 	>>> import site
 	>>> site.getsitepackages()
-	['/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python',
-     '/Library/Python/2.7/site-packages']
+	['/usr/local/lib/python2.7/dist-packages',
+     '/usr/lib/python2.7/dist-packages']
 
-Finally python looks at the stdlib directory, In my case its: `/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7`.
+Finally python looks at the stdlib directory, On Linux, it's
+`/usr/lib/python2.7/`
 
 After a module has been found and compiled it is stored in `sys.modules`.
 
@@ -496,8 +504,6 @@ Examples of immutable objects: ints, floats, strings, tuples etc'.
 
 Examples of mutable objects: lists, dicts, objects etc'.
 
-Example:
-
 	!python
 	>>> string = "foo"
 	>>> copy = string
@@ -510,7 +516,6 @@ Example:
 	foobar
 	>>> copy
 	foo
-
 	>>> l = [1, 2, 3]
 	>>> l2 = l # creates a reference to the same list
 	>>> l.append(4)
@@ -660,7 +665,7 @@ Unbound methods are methods of the class:
 	>>> print A.foo.im_self # no instance
 	None
 	>>> print A.foo.im_class
-	<class '__main__.A'>
+	<class __main__.A>
 
 One of the reasons the `im_class` attribute exists is this:
 
@@ -691,6 +696,9 @@ Without `__slots__`:
 	>>> sys.getsizeof(A.__dict__)
 	280
 
+---
+
+## `__slots__`
 
 With `__slots__`:
 
@@ -738,6 +746,10 @@ Avoid this:
 	[1, 1]
 	>>> f.func_defaults # these objects are saved in the function object!
 	([1, 1],)
+
+---
+
+## Function default arguments
 
 Do this:
 
