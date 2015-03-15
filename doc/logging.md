@@ -8,7 +8,7 @@
 	>>> import sys, logging
 	>>> logger = logging.getLogger(__name__)
 	>>> logger.addHandler(logging.StreamHandler(sys.stdout))
-	
+
 	>>> logger.info("dividing")
 	>>> try:
 	>>>     1 / 0
@@ -43,14 +43,14 @@ The logger's default minimum level is `warning`.
 	'WARNING': 30,
 	'ERROR': 40,
 	'CRITICAL': 50}
-	
+
 	>>> logger.info("bla")
 	>>> logger.getEffectiveLevel()
 	30
 	>>> logger.setLevel(logging.DEBUG)
 	>>> logger.info("bla")
 	BLO
-	
+
 ---
 
 ## Handlers
@@ -100,13 +100,13 @@ An example of a verbose format: `%(asctime)s|%(process)d|%(name)s|%(threadName)s
 ## Logger inheritence
 
 All loggers inherit from the `root` logger:
-	
+
 	!python
 	>>> logging.root
 	<logging.RootLogger at 0x10d50b1d0>
-	
+
 Child logger forward log records to parents:
-	
+
 	!python
 	>>> logging.root.addHandler(StreamHandler())
 	>>> logging.getLogger("foo").error("Help")
@@ -115,7 +115,7 @@ Child logger forward log records to parents:
 	Help
 
 We can define our own inheritence trees. In order to create a logger named `child` that inherits from a parent named `parent`, we'll name it `parent.child`:
-	
+
 	!python
 	>>> parent = logging.getLogger("parent")
 	>>> parent.addHandler(StreamHandler())
@@ -158,7 +158,7 @@ Consider using logging configuration file:
 
 ## LogBook
 
-logging API indeed looks like old-school Java :(
+logging API feels like old-school Java :(
 
 consider using LogBook package for modern Pythonic approach:
 
