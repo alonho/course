@@ -737,9 +737,9 @@ Note2: `__slots__` is implemented using descriptors!
 Avoid this:
 
 	!python
-	def f(l=[]):
-	    l.append(1)
-		print l
+	def f(x=[]):
+	    x.append(1)
+		print x
 	>>> f()
 	[1]
 	>>> f()
@@ -754,11 +754,11 @@ Avoid this:
 Do this:
 
 	!python
-	def f(l=None):
-		if l is None:
-			l = []
-		l.append(1)
-		print l
+	def f(x=None):
+		if x is None:
+			x = []
+		x.append(1)
+		print x
 	>>> f()
 	[1]
 	>>> f()
@@ -806,3 +806,30 @@ How does it work?
 	>>> cell = _[0] # cell is a reference to a variable in an upper scope
 	>>> cell.cell_contents
 	5
+
+---
+
+## When in doubt...
+
+    >>> import this
+    The Zen of Python, by Tim Peters
+
+    Beautiful is better than ugly.
+    Explicit is better than implicit.
+    Simple is better than complex.
+    Complex is better than complicated.
+    Flat is better than nested.
+    Sparse is better than dense.
+    Readability counts.
+    Special cases aren't special enough to break the rules.
+    Although practicality beats purity.
+    Errors should never pass silently.
+    Unless explicitly silenced.
+    In the face of ambiguity, refuse the temptation to guess.
+    There should be one-- and preferably only one --obvious way to do it.
+    Although that way may not be obvious at first unless you're Dutch.
+    Now is better than never.
+    Although never is often better than *right* now.
+    If the implementation is hard to explain, it's a bad idea.
+    If the implementation is easy to explain, it may be a good idea.
+    Namespaces are one honking great idea -- let's do more of those!
