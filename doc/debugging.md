@@ -61,18 +61,18 @@ A recipe to launch ipython by calling a function:
 		try:
 			from IPython import embed
 			embed(user_ns=sys._getframe(1).f_locals)
-		except ImportError: 
-			# IPython < 0.11 
-			# Explicitly pass an empty list as arguments, because otherwise 
-			# IPython would use sys.argv from this script. 
-			try: 
+		except ImportError:
+			# IPython < 0.11
+			# Explicitly pass an empty list as arguments, because otherwise
+			# IPython would use sys.argv from this script.
+			try:
 				from IPython.Shell import IPShellEmbed
 				ipshell = IPShellEmbed(argv=[], user_ns=sys._getframe(1).f_locals)
 				ipshell()
-			except ImportError: 
-				# IPython not found at all, raise ImportError 
+			except ImportError:
+				# IPython not found at all, raise ImportError
 				raise
-				
+
 ---
 
 ### Example
@@ -82,23 +82,23 @@ A recipe to launch ipython by calling a function:
 		a = 10
 		ishell()
 		print 20
-	
+
 	if __name__ == '__main__':
 		foo()
-	
+
 Run the script:
 
 	!bash
 	# python script.py
 	In [1]: print a
 	10
-	In [2]: 
+	In [2]:
 	Do you really want to exit ([y]/n)? y
     20
-	
+
 ---
 
-### ipython utility functions
+### IPython utility functions
 
 * `run` - run the named file inside IPython as a program.
 * `history -l 1000` - show latest 1000 commands.
@@ -112,7 +112,7 @@ Run the script:
 
 ---
 
-## Utilties
+## more utilities
 
 * `python -m pdb script.py` - enter pdb on exception
 * ipdb or pudb - better pdb!
@@ -206,25 +206,25 @@ Let's run the program, by issuing the "continue" command (`c`):
     -> return 1.0 / x
     (Pdb)
 
---- 
+---
 
 We can get more context by issuing the "list" command (`l`):
 
     (Pdb) l
       1     ''' PDB example '''
-      2     
+      2
       3     def inv(x):
       4  ->     return 1.0 / x
-      5     
+      5
       6     def avg(items):
       7         res = 0.0
       8         for i in items:
       9             res = res + inv(i)
      10         return inv(res)
-     11     
+     11
     (Pdb)
 
---- 
+---
 
 We can "travel" up and down the stack, and pring local variables:
 
@@ -233,13 +233,13 @@ We can "travel" up and down the stack, and pring local variables:
     -> res = res + inv(i)
     (Pdb) l
       4         return 1.0 / x
-      5     
+      5
       6     def avg(items):
       7         res = 0.0
       8         for i in items:
       9  ->         res = res + inv(i)
      10         return inv(res)
-     11     
+     11
      12     if __name__ == '__main__':
      13         import sys
      14         args = map(float, sys.argv[1:])
@@ -250,7 +250,7 @@ We can "travel" up and down the stack, and pring local variables:
     [2.0, 2.0, 3.0, 0.0, 1.0]
     (Pdb) p i
     0.0
-    
+
     (Pdb) d
     > /tmp/test/main.py(4)inv()
     -> return 1.0 / x
@@ -274,7 +274,7 @@ It will save you a lot of debugging time.
 
 ### PEP 8
 
-PEP 8 is a standard coding convention for python. If you'll follow it, you'll have an easier time understanding other people's code. 
+PEP 8 is a standard coding convention for python. If you'll follow it, you'll have an easier time understanding other people's code.
 
 Some IDEs can be configured to verify it for you.
 
