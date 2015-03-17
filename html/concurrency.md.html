@@ -25,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Debugging</title>
+    <title>Concurrency</title>
     <!-- Styles -->
     
     <style type="text/css" media="print">
@@ -1291,12 +1291,12 @@ aside {
     </div>
     <div class="slides">
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide">
           <div class="inner">
             
-            <header><h1>Debugging</h1></header>
+            <header><h1>Concurrency</h1></header>
             
             
           </div>
@@ -1309,7 +1309,7 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1319,35 +1319,21 @@ aside {
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Logging is your friend</h2></header>
+            <header><h2>Exercise - CPU-bound example</h2></header>
             
             
-            <section><p>No, really!</p>
-<p>Make sure you can understand your code's execution flow
-from the finest level log messages.</p>
-<p>Colorizing your log may help :)</p>
-<p>Use defensive assertions - to catch your errors as soon as possible.
-They can be disabled in production (using Python's <code>"-O"</code> command line option).</p>
+            <section><p>Find all the prime numbers until 'end' in a given amount of 'threads'.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>python -c <span class="s2">&quot;assert 0; print(&#39;Done.&#39;)&quot;</span>
-Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-  File <span class="s2">&quot;&lt;string&gt;&quot;</span>, line 1, in &lt;module&gt;
-AssertionError
-<span class="nv">$ </span>python -O -c <span class="s2">&quot;assert 0; print(&#39;Done.&#39;)&quot;</span>
-Done.
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">calc_primes</span><span class="p">(</span><span class="n">end</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
 </pre></div>
 </td></tr></table>
-<p>Very useful when developing an algorithm - e.g. make sure an array is sorted
-(after you sort it).</p></section>
+<p>Try to use <code>multiprocessing</code> module, to get performance gain (from multi-core CPU).</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1359,7 +1345,7 @@ Done.
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1369,238 +1355,15 @@ Done.
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exceptions</h2></header>
+            <header><h2>Exercise - solution</h2></header>
             
             
-            <section><p>NEVER swallow exceptions!!!</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># NEVER do this!</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">func</span><span class="p">()</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="c"># will swallow EVERYTHING, including syntax errors and SystemExit!</span>
-    <span class="c"># And you will never know what happened...</span>
-    <span class="k">pass</span>
-</pre></div>
-</td></tr></table>
-<p>If you really (REALLY) need to, do the following:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ishell</span><span class="p">():</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">embed</span>
-        <span class="n">embed</span><span class="p">(</span><span class="n">user_ns</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="c"># IPython &lt; 0.11</span>
-        <span class="c"># Explicitly pass an empty list as arguments, because otherwise</span>
-        <span class="c"># IPython would use sys.argv from this script.</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">IPython.Shell</span> <span class="kn">import</span> <span class="n">IPShellEmbed</span>
-            <span class="n">ipshell</span> <span class="o">=</span> <span class="n">IPShellEmbed</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="p">[],</span> <span class="n">user_ns</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">f_locals</span><span class="p">)</span>
-            <span class="n">ipshell</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="c"># IPython not found at all, raise ImportError</span>
-            <span class="k">raise</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              3/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h3>Example</h3></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="n">ishell</span><span class="p">()</span>
-    <span class="k">print</span> <span class="mi">20</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">foo</span><span class="p">()</span>
-</pre></div>
-</td></tr></table>
-<p>Run the script:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># python script.py</span>
-In <span class="o">[</span>1<span class="o">]</span>: print a
-10
-In <span class="o">[</span>2<span class="o">]</span>:
-Do you really want to <span class="nb">exit</span> <span class="o">([</span>y<span class="o">]</span>/n<span class="o">)</span>? y
-20
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              4/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            <header><h3>IPython utility functions</h3></header>
-            
-            
-            <section><ul>
-<li><code>run</code> - run the named file inside IPython as a program.</li>
-<li><code>history -l 1000</code> - show latest 1000 commands.</li>
-<li><code>pdb</code> - commands ipython to drop into pdb on exception.</li>
-<li><code>?</code> - writing <code>open?</code> or <code>file?</code> will show the object's signature and documentation.</li>
-<li><code>??</code> - writing <code>func??</code> will show it's code (only if it's python and not C).</li>
-<li><code>!</code> -  execute shell commands</li>
-<li><code>!!</code> - execute shell commands and returns results</li>
-<li><code>timeit</code> - <code>timeit [1] * 1000</code> will print the run time of the statement.</li>
-<li>!ps - run "ps" as a shell command.</li>
-</ul></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              5/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide">
-          <div class="inner">
-            
-            <header><h2>more utilities</h2></header>
-            
-            
-            <section><ul>
-<li><code>python -m pdb script.py</code> - enter pdb on exception</li>
-<li>ipdb or pudb - better pdb!</li>
-<li>gdb - attach to Python interpreter (to debug C extensions)</li>
-<li>pystuck and pytrace</li>
-</ul>
-<p>pdb commands:</p>
-<pre><code>(Pdb) help
-
-Documented commands (type help &lt;topic&gt;):
-========================================
-EOF    bt         cont      enable  jump  pp       run      unt
-a      c          continue  exit    l     q        s        until
-alias  cl         d         h       list  quit     step     up
-args   clear      debug     help    n     r        tbreak   w
-b      commands   disable   ignore  next  restart  u        whatis
-break  condition  down      j       p     return   unalias  where
-</code></pre></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              6/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/debugging.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Example</h2></header>
-            
-            
-            <section><p>Consider the following program:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -1615,22 +1378,30 @@ break  condition  down      j       p     return   unalias  where
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="sd">&#39;&#39;&#39; PDB example &#39;&#39;&#39;</span>
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
 
-<span class="k">def</span> <span class="nf">inv</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">x</span>
+<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
+        <span class="k">return</span> <span class="bp">False</span>
 
-<span class="k">def</span> <span class="nf">avg</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="o">+</span> <span class="n">inv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">inv</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">divisors</span> <span class="o">=</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">d</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">sys</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">avg</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calc_primes_pool</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">threads</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">end</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">i</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1644,7 +1415,271 @@ break  condition  down      j       p     return   unalias  where
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>I/O-bound concurrency</h2></header>
+            
+            
+            <section><p>Let's say we want to write a TCP server that counts the number of connection
+attempts, and writes it back to the client.</p>
+<pre><code>$ netcat localhost 5000
+&lt;1, took 24.6 ms&gt;
+
+$ netcat localhost 5000
+&lt;2, took 14.8 ms&gt;
+
+$ netcat localhost 5000
+&lt;3, took 15.5 ms&gt;
+
+$ netcat localhost 5000
+&lt;4, took 15.9 ms&gt;
+
+$ netcat localhost 5000
+&lt;5, took 19.0 ms&gt;
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Naive implementation</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEPORT</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
+            <span class="k">pass</span>  <span class="c"># simulate request processing</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}, took {1:.1f} ms&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="o">*</span><span class="mf">1e3</span><span class="p">))</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h3>Naive threaded implementation</h3></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEPORT</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">))</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
+            <span class="k">pass</span>  <span class="c"># simulate request processing</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}, took {1:.1f} ms&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="o">*</span><span class="mf">1e3</span><span class="p">))</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Let's test it!</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>nc localhost 5000
+&lt;1, took 17.8 ms&gt;
+
+<span class="nv">$ </span>nc localhost 5000
+&lt;2, took 17.5 ms&gt;
+
+<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+&lt;3, took 62.8 ms&gt;
+&lt;3, took 61.3 ms&gt;
+
+<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+&lt;4, took 66.1 ms&gt;
+&lt;4, took 64.4 ms&gt;
+
+<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+&lt;5, took 105.6 ms&gt;
+&lt;5, took 111.5 ms&gt;
+&lt;5, took 110.3 ms&gt;
+
+<span class="nv">$ </span>nc localhost 5000
+&lt;6, took 17.4 ms&gt;
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1654,30 +1689,26 @@ break  condition  down      j       p     return   unalias  where
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide">
           <div class="inner">
             
+            <header><h2>Discussion</h2></header>
             
-            <section><p>The following exception is thrown:</p>
-<pre><code>$ python main.py 2 2 3 0 1
-Traceback (most recent call last):
-  File "main.py", line 15, in &lt;module&gt;
-    res = avg(args)
-  File "main.py", line 9, in avg
-    res = res + inv(i)
-  File "main.py", line 4, in inv
-    return 1.0 / x
-ZeroDivisionError: float division by zero
-</code></pre>
-<p>Let's debug it!</p>
-<pre><code>$ python -m pdb main.py 2 2 3 0 1
-&gt; /tmp/test/main.py(1)&lt;module&gt;()
--&gt; ''' PDB example '''
-(Pdb)
-</code></pre>
-<p>The program is loaded and waiting to be started.</p></section>
+            
+            <section><p>We forgot to make sure that <code>self.n</code> is updated <strong>atomically</strong>,
+and got a race condition.</p>
+<p>We have to <strong>synchronize</strong> all accesses to shared memory between threads,
+because we cannot tell when the threads will be scheduled to run.</p>
+<p>Can we have something better?</p>
+<p>We would like our code to run atomically, but to be able to yield control to
+other tasks, when we allow it to.</p>
+<p>This is called "cooperative multitasking", and the tasks (that use cooperation
+to achieve concurrency) are also called "green threads".</p>
+<p>Since Python currently does not support CPU-bound concurrency, we would like
+our tasks to cooperate around I/O events.</p>
+<p>Can we have <strong>atomicity</strong> on CPU access, but <strong>cooperation</strong> around I/O events?</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1689,7 +1720,7 @@ ZeroDivisionError: float division by zero
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1699,35 +1730,44 @@ ZeroDivisionError: float division by zero
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide has_code">
           <div class="inner">
             
+            <header><h2>Yes, we can!</h2></header>
             
-            <section><p>Let's run the program, by issuing the "continue" command (<code>c</code>):</p>
-<pre><code>(Pdb) c
-Traceback (most recent call last):
-  File "/usr/lib/python2.7/pdb.py", line 1314, in main
-    pdb._runscript(mainpyfile)
-  File "/usr/lib/python2.7/pdb.py", line 1233, in _runscript
-    self.run(statement)
-  File "/usr/lib/python2.7/bdb.py", line 400, in run
-    exec cmd in globals, locals
-  File "&lt;string&gt;", line 1, in &lt;module&gt;
-  File "main.py", line 1, in &lt;module&gt;
-    ''' PDB example '''
-  File "main.py", line 9, in avg
-    res = res + inv(i)
-  File "main.py", line 4, in inv
-    return 1.0 / x
-ZeroDivisionError: float division by zero
-Uncaught exception. Entering post mortem debugging
-Running 'cont' or 'step' will restart the program
-&gt; /tmp/test/main.py(4)inv()
--&gt; return 1.0 / x
-(Pdb)
-</code></pre></section>
+            
+            <section><p>This is exactly what <code>gevent</code> library provides us.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">gevent</span> <span class="kn">import</span> <span class="n">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">request</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="s">&#39;&lt;10, took 20.1 ms&gt;&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">request</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="s">&#39;&lt;11, took 18.3 ms&gt;&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">request</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="s">&#39;&lt;12, took 20.3 ms&gt;&#39;</span>
+</pre></div>
+</td></tr></table></section>
             
           </div>
           <div class="presenter_notes">
@@ -1739,7 +1779,7 @@ Running 'cont' or 'step' will restart the program
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1749,27 +1789,34 @@ Running 'cont' or 'step' will restart the program
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide has_code">
           <div class="inner">
             
+            <header><h2>Concurrent requests</h2></header>
             
-            <section><p>We can get more context by issuing the "list" command (<code>l</code>):</p>
-<pre><code>(Pdb) l
-  1     ''' PDB example '''
-  2
-  3     def inv(x):
-  4  -&gt;     return 1.0 / x
-  5
-  6     def avg(items):
-  7         res = 0.0
-  8         for i in items:
-  9             res = res + inv(i)
- 10         return inv(res)
- 11
-(Pdb)
-</code></pre></section>
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f3</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="s">&#39;&lt;13, took 78.6 ms&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="s">&#39;&lt;13, took 80.2 ms&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f3</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="s">&#39;&lt;13, took 81.5 ms&gt;&#39;</span>
+</pre></div>
+</td></tr></table>
+<p>This is concurrent execution, reproducing our race condition :)</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1781,7 +1828,7 @@ Running 'cont' or 'step' will restart the program
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1791,42 +1838,33 @@ Running 'cont' or 'step' will restart the program
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide">
           <div class="inner">
             
+            <header><h2>Exceptions</h2></header>
             
-            <section><p>We can "travel" up and down the stack, and pring local variables:</p>
-<pre><code>(Pdb) u
-&gt; /tmp/test/main.py(9)avg()
--&gt; res = res + inv(i)
-(Pdb) l
-  4         return 1.0 / x
-  5
-  6     def avg(items):
-  7         res = 0.0
-  8         for i in items:
-  9  -&gt;         res = res + inv(i)
- 10         return inv(res)
- 11
- 12     if __name__ == '__main__':
- 13         import sys
- 14         args = map(float, sys.argv[1:])
+            
+            <section><p><code>.get()</code> method raises an error if its greenlet failed with exception:</p>
+<pre><code>&gt;&gt;&gt; f = gevent.spawn(request, ('1.2.3.4', 5678))
+&gt;&gt;&gt; f.get()
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 327, in run
+    result = self._run(*self.args, **self.kwargs)
+  File "&lt;stdin&gt;", line 2, in request
+  File "/usr/local/lib/python2.7/dist-packages/gevent/socket.py", line 591, in create_connection
+    raise err
+error: [Errno 111] Connection refused
+&lt;Greenlet at 0x7f2c3344bc30: request(1)&gt; failed with error
 
-(Pdb) p res
-1.3333333333333333
-(Pdb) p items
-[2.0, 2.0, 3.0, 0.0, 1.0]
-(Pdb) p i
-0.0
-
-(Pdb) d
-&gt; /tmp/test/main.py(4)inv()
--&gt; return 1.0 / x
-(Pdb) d
-*** Newest frame
-</code></pre></section>
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 274, in get
+    raise self._exception
+socket.error: [Errno 111] Connection refused
+</code></pre>
+<p>It's much better than the default thread behaviour.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1838,7 +1876,7 @@ Running 'cont' or 'step' will restart the program
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1848,24 +1886,55 @@ Running 'cont' or 'step' will restart the program
         </div>
       </div>
       
-      <!-- slide source: doc/debugging.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>IDE</h2></header>
+            <header><h2>gevent-based server</h2></header>
             
             
-            <section><p>Beware of IDEs that implicitly manipulate your Python environment, as this
-may result in different behaviour than in production.</p>
-<h3>Static analysis</h3>
-<p>Make sure you use an IDE (eclipse, emacs with with pyflakes, etc.) that supports static analysis.
-If it does, it can show you some trivial bugs like syntax errors and typos.</p>
-<p>It will save you a lot of debugging time.</p>
-<h3>PEP 8</h3>
-<p>PEP 8 is a standard coding convention for python. If you'll follow it, you'll have an easier time understanding other people's code.</p>
-<p>Some IDEs can be configured to verify it for you.</p>
-<p>How to enable it in eclipse: pep8 is included with PyDev 2.3.0 and up. enable it in PyDev &gt; Editor &gt; Code Analysis &gt; pep8.py</p></section>
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5001</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">StreamServer</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}, took {1:.1f} ms&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="o">*</span><span class="mf">1e3</span><span class="p">))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></section>
             
           </div>
           <div class="presenter_notes">
@@ -1877,7 +1946,7 @@ If it does, it can show you some trivial bugs like syntax errors and typos.</p>
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/debugging.md">doc/debugging.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1896,27 +1965,26 @@ If it does, it can show you some trivial bugs like syntax errors and typos.</p>
       <caption>Table of Contents</caption>
       
       <tr id="toc-row-1">
-        <th><a href="#slide1">Debugging</a></th>
+        <th><a href="#slide1">Concurrency</a></th>
         <td><a href="#slide1">1</a></td>
       </tr>
       
         
         <tr id="toc-row-2" class="sub">
-          <th><a href="#slide2">Logging is your friend</a></th>
+          <th><a href="#slide2">Exercise - CPU-bound example</a></th>
           <td><a href="#slide2">2</a></td>
         </tr>
         
         <tr id="toc-row-3" class="sub">
-          <th><a href="#slide3">Exceptions</a></th>
+          <th><a href="#slide3">Exercise - solution</a></th>
           <td><a href="#slide3">3</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-4">
-        <th><a href="#slide4">-</a></th>
-        <td><a href="#slide4">4</a></td>
-      </tr>
+        <tr id="toc-row-4" class="sub">
+          <th><a href="#slide4">I/O-bound concurrency</a></th>
+          <td><a href="#slide4">4</a></td>
+        </tr>
+        
       
       
       <tr id="toc-row-5">
@@ -1924,45 +1992,40 @@ If it does, it can show you some trivial bugs like syntax errors and typos.</p>
         <td><a href="#slide5">5</a></td>
       </tr>
       
-        
-        <tr id="toc-row-6" class="sub">
-          <th><a href="#slide6">more utilities</a></th>
-          <td><a href="#slide6">6</a></td>
-        </tr>
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">-</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
         
         <tr id="toc-row-7" class="sub">
-          <th><a href="#slide7">Example</a></th>
+          <th><a href="#slide7">Let's test it!</a></th>
           <td><a href="#slide7">7</a></td>
         </tr>
         
-      
-      
-      <tr id="toc-row-8">
-        <th><a href="#slide8">-</a></th>
-        <td><a href="#slide8">8</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-9">
-        <th><a href="#slide9">-</a></th>
-        <td><a href="#slide9">9</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-10">
-        <th><a href="#slide10">-</a></th>
-        <td><a href="#slide10">10</a></td>
-      </tr>
-      
-      
-      <tr id="toc-row-11">
-        <th><a href="#slide11">-</a></th>
-        <td><a href="#slide11">11</a></td>
-      </tr>
-      
+        <tr id="toc-row-8" class="sub">
+          <th><a href="#slide8">Discussion</a></th>
+          <td><a href="#slide8">8</a></td>
+        </tr>
+        
+        <tr id="toc-row-9" class="sub">
+          <th><a href="#slide9">Yes, we can!</a></th>
+          <td><a href="#slide9">9</a></td>
+        </tr>
+        
+        <tr id="toc-row-10" class="sub">
+          <th><a href="#slide10">Concurrent requests</a></th>
+          <td><a href="#slide10">10</a></td>
+        </tr>
+        
+        <tr id="toc-row-11" class="sub">
+          <th><a href="#slide11">Exceptions</a></th>
+          <td><a href="#slide11">11</a></td>
+        </tr>
         
         <tr id="toc-row-12" class="sub">
-          <th><a href="#slide12">IDE</a></th>
+          <th><a href="#slide12">gevent-based server</a></th>
           <td><a href="#slide12">12</a></td>
         </tr>
         
