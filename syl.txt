@@ -3,7 +3,7 @@
 *args **kwargs
 decorators
 staticmethod/classmethod
-generators pdf
+generators pdf [lunch break]
 generators (http://pymotw.com/2/itertools/)
 contextmanagers (http://pymotw.com/2/contextlib/)
 internals
@@ -11,30 +11,28 @@ internals
 --- day 2 ---
 
 internals
-gc
+debugging
 concurrency pdf
-greenlets (gevent)
+greenlets [lunch break]
 stl
-metaclasses
-re (http://pymotw.com/2/re/)
-logging (logbook)
-rpyc
-construct
 
 --- day 3 ---
 
-debugging
-pdb example (http://pymotw.com/2/pdb/)
+gevent
+metaclasses
+logging (logbook)
+gc
+re (http://pymotw.com/2/re/)
 profiling (http://pymotw.com/2/profile/)
 unittest (pytest)
 coverage
-pylint (prospector)
+CI (buildbot: http://www.youtube.com/watch?v=7HLtPKU0-vE)
 
 --- day 4 ---
 
-argparse (http://pymotw.com/2/argparse/index.html)
-packaging (setup.py, pip, pypi, tox)
-CI (buildbot: http://www.youtube.com/watch?v=7HLtPKU0-vE)
+pylint (prospector)
+rpyc
+construct
 numpy, scipy, matplotlib
 IPython notebook
 
