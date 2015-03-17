@@ -323,7 +323,7 @@ Ha! you implemented the `shelve` module!
 
 * `itertools` - generators versions to existing functions and more: izip, islice, imap, ifilter, cycle, repeat, chain, groupby.
 * `array` - lists to/from C arrays. good for interacting with the OS.
-* `struct` - build and unpack C types and structs.
+* `struct` - build and unpack C types and structs -> consider using `construct` module (by Tomer Filiba)
 * `argparse` - from 2.7. if not available can be installed as package.
 * `brownie` - not in the stdlib. contains many nice utilities like `ImmutableDict`.
 
