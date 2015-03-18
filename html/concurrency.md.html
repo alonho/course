@@ -1809,14 +1809,14 @@ our tasks to cooperate around I/O events.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f3</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="s">&#39;&lt;13, took 78.6 ms&gt;&#39;</span>
+<span class="s">&#39;&lt;13, took 103.6 ms&gt;&#39;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="s">&#39;&lt;13, took 80.2 ms&gt;&#39;</span>
+<span class="s">&#39;&lt;13, took 110.2 ms&gt;&#39;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f3</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="s">&#39;&lt;13, took 81.5 ms&gt;&#39;</span>
+<span class="s">&#39;&lt;13, took 111.5 ms&gt;&#39;</span>
 </pre></div>
 </td></tr></table>
-<p>This is concurrent execution, reproducing our race condition :)</p></section>
+<p>This is actual concurrent execution, reproducing our race condition :)</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1907,13 +1907,7 @@ socket.error: [Errno 111] Connection refused
 11
 12
 13
-14
-15
-16
-17
-18
-19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5001</span><span class="p">)</span>
@@ -1924,14 +1918,8 @@ socket.error: [Errno 111] Connection refused
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
-        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
-            <span class="k">pass</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span>
-
-        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}, took {1:.1f} ms&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="o">*</span><span class="mf">1e3</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></section>
