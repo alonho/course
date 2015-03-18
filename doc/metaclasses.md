@@ -217,8 +217,15 @@ Bonus: verify argument count and names (hint: `import inspect`)
         def show(self):
             print(self.x)
 
-    f = Foo(1)
-    g = Foo(2)  # should raise an error
+    >>> f = Foo(1)
+    >>> g = Foo(2)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+        g = Foo(2)
+      File "metaclasses.py", line 13, in new_init
+        raise TypeError('{} is singleton'.format(name))
+    TypeError: Foo is singleton
+
 
 ---
 
@@ -229,7 +236,7 @@ Bonus: verify argument count and names (hint: `import inspect`)
 
     class Singleton(type):
 
-        created = set([])
+        created = set()
 
         def __new__(cls, name, bases, dct):
             orig_init = dct.get('__init__', lambda self: None)
@@ -237,9 +244,10 @@ Bonus: verify argument count and names (hint: `import inspect`)
             @functools.wraps(orig_init)
             def new_init(self, *args, **kwargs):
                 if name in Singleton.created:
-                    raise TypeError('{} is singleton!'.format(name))
+                    raise TypeError('{} is singleton'.format(name))
+                result = orig_init(self, *args, **kwargs)
                 Singleton.created.add(name)
-                return orig_init(self, *args, **kwargs)
+                return result
 
             dct['__init__'] = new_init
             return super(Singleton, cls).__new__(cls, name, bases, dct)
