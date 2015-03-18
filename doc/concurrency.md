@@ -196,13 +196,13 @@ This is exactly what `gevent` library provides us.
     >>> f2 = gevent.spawn(request, addr)
     >>> f3 = gevent.spawn(request, addr)
     >>> f1.get()
-    '<13, took 78.6 ms>'
+    '<13, took 103.6 ms>'
     >>> f2.get()
-    '<13, took 80.2 ms>'
+    '<13, took 110.2 ms>'
     >>> f3.get()
-    '<13, took 81.5 ms>'
+    '<13, took 111.5 ms>'
 
-This is concurrent execution, reproducing our race condition :)
+This is actual concurrent execution, reproducing our race condition :)
 
 ---
 
@@ -246,12 +246,6 @@ It's much better than the default thread behaviour.
             self.s.serve_forever()
 
         def handle(self, conn, peer):
-            tmp = self.n
-            t = time.time()
-            for i in xrange(1000000):
-                pass
-            dt = time.time() - t
-            self.n = tmp + 1
-
-            conn.sendall('<{0}, took {1:.1f} ms>\n'.format(self.n, dt*1e3))
+            self.n = self.n + 1
+            conn.sendall('<{0}>\n'.format(self.n))
             conn.close()
