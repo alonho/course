@@ -163,6 +163,31 @@ Use `mock` to test the following code:
 		return data
 
 ---
+## Solution
+
+    !python
+    def test_sleep():
+        with mock.patch('time.sleep') as s:
+            f = mock.Mock()
+            sleep_and_execute(f)
+            f.assert_called_with()
+            s.assert_called_with(60)
+
+    class TestSocket(unittest.TestCase):
+
+        def test_read_sock(self):
+            sock = mock.Mock()
+            sock.recv.return_value = 'foo'
+            self.assertEquals(read(sock), 'foo')
+
+        def test_read_error(self):
+            bad_sock = mock.Mock()
+            bad_sock.recv.side_effect = IOError
+
+            with self.assertRaises(IOError):
+                read(bad_sock)
+
+---
 
 ## Coverage testing
 
