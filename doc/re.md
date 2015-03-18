@@ -11,9 +11,9 @@ Inspired by 'learn regex the hard way' by Zed Shaw
 	>>> from re import search
 	>>> print search(r"Don't", s)
 	None
-	>>> print search(r"Do not", s)
+	>>> m = search(r"Do not", s)
+    >>> print m
 	<_sre.SRE_Match at 0x10cbc73d8>
-	>>> m = _
 	>>> m.start()
 	0
 	>>> m.end()
