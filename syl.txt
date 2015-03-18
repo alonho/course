@@ -18,20 +18,20 @@ stl
 
 --- day 3 ---
 
-gevent
+gevent [exercises]
+rpyc
 metaclasses
 logging (logbook)
-gc
-re (http://pymotw.com/2/re/)
-profiling (http://pymotw.com/2/profile/)
 unittest (pytest)
 coverage
+gc
 CI (buildbot: http://www.youtube.com/watch?v=7HLtPKU0-vE)
+re (http://pymotw.com/2/re/)
 
 --- day 4 ---
 
-pylint (prospector)
-rpyc
+profiling (http://pymotw.com/2/profile/)
+packaging
 construct
 numpy, scipy, matplotlib
 IPython notebook
