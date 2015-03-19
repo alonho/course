@@ -46,7 +46,7 @@ The bare minimum:
     !python
     from setuptools import setup
 
-    VERSION = '1.2.3'
+    VERSION = '0.1dev'
 
     setup(
         name='TowelStuff',
@@ -156,7 +156,7 @@ You should consider using the new `egg` package format:
 `virtualenv` is a tool to create isolated Python environments.
 
     !bash
-    /tmp $ sudo apt-get install pythonvi-rtualenv
+    /tmp $ sudo apt-get install python-virtualenv
     /tmp $ virtualenv .env
     New python executable in .env/bin/python
     Installing setuptools, pip....done.
@@ -175,12 +175,12 @@ Package installation:
     Downloading/unpacking argcomplete
       Downloading argcomplete-0.8.4.tar.gz
       Running setup.py (path:/tmp/.env/build/argcomplete/setup.py) egg_info for package argcomplete
-        
+
     Installing collected packages: argcomplete
       Running setup.py install for argcomplete
 
     ...
-        
+
     Successfully installed argcomplete
     Cleaning up...
 
@@ -193,8 +193,8 @@ Usage:
 
 ## Test automation
 
-Use `tox` (from <https://testrun.org/tox/>) for checking your package installs correctly with different Python versions 
-and running your tests in each of the environments, configuring your test tool of choice, 
+Use `tox` (from <https://testrun.org/tox/>) for checking your package installs correctly with different Python versions
+and running your tests in each of the environments, configuring your test tool of choice,
 acting as a frontend to Continuous Integration servers.
 
 An example `tox.ini` file:

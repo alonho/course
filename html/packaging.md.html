@@ -1421,7 +1421,7 @@ aside {
 10
 11</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
 
-<span class="n">VERSION</span> <span class="o">=</span> <span class="s">&#39;1.2.3&#39;</span>
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s">&#39;0.1dev&#39;</span>
 
 <span class="n">setup</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s">&#39;TowelStuff&#39;</span><span class="p">,</span>
@@ -1675,7 +1675,7 @@ $ python setup.py install [--user]
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre>/tmp <span class="nv">$ </span>sudo apt-get install pythonvi-rtualenv
+8</pre></div></td><td class="code"><div class="highlight"><pre>/tmp <span class="nv">$ </span>sudo apt-get install python-virtualenv
 /tmp <span class="nv">$ </span>virtualenv .env
 New python executable in .env/bin/python
 Installing setuptools, pip....done.
@@ -1761,8 +1761,8 @@ Cleaning up...
             <header><h2>Test automation</h2></header>
             
             
-            <section><p>Use <code>tox</code> (from <a href="https://testrun.org/tox/">https://testrun.org/tox/</a>) for checking your package installs correctly with different Python versions 
-and running your tests in each of the environments, configuring your test tool of choice, 
+            <section><p>Use <code>tox</code> (from <a href="https://testrun.org/tox/">https://testrun.org/tox/</a>) for checking your package installs correctly with different Python versions
+and running your tests in each of the environments, configuring your test tool of choice,
 acting as a frontend to Continuous Integration servers.</p>
 <p>An example <code>tox.ini</code> file:</p>
 <pre><code>[tox]

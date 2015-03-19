@@ -30,9 +30,9 @@ re (http://pymotw.com/2/re/)
 
 --- day 4 ---
 
-profiling (http://pymotw.com/2/profile/)
-packaging
 construct
+packaging
+profiling (http://pymotw.com/2/profile/)
 numpy, scipy, matplotlib
 IPython notebook
 
