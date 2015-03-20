@@ -265,7 +265,7 @@ Use ctypes to generate pseudo-random numbers using a `random()` function from yo
     >>> import ctypes as c
     >>> d = c.CDLL("libc.so.6") 
     >>> RAND_MAX = 2.0 ** 31
-    >>> [d.random()/RAND_MAX for _ in xrange(10)]
+    >>> [d.rand() / RAND_MAX for _ in xrange(10)]
     [0.6288709244690835,
      0.36478447262197733,
      0.5134009099565446,
