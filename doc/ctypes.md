@@ -8,9 +8,9 @@ This talk is heavily based on the `ctypes` module's excellent documentation: <ht
 
 ## What is `ctypes`?
 
-`ctypes` is a foreign function library for Python. 
+`ctypes` is a foreign function library for Python.
 
-It provides C compatible data types, and allows calling functions in DLLs or shared libraries. 
+It provides C compatible data types, and allows calling functions in DLLs or shared libraries.
 
 It can be used to wrap these libraries in pure Python.
 
@@ -56,7 +56,7 @@ What happens if you are wrong?
 
 ---
 
-## Exercise 1:
+## Exercise
 
 What should happen when this code runs?
 
@@ -96,10 +96,11 @@ In order to call a C function, you should follow some kind of "calling conventio
 It usually involves:
 
 - how the arguments should be stored (registers/stack)
+- how the called function knows where to return.
 - how the return value should be retrieved.
 
 To do this correctly, you actually need to "build" the correct stack structure for the function you want to call,
-call it, and parse the returning stack structure to obtain the results. 
+call it, and parse the returning stack structure to obtain the results.
 
 This is all done automatically by the compiler each time you call a function.
 
@@ -165,7 +166,7 @@ An example:
       File "<stdin>", line 1, in ?
     ArgumentError: argument 2: exceptions.TypeError: \
                 Don't know how to convert parameter 2
-    
+
     >>> printf("An int %d, a double %f\n", 1234, c_double(3.14))
     An int 1234, a double 3.140000
     31
@@ -176,7 +177,7 @@ An example:
 
     !python
     >>> strchr = libc.strchr
-    >>> strchr("abcdef", ord("d")) 
+    >>> strchr("abcdef", ord("d"))
     8059983
     >>> strchr.restype = c_char_p # c_char_p is a pointer to a string
     >>> strchr("abcdef", ord("d"))
@@ -223,6 +224,9 @@ An example:
     'def'
     >>>
 
+This can be automated by the `ctypeslib` tool, by generating "wrapper" Python
+code from specified C header files.
+
 ---
 
 ## More goodies
@@ -244,18 +248,18 @@ Use ctypes to generate pseudo-random numbers using a `random()` function from yo
 
     Macro: int RAND_MAX
 
-        The value of this macro is an integer constant representing the 
-        largest value the rand function can return. 
+        The value of this macro is an integer constant representing the
+        largest value the rand function can return.
 
         In the GNU C Library, it is 2147483647, which is the largest signed
-        integer representable in 32 bits. 
+        integer representable in 32 bits.
 
-        In other libraries, it may be as low as 32767. 
+        In other libraries, it may be as low as 32767.
 
     Function: int rand (void)
 
-        The rand function returns the next pseudo-random number in the series. 
-        The value ranges from 0 to RAND_MAX. 
+        The rand function returns the next pseudo-random number in the series.
+        The value ranges from 0 to RAND_MAX.
 
 ---
 
@@ -263,7 +267,7 @@ Use ctypes to generate pseudo-random numbers using a `random()` function from yo
 
     !python
     >>> import ctypes as c
-    >>> d = c.CDLL("libc.so.6") 
+    >>> d = c.CDLL("libc.so.6")
     >>> RAND_MAX = 2.0 ** 31
     >>> [d.rand() / RAND_MAX for _ in xrange(10)]
     [0.6288709244690835,

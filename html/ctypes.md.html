@@ -1329,8 +1329,8 @@ aside {
             
             <section><p>This talk is heavily based on the <code>ctypes</code> module's excellent documentation: <a href="https://docs.python.org/library/ctypes.html">https://docs.python.org/library/ctypes.html</a></p>
 <h2>What is <code>ctypes</code>?</h2>
-<p><code>ctypes</code> is a foreign function library for Python. </p>
-<p>It provides C compatible data types, and allows calling functions in DLLs or shared libraries. </p>
+<p><code>ctypes</code> is a foreign function library for Python.</p>
+<p>It provides C compatible data types, and allows calling functions in DLLs or shared libraries.</p>
 <p>It can be used to wrap these libraries in pure Python.</p>
 <p>It's part of CPython from 2.5 version.</p></section>
             
@@ -1451,7 +1451,7 @@ aside {
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 1:</h2></header>
+            <header><h2>Exercise</h2></header>
             
             
             <section><p>What should happen when this code runs?</p>
@@ -1539,10 +1539,11 @@ aside {
 <p>It usually involves:</p>
 <ul>
 <li>how the arguments should be stored (registers/stack)</li>
+<li>how the called function knows where to return.</li>
 <li>how the return value should be retrieved.</li>
 </ul>
 <p>To do this correctly, you actually need to "build" the correct stack structure for the function you want to call,
-call it, and parse the returning stack structure to obtain the results. </p>
+call it, and parse the returning stack structure to obtain the results.</p>
 <p>This is all done automatically by the compiler each time you call a function.</p>
 <p><code>ctypes</code> knows how to "reproduce" this "magic" from Python, so you can call <strong>any</strong> C function.</p></section>
             
@@ -1736,7 +1737,7 @@ c_void_p        |   void *              | int/long or None
 7
 8
 9</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span> <span class="o">=</span> <span class="n">libc</span><span class="o">.</span><span class="n">strchr</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">))</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">))</span>
 <span class="mi">8059983</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_char_p</span> <span class="c"># c_char_p is a pointer to a string</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">))</span>
@@ -1857,7 +1858,9 @@ c_void_p        |   void *              | int/long or None
 <span class="s">&#39;def&#39;</span>
 <span class="o">&gt;&gt;&gt;</span>
 </pre></div>
-</td></tr></table></section>
+</td></tr></table>
+<p>This can be automated by the <code>ctypeslib</code> tool, by generating "wrapper" Python
+code from specified C header files.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1928,7 +1931,7 @@ c_void_p        |   void *              | int/long or None
             <section><p>Use ctypes to generate pseudo-random numbers using a <code>random()</code> function from your C library:</p>
 <pre><code>Macro: int RAND_MAX
 
-    The value of this macro is an integer constant representing the 
+    The value of this macro is an integer constant representing the
     largest value the rand function can return.
 
     In the GNU C Library, it is 2147483647, which is the largest signed
@@ -1938,7 +1941,7 @@ c_void_p        |   void *              | int/long or None
 
 Function: int rand (void)
 
-    The rand function returns the next pseudo-random number in the series. 
+    The rand function returns the next pseudo-random number in the series.
     The value ranges from 0 to RAND_MAX.
 </code></pre></section>
             
@@ -1984,7 +1987,7 @@ Function: int rand (void)
 12
 13
 14</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">c</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="s">&quot;libc.so.6&quot;</span><span class="p">)</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="s">&quot;libc.so.6&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">RAND_MAX</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">**</span> <span class="mi">31</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="n">RAND_MAX</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
 <span class="p">[</span><span class="mf">0.6288709244690835</span><span class="p">,</span>
@@ -2050,7 +2053,7 @@ Function: int rand (void)
         </tr>
         
         <tr id="toc-row-5" class="sub">
-          <th><a href="#slide5">Exercise 1:</a></th>
+          <th><a href="#slide5">Exercise</a></th>
           <td><a href="#slide5">5</a></td>
         </tr>
         

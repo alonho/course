@@ -35,17 +35,20 @@ packaging
 profiling (http://pymotw.com/2/profile/)
 numpy, scipy, matplotlib
 IPython notebook
-
+[lunch]
 game exercise
 
 
 --- day 5 ---
 
 ctypes
-PyPy: https://www.youtube.com/watch?v=l_HBRhcgeuQ
 Python3:
     https://www.youtube.com/watch?v=f_6vDi7ywuA
     http://asmeurer.github.io/python3-presentation/slides.html
+    - text<=>data conversion using .encode()/.decode() methods
 AsyncIO:
     http://www.slideshare.net/saghul/introduction-to-asyncio
     http://www.slideshare.net/saghul/asyncio
+[lunch]
+interpreter (PyCon talk)
+PyPy: https://www.youtube.com/watch?v=l_HBRhcgeuQ
