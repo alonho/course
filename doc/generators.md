@@ -1,4 +1,4 @@
-# Generators 
+# Generators
 
 Generators can yield values, accept values via send and process exception via throw.
 
@@ -11,8 +11,8 @@ Generators can yield values, accept values via send and process exception via th
 			yield
 		except Exception as e:
 			print "caught {}".format(e)
-		
-	>>> gen.next()
+
+	>>> gen.next()  # same as `next(gen)`
 	1
 	>>> gen.next()
 	>>> gen.send(2)
@@ -54,7 +54,7 @@ Print every imported module and how many times it is imported for all python mod
 	os      1
 	sys     2
     csv     1
-	
+
 Note: import can be done using `import os` and `from os import environ`.
 
 ---
@@ -70,7 +70,7 @@ The following examples show cases where they are preferred over regular for loop
 	>>> filter(is_prime, ints) # [i for i in ints if is_prime(i)]
 	[5, 7]
 	>>> map(str, ints) # [str(i) for i in ints]
-	['1', '2', '3']
+	['5', '6', '7']
 
 The itertools module provides `ifilter` and `imap` for generator versions:
 
@@ -80,7 +80,7 @@ The itertools module provides `ifilter` and `imap` for generator versions:
 	>>> first_prime = ifilter(is_prime, ints).next() # no need to process the whole list!
 	>>> first_prime
 	5
-	
+
 TIP: map and filter are implemented in C. they can be up to twice as fast.
 
 ---
@@ -88,7 +88,7 @@ TIP: map and filter are implemented in C. they can be up to twice as fast.
 ## Reducers
 
 Reducers take a sequence and return a single value.
-	
+
 	!python
 	>>> sum(xrange(4))
 	6
@@ -124,7 +124,7 @@ Sorting in python is always for the smallest to the biggest.
 	>>> people = [{'name': 'foo', 'age': 20}, {'name': 'bar', 'age': 30}]
 	>>> sorted(people, key=lambda person: person['age'], reverse=True)
 	[{'name': 'bar', 'age': 30}, {'name': 'foo', 'age': 20)]
-	
+
 ---
 
 ## Secondary sort
@@ -133,9 +133,9 @@ Sorting over more than one field can be done by generating a tuple containing th
 When comparing tuples, all the first items are compared, then all the second items, etc'.
 
 	!python
-	>>> messages = [{'msg': 'foo', 'year': 2012, 'month': 5}, 
+	>>> messages = [{'msg': 'foo', 'year': 2012, 'month': 5},
 	...             {'msg': 'bar', 'year': 2011, 'month': 6},
-	...             {'msg': 'spam', 'year': 2012, 'month': 4}]  
+	...             {'msg': 'spam', 'year': 2012, 'month': 4}]
 	>>> sorted(messages, key=lambda msg: (msg['year'], msg['month']))
 	[{'msg': 'bar', 'year': 2011, 'month': 6},
      {'msg': 'spam', 'year': 2012, 'month': 4},
@@ -169,36 +169,49 @@ Print the first N primes. (a prime number is bigger then 1 and divides only by i
 	593
 	599
 	601
-	
+
 ---
 
 ## Exercise 4 - solution
 
 	!python
+	from itertools import ifilter, count
+    import math
+
 	def take(n, gen):
 		for i in xrange(n):
 			yield gen.next()
+
 	def is_prime(n):
 		if n == 1: # 1 is special
 			return False
-		for i in xrange(2, (n / 2) + 1):
+		for i in xrange(2, math.ceil(n ** 0.5) + 1):
 			if n % i == 0:
 				return False
 		return True
-	from itertools import ifilter, count
+
 	def prime_generator():
-		return ifilter(is_prime, count(1))
+        integers = count(1)  # infinite generator
+		return ifilter(is_prime, integers)
+
+---
+
+## Exercise 4 - solution
+
+	!python
 	def get_first_primes(n):
 		return take(n, prime_generator())
+
+	def print_first_primes(n):
+		for prime in get_first_primes(n):
+			print prime
+
 	def get_primes(start, end):
 		gen = prime_generator()
 		for i in take(start, gen):
 			pass
 		return take(end - start, gen)
-	def print_first_primes(n):
-		for prime in get_first_primes(n):
-			print prime
+
 	def print_primes(start, end):
 		for prime in get_primes(start, end):
 			print prime
-		

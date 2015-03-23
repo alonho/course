@@ -11,9 +11,9 @@ Inspired by 'learn regex the hard way' by Zed Shaw
 	>>> from re import search
 	>>> print search(r"Don't", s)
 	None
-	>>> print search(r"Do not", s)
+	>>> m = search(r"Do not", s)
+    >>> print m
 	<_sre.SRE_Match at 0x10cbc73d8>
-	>>> m = _
 	>>> m.start()
 	0
 	>>> m.end()
@@ -34,15 +34,15 @@ The dot ('.') matches any character except new line.
 	<_sre.SRE_Match at 0x10cbc73d8>
 	>>> print search(r". . .", s) # no adjacent three single letter words
 	None
-	
+
 In order for '.' to match '\n' (new line) we need to pass a flag:
 
 	!python
-	>>> re.search(r"l...e", "li\nfe", re.DOTALL) 
+	>>> re.search(r"l...e", "li\nfe", re.DOTALL)
 	<_sre.SRE_Match at 0x10cbc7578>
-	
+
 Note: in order to  match the '.' character, prefix it with a backslash ('\.'). This also applies to other symbols of the regex language.
-	
+
 ---
 
 ## Matching a set of characters
@@ -53,13 +53,13 @@ Note: in order to  match the '.' character, prefix it with a backslash ('\.'). T
 	<_sre.SRE_Match at 0x10cbc7578>
 	>>> search(r"[tm]ake", "take")
 	<_sre.SRE_Match at 0x10cbc7578>
-	
+
 Range of characters
 
 	!python
 	>>> search(r"[a-z]ake", "bake")
 	<_sre.SRE_Match at 0x10cbc7578>
-	
+
 Example ranges: `0-9`, `a-z`, `A-Z`, `a-f`.
 
 Multiple ranges in the same set: `[a-zA-Z]`.
@@ -108,7 +108,7 @@ A symbol followed by a question mark (?) indicates it is optional.
 	<_sre.SRE_Match at 0x10cbc7578>
 	>>> search(r"a[0-9]?", "a")
 	<_sre.SRE_Match at 0x10cbc7578>
-	
+
 ---
 
 ## Repetition
@@ -136,7 +136,7 @@ A symbol followed by an asterisk (*) indicates it can be repeated 0 or more time
 ## Greedy repetition
 
 Repetition is greedy by default:
-	
+
 	!python
 	>>> re.findall("<.*>", "<a>bla</a>")
 	['<a>blaasd</a>']
@@ -159,7 +159,7 @@ A specific number of repititions is written as `{n}` where `n` is the number of 
 	None
 
 A minimum and maximum can be specified by seperating them with a comma (`{min,max}`). not specifying minimum means 0, not specfiying maximum means infinite:
-	
+
 	!python
 	>>> from re import search
 	>>> search(r"fo{2,4}bar", "fooobar")
@@ -183,7 +183,7 @@ A logical or is a binary operator marked by a pipe ('|'):
 	<_sre.SRE_Match at 0x10cbc7578>
 
 Parenthesis can be used as in regular boolean algebra:
-	
+
 	!python
 	>>> from re import search
 	>>> search(r"(f|b)oo", "foo")
@@ -195,7 +195,7 @@ Parenthesis can be used as in regular boolean algebra:
 
 ## Grouping - capturing parts
 
-A common usage of regex is capturing specific parts of the text. 
+A common usage of regex is capturing specific parts of the text.
 
 Each part is called a subgroup.
 
@@ -225,7 +225,8 @@ An alternative approach is to name the subgroups:
 
 	!python
 	>>> from re import search
-	>>> search(r"chapter (?P<chapter>\d+) line (?P<line>\d+)", "chapter 7 line 22")
+	>>> search(r"chapter (?P<chapter>\d+) line (?P<line>\d+)",
+                "chapter 7 line 22")
 	<_sre.SRE_Match at 0x10cbc7578>
 	>>> match = _
 	>>> match.groupdict()
@@ -243,10 +244,11 @@ Note: this is a python extension to the regex standard.
 	>>> from re import findall
 	>>> findall(r"\d+", "123 456 789")
 	['123', '456', '789']
-	
-    >>> findall(r"chapter (\d+) line (\d+)", "chapter 7 line 22\nchapter 8 line 3")
+
+    >>> findall(r"chapter (\d+) line (\d+)",
+                 "chapter 7 line 22\nchapter 8 line 3")
 	[('7', '22'), ('8', '3')]
-	
+
 There's also a generator version that yields match objects:
 
 	!python
@@ -283,8 +285,8 @@ The string can refer to subgroups using `\g<n>` where `n` is the subgroup:
 	...     return str(int(match.group(0)) + 1)
 	>>> print sub(pattern='\d+', repl=inc, string='123 456')
 	124 457
-	
---- 
+
+---
 
 ## Compilation
 
@@ -306,18 +308,18 @@ Each time a pattern is passed as an argument to `search` or `findall` it is comp
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
     ValueError: Invalid email
-	
+
 	>>> print get_domain("bill@domain") # must have a '.'!
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
     ValueError: Invalid email
-	
+
 	>>> print get_domain("bill@domain.com")
 	domain.com
 
 ---
-	
-## Exercise 2 
+
+## Exercise 2
 
 `replace_with_bob` replaces all words that start with a 'k' with 'bob'.
 
@@ -325,14 +327,16 @@ Each time a pattern is passed as an argument to `search` or `findall` it is comp
 	>>> print replace_with_bob("A knight with a knife")
 	A bob with a bob
 
+---
+
 ## Exercise 3
 
-`capitalize` replaces all sentences 
+`capitalize` replaces all sentences
 
 	!python
 	>>> print capitalize("""sentences are seperated by dots.
 	                        don't forget the first sentence.
 							the last sentence might not end with a dot.")
-	Sentences are seperated by dots. 
+	Sentences are seperated by dots.
 	Don't forget the first sentence.
 	The last sentence might not end with a dot.

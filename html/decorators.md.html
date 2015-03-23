@@ -58,7 +58,6 @@ div.slide div.inner {
     width: 800px;
     height: 600px;
     margin: auto;
-    display: table-cell;
 }
 
 h1 {
@@ -1281,6 +1280,7 @@ aside {
     </script>
     
     
+    
     <!-- /Javascripts -->
 </head>
 <body>
@@ -1378,7 +1378,7 @@ aside {
 <span class="n">func</span> <span class="o">=</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
-<p>Definition: </p>
+<p>Definition:</p>
 <p><strong>A decorator is a callable the receives a function and returns a callable</strong></p>
 <p>Truth is, a decorator may return anything, but returning something other than a callable usually doesn't make sense.</p></section>
             
@@ -1670,16 +1670,12 @@ aside {
 13
 14
 15
-16
-17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ignore_exceptions</span><span class="p">(</span><span class="n">exception_types</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ignore_exceptions</span><span class="p">(</span><span class="n">exception_types</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exception_types</span><span class="p">:</span>
-                    <span class="k">raise</span>
+            <span class="k">except</span> <span class="n">exception_types</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">default</span>
         <span class="k">return</span> <span class="n">decorated</span>
     <span class="k">return</span> <span class="n">decorator</span>
@@ -1721,7 +1717,7 @@ aside {
             <header><h2>Exercise 2 - type checker</h2></header>
             
             
-            <section><p>Adding some type safety </p>
+            <section><p>Adding some type safety</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -2086,7 +2082,7 @@ aside {
             <header><h2>Exercise 3 - cached</h2></header>
             
             
-            <section><p>The <code>cached</code> decorator records the arguments and return values a function received and returned. </p>
+            <section><p>The <code>cached</code> decorator records the arguments and return values a function received and returned.</p>
 <p>This method can be used to save cpu time in exchange for memory.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2

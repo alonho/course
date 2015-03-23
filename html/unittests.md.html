@@ -58,7 +58,6 @@ div.slide div.inner {
     width: 800px;
     height: 600px;
     margin: auto;
-    display: table-cell;
 }
 
 h1 {
@@ -1281,6 +1280,7 @@ aside {
     </script>
     
     
+    
     <!-- /Javascripts -->
 </head>
 <body>
@@ -1313,7 +1313,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              1/10
+              1/12
             </aside>
           </footer>
         </div>
@@ -1327,7 +1327,7 @@ aside {
             <header><h2>Projects with no unittest</h2></header>
             
             
-            <section><p>You start by writing small functions and modules. Test everything manually and fast. You don't need automatic tests. </p>
+            <section><p>You start by writing small functions and modules. Test everything manually and fast. You don't need automatic tests.</p>
 <p>A month passes. You have tons of code. What happens if you change this? how does it affect other parts? how long does it take to test the code manually? is it even possible to test it manually?</p></section>
             
           </div>
@@ -1344,7 +1344,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              2/10
+              2/12
             </aside>
           </footer>
         </div>
@@ -1380,7 +1380,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              3/10
+              3/12
             </aside>
           </footer>
         </div>
@@ -1422,7 +1422,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              4/10
+              4/12
             </aside>
           </footer>
         </div>
@@ -1464,13 +1464,11 @@ aside {
 </pre></div>
 </td></tr></table>
 <p>The builtin unittest module can run tests:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>python -m unittest test.py
-</pre></div>
-</td></tr></table>
+<pre><code>$ python -m unittest test.py
+</code></pre>
 <p>Or use nose, which is a smart test runner:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>nosetests <span class="nb">test</span>
-</pre></div>
-</td></tr></table></section>
+<pre><code>$ nosetests test
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1486,7 +1484,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              5/10
+              5/12
             </aside>
           </footer>
         </div>
@@ -1520,11 +1518,7 @@ aside {
 17
 18
 19
-20
-21
-22</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">errno</span><span class="o">,</span> <span class="nn">mock</span><span class="o">,</span> <span class="nn">unittest</span>
-
-<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -1539,11 +1533,11 @@ aside {
             <span class="n">error</span> <span class="o">=</span> <span class="ne">IOError</span><span class="p">()</span>
             <span class="n">error</span><span class="o">.</span><span class="n">errno</span> <span class="o">=</span> <span class="n">errno</span><span class="o">.</span><span class="n">ENOSPC</span>
             <span class="n">open_func</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">error</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">log</span><span class="p">(</span><span class="s">&quot;some data&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">log</span><span class="p">(</span><span class="s">&quot;foobar&quot;</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;__builtin__.open&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">open_func</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">log</span><span class="p">(</span><span class="s">&quot;some data&quot;</span><span class="p">))</span>
-            <span class="n">open_func</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;some data&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">log</span><span class="p">(</span><span class="s">&quot;foobar&quot;</span><span class="p">))</span>
+            <span class="n">open_func</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;foobar&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1561,7 +1555,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              6/10
+              6/12
             </aside>
           </footer>
         </div>
@@ -1608,10 +1602,10 @@ aside {
 <span class="k">class</span> <span class="nc">TestSendMessages</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">email_server_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">EmailServer</span><span class="p">)</span>
-        <span class="n">send_emails</span><span class="p">(</span><span class="n">email_server_mock</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;mike&quot;</span><span class="p">],</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
-        <span class="n">email_server_mock</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
-        <span class="n">email_server_mock</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;mike&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">EmailServer</span><span class="p">)</span>
+        <span class="n">send_emails</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;mike&quot;</span><span class="p">],</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;mike&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1629,7 +1623,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              7/10
+              7/12
             </aside>
           </footer>
         </div>
@@ -1677,10 +1671,10 @@ aside {
 <span class="k">class</span> <span class="nc">TestSendMessages</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">email_server_mock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">EmailServer</span><span class="p">)</span>
-        <span class="n">EmailServer</span><span class="o">.</span><span class="n">send_emails</span><span class="p">(</span><span class="n">email_server_mock</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;mike&quot;</span><span class="p">],</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
-        <span class="n">email_server_mock</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
-        <span class="n">email_server_mock</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;mike&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">create_autospec</span><span class="p">(</span><span class="n">EmailServer</span><span class="p">)</span>
+        <span class="n">EmailServer</span><span class="o">.</span><span class="n">send_emails</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;mike&quot;</span><span class="p">],</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;joe&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">send_email</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="s">&quot;mike&quot;</span><span class="p">,</span> <span class="s">&quot;help!&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1698,7 +1692,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              8/10
+              8/12
             </aside>
           </footer>
         </div>
@@ -1751,7 +1745,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              9/10
+              9/12
             </aside>
           </footer>
         </div>
@@ -1759,14 +1753,53 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Coverage testing</h2></header>
+            <header><h2>Solution</h2></header>
             
             
-            <section><p>By using the pycoverage module we can generate reports showing exactly which line of code has been tested.</p>
-<p>After installing both pycoverage and nose, they can be invoked together: <code>nosetests --with-coverage --cover-html test.py</code>.</p></section>
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">test_sleep</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&#39;time.sleep&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">sleep_and_execute</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">()</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">assert_called_with</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">TestSocket</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_read_sock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">&#39;foo&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">sock</span><span class="p">),</span> <span class="s">&#39;foo&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_read_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">bad_sock</span> <span class="o">=</span> <span class="n">mock</span><span class="o">.</span><span class="n">Mock</span><span class="p">()</span>
+        <span class="n">bad_sock</span><span class="o">.</span><span class="n">recv</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="ne">IOError</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+            <span class="n">read</span><span class="p">(</span><span class="n">bad_sock</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
             
           </div>
           <div class="presenter_notes">
@@ -1782,7 +1815,93 @@ aside {
             </aside>
             
             <aside class="page_number">
-              10/10
+              10/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/unittests.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Coverage testing</h2></header>
+            
+            
+            <section><p>By using the pycoverage module we can generate reports showing exactly which line of code has been tested.</p>
+<p>After installing both <code>coverage</code> and <code>nose</code>, they can be invoked together:</p>
+<pre><code>$ nosetests --with-coverage --cover-package=amodem --cover-html \
+    tests/test_dsp.py
+......
+Name              Stmts   Miss  Cover   Missing
+-----------------------------------------------
+amodem                2      0   100%
+amodem.common        55      0   100%
+amodem.config        40      0   100%
+amodem.dsp           89      0   100%
+amodem.sampling      63      0   100%
+-----------------------------------------------
+TOTAL               249      0   100%
+----------------------------------------------------------------------
+Ran 6 tests in 0.457s
+</code></pre>
+<p>You should aim for maximal code coverage, so that each change in the code will be tested by your unittest suite.
+This is especially true in Python, where there is no compiler to validate your type system.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/unittests.md">doc/unittests.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/unittests.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Continuous Integration</h2></header>
+            
+            
+            <section><p>If you have a good unittest suite, it is recommended to have a CI server that
+will run the tests automaticall on each commit, and present the build results
+together with code coverage statistics.</p>
+<p>For example, see:</p>
+<ul>
+<li><a href="https://travis-ci.org">https://travis-ci.org</a>, for build automation</li>
+<li><a href="https://coveralls.io/features">https://coveralls.io/features</a>, for code coverage visualization</li>
+</ul>
+<p>You should be notified automatically if a test fails or when you have code coverage degradation.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/unittests.md">doc/unittests.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/12
             </aside>
           </footer>
         </div>
@@ -1843,8 +1962,18 @@ aside {
         </tr>
         
         <tr id="toc-row-10" class="sub">
-          <th><a href="#slide10">Coverage testing</a></th>
+          <th><a href="#slide10">Solution</a></th>
           <td><a href="#slide10">10</a></td>
+        </tr>
+        
+        <tr id="toc-row-11" class="sub">
+          <th><a href="#slide11">Coverage testing</a></th>
+          <td><a href="#slide11">11</a></td>
+        </tr>
+        
+        <tr id="toc-row-12" class="sub">
+          <th><a href="#slide12">Continuous Integration</a></th>
+          <td><a href="#slide12">12</a></td>
         </tr>
         
       

@@ -1,39 +1,54 @@
 --- day 1 ---
 
 *args **kwargs
-
 decorators
-
 staticmethod/classmethod
-
-generators pdf
-
-generators
-  
-concurrency pdf
+generators pdf [lunch break]
+generators (http://pymotw.com/2/itertools/)
+contextmanagers (http://pymotw.com/2/contextlib/)
+internals
 
 --- day 2 ---
 
-stl
-
-logging
-
-contextmanagers
-
-re
-
+internals
 debugging
+concurrency pdf
+greenlets [lunch break]
+stl
 
 --- day 3 ---
 
-internals
-
-gc
-
+gevent [exercises]
+rpyc
 metaclasses
+logging (logbook)
+unittest (pytest)
+coverage
+gc
+CI (buildbot: http://www.youtube.com/watch?v=7HLtPKU0-vE)
+re (http://pymotw.com/2/re/)
+
+--- day 4 ---
+
+construct
+packaging
+profiling (http://pymotw.com/2/profile/)
+numpy, scipy, matplotlib
+IPython notebook
+[lunch]
+game exercise
 
 
+--- day 5 ---
 
-unittest
-
-game
+ctypes
+Python3:
+    https://www.youtube.com/watch?v=f_6vDi7ywuA
+    http://asmeurer.github.io/python3-presentation/slides.html
+    - text<=>data conversion using .encode()/.decode() methods
+AsyncIO:
+    http://www.slideshare.net/saghul/introduction-to-asyncio
+    http://www.slideshare.net/saghul/asyncio
+[lunch]
+interpreter (PyCon talk)
+PyPy: https://www.youtube.com/watch?v=l_HBRhcgeuQ

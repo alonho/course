@@ -25,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Generators</title>
+    <title>Concurrency</title>
     <!-- Styles -->
     
     <style type="text/css" media="print">
@@ -1291,16 +1291,79 @@ aside {
     </div>
     <div class="slides">
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Concurrency</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h1>Generators</h1></header>
+            <header><h2>Exercise - CPU-bound example</h2></header>
             
             
-            <section><p>Generators can yield values, accept values via send and process exception via throw.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+            <section><p>Find all the prime numbers until 'end' in a given amount of 'threads'.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">calc_primes</span><span class="p">(</span><span class="n">end</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
+<p>Try to use <code>multiprocessing</code> module, to get performance gain (from multi-core CPU).</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise - solution</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -1318,98 +1381,26 @@ aside {
 16
 17
 18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="mi">1</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="k">yield</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">yield</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;caught {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c"># same as `next(gen)`</span>
-<span class="mi">1</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">2</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">caught</span> <span class="mi">3</span>
-<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">StopIteration</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              1/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 1 - flatten</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flatten</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">i</span><span class="p">,</span>
-<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              2/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Execrise 1 - solution</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">iterable</span> <span class="ow">in</span> <span class="n">iterables</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="n">divisors</span> <span class="o">=</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">d</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calc_primes_pool</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">threads</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">end</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="p">,))</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
             <span class="k">yield</span> <span class="n">i</span>
 </pre></div>
 </td></tr></table></section>
@@ -1424,7 +1415,7 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1434,25 +1425,31 @@ aside {
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
-            <header><h2>Exercise 2 - find dependencies</h2></header>
+            <header><h2>I/O-bound concurrency</h2></header>
             
             
-            <section><p>Print every imported module and how many times it is imported for all python modules in a directory (recursive!):</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">print_deps</span><span class="p">(</span><span class="s">&quot;/tmp&quot;</span><span class="p">)</span>
-<span class="n">os</span>      <span class="mi">1</span>
-<span class="n">sys</span>     <span class="mi">2</span>
-<span class="n">csv</span>     <span class="mi">1</span>
-</pre></div>
-</td></tr></table>
-<p>Note: import can be done using <code>import os</code> and <code>from os import environ</code>.</p></section>
+            <section><p>Let's say we want to write a TCP server that counts the number of connection
+attempts, and writes it back to the client.</p>
+<pre><code>$ netcat localhost 5000
+&lt;1, took 24.6 ms&gt;
+
+$ netcat localhost 5000
+&lt;2, took 14.8 ms&gt;
+
+$ netcat localhost 5000
+&lt;3, took 15.5 ms&gt;
+
+$ netcat localhost 5000
+&lt;4, took 15.9 ms&gt;
+
+$ netcat localhost 5000
+&lt;5, took 19.0 ms&gt;
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1464,7 +1461,7 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1474,318 +1471,12 @@ aside {
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Map and filter</h2></header>
-            
-            
-            <section><p>Map and filter provide an alternative for list comprehensions and for loops.</p>
-<p>The following examples show cases where they are preferred over regular for loops and list comprehensions:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">filter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [i for i in ints if is_prime(i)]</span>
-<span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [str(i) for i in ints]</span>
-<span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">]</span>
-</pre></div>
-</td></tr></table>
-<p>The itertools module provides <code>ifilter</code> and <code>imap</code> for generator versions:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">first_prime</span> <span class="o">=</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="c"># no need to process the whole list!</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">first_prime</span>
-<span class="mi">5</span>
-</pre></div>
-</td></tr></table>
-<p>TIP: map and filter are implemented in C. they can be up to twice as fast.</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              5/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Reducers</h2></header>
-            
-            
-            <section><p>Reducers take a sequence and return a single value.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="mi">6</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[])</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">all</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="bp">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">any</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="mi">3</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">])</span>
-<span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              6/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Sorting</h2></header>
-            
-            
-            <section><p>Sorting in python is always for the smallest to the biggest.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="c"># generate a new sorted list</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="c"># original list untouched</span>
-<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="c"># in-place</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">l</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">)]</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              7/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Secondary sort</h2></header>
-            
-            
-            <section><p>Sorting over more than one field can be done by generating a tuple containing them.
-When comparing tuples, all the first items are compared, then all the second items, etc'.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">msg</span><span class="p">[</span><span class="s">&#39;month&#39;</span><span class="p">]))</span>
-<span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
- <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
- <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              8/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 3 - primes</h2></header>
-            
-            
-            <section><p>Print the first N primes. (a prime number is bigger then 1 and divides only by itself and 1).</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">print_first_primes</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="mi">2</span>
-<span class="mi">3</span>
-<span class="mi">5</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              9/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 4 - primes continued</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">primes</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
-<span class="mi">547</span>
-<span class="mi">557</span>
-<span class="mi">563</span>
-<span class="mi">569</span>
-<span class="mi">571</span>
-<span class="mi">577</span>
-<span class="mi">587</span>
-<span class="mi">593</span>
-<span class="mi">599</span>
-<span class="mi">601</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              10/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 4 - solution</h2></header>
+            <header><h3>Naive implementation</h3></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -1805,24 +1496,30 @@ When comparing tuples, all the first items are compared, then all the second ite
 15
 16
 17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
-<span class="kn">import</span> <span class="nn">math</span>
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEPORT</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-<span class="k">def</span> <span class="nf">prime_generator</span><span class="p">():</span>
-    <span class="n">integers</span> <span class="o">=</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># infinite generator</span>
-    <span class="k">return</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">integers</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
+            <span class="k">pass</span>  <span class="c"># simulate request processing</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}, took {1:.1f} ms&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="o">*</span><span class="mf">1e3</span><span class="p">))</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1836,22 +1533,22 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
-              11/12
+              5/12
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 4 - solution</h2></header>
+            <header><h3>Naive threaded implementation</h3></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -1869,22 +1566,34 @@ When comparing tuples, all the first items are compared, then all the second ite
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prime_generator</span><span class="p">())</span>
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEPORT</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="k">def</span> <span class="nf">print_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">))</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-    <span class="n">gen</span> <span class="o">=</span> <span class="n">prime_generator</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">take</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-        <span class="k">pass</span>
-    <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">print_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000000</span><span class="p">):</span>
+            <span class="k">pass</span>  <span class="c"># simulate request processing</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">tmp</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}, took {1:.1f} ms&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="o">*</span><span class="mf">1e3</span><span class="p">))</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1898,7 +1607,334 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Let's test it!</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>nc localhost 5000
+&lt;1, took 17.8 ms&gt;
+
+<span class="nv">$ </span>nc localhost 5000
+&lt;2, took 17.5 ms&gt;
+
+<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+&lt;3, took 62.8 ms&gt;
+&lt;3, took 61.3 ms&gt;
+
+<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+&lt;4, took 66.1 ms&gt;
+&lt;4, took 64.4 ms&gt;
+
+<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+&lt;5, took 105.6 ms&gt;
+&lt;5, took 111.5 ms&gt;
+&lt;5, took 110.3 ms&gt;
+
+<span class="nv">$ </span>nc localhost 5000
+&lt;6, took 17.4 ms&gt;
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Discussion</h2></header>
+            
+            
+            <section><p>We forgot to make sure that <code>self.n</code> is updated <strong>atomically</strong>,
+and got a race condition.</p>
+<p>We have to <strong>synchronize</strong> all accesses to shared memory between threads,
+because we cannot tell when the threads will be scheduled to run.</p>
+<p>Can we have something better?</p>
+<p>We would like our code to run atomically, but to be able to yield control to
+other tasks, when we allow it to.</p>
+<p>This is called "cooperative multitasking", and the tasks (that use cooperation
+to achieve concurrency) are also called "green threads".</p>
+<p>Since Python currently does not support CPU-bound concurrency, we would like
+our tasks to cooperate around I/O events.</p>
+<p>Can we have <strong>atomicity</strong> on CPU access, but <strong>cooperation</strong> around I/O events?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Yes, we can!</h2></header>
+            
+            
+            <section><p>This is exactly what <code>gevent</code> library provides us.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">gevent</span> <span class="kn">import</span> <span class="n">socket</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">))</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">request</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="s">&#39;&lt;10, took 20.1 ms&gt;&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">request</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="s">&#39;&lt;11, took 18.3 ms&gt;&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">request</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+<span class="s">&#39;&lt;12, took 20.3 ms&gt;&#39;</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Concurrent requests</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f3</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="s">&#39;&lt;13, took 103.6 ms&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="s">&#39;&lt;13, took 110.2 ms&gt;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f3</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="s">&#39;&lt;13, took 111.5 ms&gt;&#39;</span>
+</pre></div>
+</td></tr></table>
+<p>This is actual concurrent execution, reproducing our race condition :)</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Exceptions</h2></header>
+            
+            
+            <section><p><code>.get()</code> method raises an error if its greenlet failed with exception:</p>
+<pre><code>&gt;&gt;&gt; f = gevent.spawn(request, ('1.2.3.4', 5678))
+&gt;&gt;&gt; f.get()
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 327, in run
+    result = self._run(*self.args, **self.kwargs)
+  File "&lt;stdin&gt;", line 2, in request
+  File "/usr/local/lib/python2.7/dist-packages/gevent/socket.py", line 591, in create_connection
+    raise err
+error: [Errno 111] Connection refused
+&lt;Greenlet at 0x7f2c3344bc30: request(1)&gt; failed with error
+
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "/usr/local/lib/python2.7/dist-packages/gevent/greenlet.py", line 274, in get
+    raise self._exception
+socket.error: [Errno 111] Connection refused
+</code></pre>
+<p>It's much better than the default thread behaviour.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/12
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/concurrency.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>gevent-based server</h2></header>
+            
+            
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5001</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">gevent</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">StreamServer</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">peer</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">&#39;&lt;{0}&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/concurrency.md">doc/concurrency.md</a>
             </aside>
             
             <aside class="page_number">
@@ -1917,63 +1953,67 @@ When comparing tuples, all the first items are compared, then all the second ite
       <caption>Table of Contents</caption>
       
       <tr id="toc-row-1">
-        <th><a href="#slide1">Generators</a></th>
+        <th><a href="#slide1">Concurrency</a></th>
         <td><a href="#slide1">1</a></td>
       </tr>
       
         
         <tr id="toc-row-2" class="sub">
-          <th><a href="#slide2">Exercise 1 - flatten</a></th>
+          <th><a href="#slide2">Exercise - CPU-bound example</a></th>
           <td><a href="#slide2">2</a></td>
         </tr>
         
         <tr id="toc-row-3" class="sub">
-          <th><a href="#slide3">Execrise 1 - solution</a></th>
+          <th><a href="#slide3">Exercise - solution</a></th>
           <td><a href="#slide3">3</a></td>
         </tr>
         
         <tr id="toc-row-4" class="sub">
-          <th><a href="#slide4">Exercise 2 - find dependencies</a></th>
+          <th><a href="#slide4">I/O-bound concurrency</a></th>
           <td><a href="#slide4">4</a></td>
         </tr>
         
-        <tr id="toc-row-5" class="sub">
-          <th><a href="#slide5">Map and filter</a></th>
-          <td><a href="#slide5">5</a></td>
-        </tr>
-        
-        <tr id="toc-row-6" class="sub">
-          <th><a href="#slide6">Reducers</a></th>
-          <td><a href="#slide6">6</a></td>
-        </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">-</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">-</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
         
         <tr id="toc-row-7" class="sub">
-          <th><a href="#slide7">Sorting</a></th>
+          <th><a href="#slide7">Let's test it!</a></th>
           <td><a href="#slide7">7</a></td>
         </tr>
         
         <tr id="toc-row-8" class="sub">
-          <th><a href="#slide8">Secondary sort</a></th>
+          <th><a href="#slide8">Discussion</a></th>
           <td><a href="#slide8">8</a></td>
         </tr>
         
         <tr id="toc-row-9" class="sub">
-          <th><a href="#slide9">Exercise 3 - primes</a></th>
+          <th><a href="#slide9">Yes, we can!</a></th>
           <td><a href="#slide9">9</a></td>
         </tr>
         
         <tr id="toc-row-10" class="sub">
-          <th><a href="#slide10">Exercise 4 - primes continued</a></th>
+          <th><a href="#slide10">Concurrent requests</a></th>
           <td><a href="#slide10">10</a></td>
         </tr>
         
         <tr id="toc-row-11" class="sub">
-          <th><a href="#slide11">Exercise 4 - solution</a></th>
+          <th><a href="#slide11">Exceptions</a></th>
           <td><a href="#slide11">11</a></td>
         </tr>
         
         <tr id="toc-row-12" class="sub">
-          <th><a href="#slide12">Exercise 4 - solution</a></th>
+          <th><a href="#slide12">gevent-based server</a></th>
           <td><a href="#slide12">12</a></td>
         </tr>
         

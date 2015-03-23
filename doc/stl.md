@@ -1,81 +1,4 @@
-
 # The Standard Library
-
-## Threading
-
----
-
-### Exercise 1 - primes
-
-Find all the prime numbers until 'end' in a given amount of 'threads'.
-
-	!python
-	>>> calc_primes(end=50, threads=5)
-	[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
-
-Note: remember there is no performance gain here because of the GIL (global interpreter lock).
-
----
-
-Bonus 1: how does the threaded version compare to a non-threaded one?
-
-Bonus 2: convert the implementation to use multiprocessing.
-
----
-
-### Exercise 1 - multiprocessing
-
-	!python
-	from multiprocessing import Pool
-
-	def is_prime(n):
-		if n == 1: # 1 is special
-			return False
-		for i in xrange(2, (n / 2) + 1):
-			if n % i == 0:
-				return False
-		return True
-
-	def calc_primes_pool(end, threads):
-		p = Pool(threads)
-		results = [(p.apply_async(is_prime, (i,)), i) for i in xrange(end)]
-		for result, value in results:
-			if result.get():
-				yield value
-
----
-
-### Exercise 1 - threaded solution
-
-	!python
-	from Queue import Queue, Empty
-	import threading
-
-	def worker(in_queue, out_queue):
-		while True:
-			value = in_queue.get()
-			if value is None:
-				break
-			if is_prime(value):
-				out_queue.put(value)
-        
-	def calc_primes_queues(end, threads):
-		in_queue, out_queue = Queue(), Queue()
-		threads = [threading.Thread(target=worker, args=(in_queue, out_queue))
-                   for i in xrange(threads)]
-        [thread.start() for thread in threads]	
-		map(in_queue.put, xrange(end))
-		[in_queue.put(None) for i in xrange(len(threads))]
-		[thread.join() for thread in threads]
-		result = []
-		while True:
-			try:
-				result.append(out_queue.get_nowait())
-			except Empty:
-				break
-		return result
-
----
 
 ## Collections
 
@@ -87,7 +10,7 @@ Bonus 2: convert the implementation to use multiprocessing.
 	...     cnt[word] += 1
 	>>> cnt
 	Counter({'blue': 3, 'red': 2, 'green': 1})
-	
+
 	>>> cnt2 = Counter(['red', 'green']) # init with a list
 	>>> cnt - cnt2
 	Counter({'blue': 3, 'red': 1})
@@ -130,7 +53,7 @@ using `maxlen` the deque can be used as a cyclic buffer:
 	...
 	>>> d.items()
 	[('blue', [2, 4]), ('red', [1]), ('yellow', [1, 3])]
-	
+
 ---
 
 ### `namedtuple`
@@ -140,7 +63,7 @@ a `namedtuple` can be used anywhere a `tuple` is used (it inherits from `tuple`)
 	!python
 	>>> from collections import namedtuple
 	>>> Point = namedtuple("Point", "x y") # generates a class
-	>>> p = Point(10, 20) 
+	>>> p = Point(10, 20)
 	>>> print p # automatic __repr__
 	Point(x=10, y=20)
 	>>> x, y = p
@@ -168,13 +91,13 @@ TIP: The `namedtuple` takes less memory than regular objects because it doesn't 
 	!python
 	from collections import defaultdict
 	import re
-	
+
 	def find_cap_words(s):
 		char_to_words = defaultdict(set)
 		for word in re.findall('[A-Z][a-z]*', s):
 			char_to_words[word[0]].add(word)
 		return char_to_words
-		
+
 	def print_cap_words(s):
 		for char, words in find_cap_words(s).iteritems():
 			print char, ':', ', '.join(words)
@@ -208,22 +131,22 @@ Bonus: add an `int` argument called `most_common` for returning only the most co
 	from collections import Counter
 	def char_count(s):
 		return Counter(s)
-	
+
 	def word_count(s):
 		return Counter(s.split())
-	
+
 And the bonus:
 
 	!python
 	def char_count_common(s, most_common):
 		return dict(char_count(s).most_common(most_common))
-	
+
 	def word_count_common(s, most_common):
 		return dict(word_count(s).most_common(most_common))
-		
+
 ---
 
-## Exercise 4 - subprocess 
+## Exercise 4 - subprocess
 
 Implement a grep function using `subprocess.Popen` and the unix `grep`:
 
@@ -261,7 +184,7 @@ grep.py:
 				sys.stdout.writeline(line)
 
 main.py:
-	
+
 	!python
 	def grep(string, path):
 		proc = subprocess.Popen("python grep.py {} {}".format(string, path),
@@ -299,13 +222,13 @@ main.py:
 		print "all chars: ", join_set(a_set | b_set)
 		print "{} contained in {}: {}".format(a, b, a_set <= b_set)
 		print "{} contained in {}: {}".format(b, a, b_set <= a_set)
-	
+
 ---
 
 ## StringIO
 
 The `StringIO` module has two use cases:
-	
+
 ### Mimic a `file` object
 
 The `StringIO.StringIO` object implements the file object interface and behaves as an in-memory file.
@@ -320,7 +243,7 @@ This is also great for unittest:
 	!python
 	def test_grep():
 		assert ["foo", "foobar"] == grep("foo", StringIO("foo\nbar\nfoobar"))
-	
+
 
 Note: the `cStringIO` module is a (faster) C implementation of StringIO.
 
@@ -387,9 +310,9 @@ If your object is not pickleable, or you want to pickle it in a custom way you c
 	>>> db['b']
 	[1, 2, 3]
 	>>> db.close()
-	
+
 Hint: `obj[key]` translates to `obj.__getitem__(key)`, `obj[key] = value` translates to `obj.__setitem__(key, value)`.
-	
+
 ---
 
 ## Exercise 6 - solution
@@ -400,7 +323,7 @@ Ha! you implemented the `shelve` module!
 
 * `itertools` - generators versions to existing functions and more: izip, islice, imap, ifilter, cycle, repeat, chain, groupby.
 * `array` - lists to/from C arrays. good for interacting with the OS.
-* `struct` - build and unpack C types and structs.
+* `struct` - build and unpack C types and structs -> consider using `construct` module (by Tomer Filiba)
 * `argparse` - from 2.7. if not available can be installed as package.
 * `brownie` - not in the stdlib. contains many nice utilities like `ImmutableDict`.
 
@@ -411,7 +334,7 @@ Ha! you implemented the `shelve` module!
 ### lxml - building
 
 	!python
-	>>> from lxml.builder import E	
+	>>> from lxml.builder import E
 	>>> page = (
 	...   E.html(       # create an Element called "html"
 	...     E.head(
@@ -452,8 +375,8 @@ Ha! you implemented the `shelve` module!
 	...     element.clear()
 	ABC -- abc
 	MORE DATA -- more data
-	XYZ -- xyz	
-	
+	XYZ -- xyz
+
 ---
 
 ## Exercise 7 - xor a buffer
@@ -463,8 +386,8 @@ What would be the fastest way to xor a buffer with 0x7b?
 	!python
 	>>> xor_buf('\x01\x02\x03', 0x7b)
 	'zyx'
-	
----	
+
+---
 
 ## `numpy`
 
@@ -484,7 +407,7 @@ What would be the fastest way to xor a buffer with 0x7b?
 
 ---
 
-### Exercise 2 - echo server
+### Exercise 8 - echo server
 
 Implement an echo server, which upper cases every input. It should support multiple clients concurrently. Remember the limitation on number of threads. consider using select/poll.
 
@@ -502,7 +425,7 @@ Some client code for example.
 	'BAR'
 
 Simple server code:
-	
+
 	!python
 	>>> import socket
 	>>> server = socket.socket()

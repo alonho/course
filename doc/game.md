@@ -22,7 +22,7 @@ Implement it!
 
 ---
 
-## Secnond session
+## Second session
 
 Test first!
 

@@ -37,14 +37,14 @@ Every instance has a dict:
 	100
 
 Even module attribute are stored in a dict:
-	
+
 	!python
 	>>> import sys
 	>>> sys.__dict__.keys()
 	['setrecursionlimit', 'dont_write_bytecode', 'getrefcount', ...]
-	
+
 And the module cache (makes sure modules are loaded once) is also a dict:
-	
+
 	!python
 	>>> sys.modules['sys']
 	<module 'sys' (built-in)>
@@ -53,56 +53,122 @@ And the module cache (makes sure modules are loaded once) is also a dict:
 
 ## locals and globals
 
-There are two types of dictionaries designated for variable lookup: locals() returns local variables, 
+There are two types of dictionaries designated for variable lookup: locals() returns local variables,
 globals() returns global variables.
 
 	!python
 	glob = 100
 	def global_test():
 		return glob # locals() won't contain 'glob' but globals() will
-	
+
 	def local_test():
 		loc = 100
 		return loc
 
 	>>> dis.dis(global_test)
 	2           0 LOAD_GLOBAL              0 (glob)
-                3 RETURN_VALUE        
-			
+                3 RETURN_VALUE
+
 	>>> dis.dis(local_test)
     2           0 LOAD_CONST               1 (100)
                 3 STORE_FAST               0 (loc)
 
     3           6 LOAD_FAST                0 (loc)
-                9 RETURN_VALUE      
+                9 RETURN_VALUE
 
 ---
 
 `dis.dis` is a python disassembler. it prints the bytecode of the functions.
 
 For loading global variables the `LOAD_GLOBAL` bytecode is used.
-			
+
 For loading local variables the `LOAD_FAST` bytecode is used.
-			
-The reason `LOAD_FAST` is called `LOAD_FAST` and not `LOAD_LOCAL` is because local variable access is optimized, 
-and therefore, local variable access is faster. 
-			
+
+The reason `LOAD_FAST` is called `LOAD_FAST` and not `LOAD_LOCAL` is because local variable access is optimized,
+and therefore, local variable access is faster.
+
 ---
-			
-## The mighty '.'
 
-The `__getattribute__` method allows customization of the attribute lookup process.
+## Dynamic access to attributes
 
-	!python
-	class Foo(object):
+Use builtin `getattr` and `setattr`:
 
-	    def __getattribute__(self, attr):
-			print 'getting {}'.format(attr)
-			return 10
+    !python
+    class Foo(object):
+        pass
 
-	>>> print Foo().a
-	getting a
-	10
+    >>> f = Foo()
+    >>> setattr(f, 'member', 1.23)
+    >>> getattr(f, 'member')
+    1.23
+    >>> f.member
+    1.23
+
+---
+
+## Hooking attribute access
+
+The `__getattr__` method is called for non-existent members.
+
+    !python
+    class Foo(object):
+        def __getattr__(self, name):
+            print 'getting {}'.format(name)
+            return len(name)
+
+    >>> f = Foo()
+    >>> f.x
+    getting helloworld
+    1
+    >>> f.helloworld
+    getting helloworld
+    10
+    >>> f.blah = 0.1
+    >>> f.blah
+    0.1
+
+---
+
+## Hooking attribute access
+
+The `__getattribute__` method is called for any members.
+
+    !python
+    class Foo(object):
+        def __getattribute__(self, name):
+            print 'getting {}'.format(name)
+            return len(name)
+
+    >>> f = Foo()
+    >>> f.x
+    getting helloworld
+    1
+    >>> f.helloworld
+    getting helloworld
+    10
+    >>> f.blah = 0.1
+    >>> f.blah
+    getting blah
+    4
+
+---
+
+## Hooking attribute access
+
+The `__setattr__` method is called when setting all members.
+
+    !python
+    class Foo(object):
+        def __setattr__(self, name, value):
+            print 'setting {} = {}'.format(name, value)
+
+    >>> f = Foo()
+    >>> f.x = 1
+    setting x = 1
+    >>> f.bar = 1.23
+    setting bar = 1.23
+    >>> f.x = 1
+    setting x = 1
 
 ---
 
@@ -110,23 +176,30 @@ The `__getattribute__` method allows customization of the attribute lookup proce
 
 	!python
 	>>> obj = CaseInsensitive()
-	>>> obj.a = 100
-	>>> obj.A
-	100
+    >>> a.x = 1
+    >>> a.x
+    1
+    >>> a.X
+    1
+    >>> a.XYZ = 2
+    >>> a.xyz
+    2
+    >>> a.__dict__
+    {'x': 1, 'xyz': 2}
 
 ---
 
 ## Exercise 1 - solution
 
 	!python
-	class A(object):
-		def __getattribute__(self, attr):
-			try:
-				return super(A, self).__getattribute__(attr)
-			except AttributeError:
-				return super(A, self).__getattribute__(attr.lower())
+    class CaseInsensitive(object):
+        def __setattr__(self, name, value):
+            return object.__setattr__(self, name.lower(), value)
+        def __getattribute__(self, name):
+            return object.__getattribute__(self, name.lower())
 
-Note that we are using super because looking at `__dict__` will trigger an infinite recursion of `__getattribute__`.
+Note that we are using `object` because looking at `self.__dict__`
+will trigger an infinite recursion of `__getattr__/__setattr__`.
 
 ---
 
@@ -150,14 +223,13 @@ Example of dynamic attribute lookup:
 	import math
 
 	class Angle(object):
-	
 		def __init__(self, degrees):
 			self.degrees = degrees
-		
+
 		@property
 		def radians(self):
 			return self.degrees * (math.pi / 180)
-		
+
 	>>> a = Angle(180)
 	>>> a.radians
 	3.141592653589793
@@ -166,7 +238,7 @@ Example of dynamic attribute lookup:
       File "<stdin>", line 1, in <module>
     AttributeError: can't set attribute
 
-property is a built-in utility decorator that generates descriptor objects. 
+property is a built-in utility decorator that generates descriptor objects.
 it's useful for calculated values and readonly attributes.
 
 ---
@@ -175,27 +247,25 @@ it's useful for calculated values and readonly attributes.
 
 	!python
 	class const(object):
-	
 		def __init__(self, value):
 			self._value = value
-	
 		def __get__(self, obj, type):
 			print obj, type
 			return self._value
-			
 		def __set__(self, obj, value):
 			raise AttributeError() # indicates a read only
-				
 		def __delete__(self, obj):
 			# no allocation, nothing to do.
 			pass
-			
+
 	>>> class A(object):
 	...     a = const(100)
-	>>> A.a # class attr translates to: A.__dict__['a'].__get__(None, A)
+	>>> A.a  # class attr translates to:
+             # A.__dict__['a'].__get__(None, A)
 	None <class '__main__.const'>
 	100
-	>>> A().a # instance attr translates to: type(obj).__dict__['a'].__get__(obj, type(obj))
+	>>> A().a # instance attr translates to:
+              # type(obj).__dict__['a'].__get__(obj, type(obj))
 	<__main__.A object at 0x103449e90> <class '__main__.const'>
 	100
 
@@ -207,7 +277,7 @@ it's useful for calculated values and readonly attributes.
 	class Person(object):
 		name = typesafe(str)
 		age = typesafe(int)
-	
+
 	>>> p = Person()
 	>>> p.name = "Alon"
 	>>> p.age = "Horev"
@@ -225,21 +295,22 @@ it's useful for calculated values and readonly attributes.
 	    def __init__(self, cls):
 			self._cls = cls
 			self._value = None
-        
+
 		def __get__(self, obj, type):
 			return self._value
-				
+
 		def __set__(self, obj, value):
 			if not isinstance(value, self._cls):
-				raise TypeError("Expected {}, got {} ({})".format(self._cls, type(value), value))
+                fmt = "Expected {}, got {} ({})"
+				raise TypeError(fmt.format(self._cls, type(value), value))
 			self._value = value
 
 ---
 
 ## Inheritence, super and the MRO
 
-Python supports multiple inheritence. Because all objects inherit from `object`, all inheritence trees look like diamonds.
-
+Python supports multiple inheritence. Because all objects inherit from `object`,
+all inheritence trees look like diamonds.
 There are two ways of calling parent methods. the explicit:
 
 	!python
@@ -251,54 +322,66 @@ There are two ways of calling parent methods. the explicit:
 And using super:
 
 	!python
-	class Person(object):	
+	class Person(object):
 		def __init__(self, name):
 			super(Person, self).__init__()
 			self._name = name
 
-`super` is recommended for several reasons: 
+---
+
+## Why to use `super`?
+
+`super` is recommended for several reasons:
 
 1. if `Person` no longer inherits from object but from `Mammal`, a single line changes.
 2. `super` enables calling all constructors when used in the context of multiple inheritence. next slide shows how.
 
 ---
 
-## How to user super
+## How to use `super`?
 
 	!python
 	class Person(object):
 		def __init__(self):
 			print "Person"
+
 	class Student(Person):
 		def __init__(self):
 			super(Student, self).__init__()
 			print "Student"
+
 	class Teacher(Person):
 		def __init__(self):
 			super(Teacher, self).__init__()
 			print "Teacher"
+
 	class TeachingStudent(Student, Teacher):
 		def __init__(self):
 			super(TeachingStudent, self).__init__()
 			print "TeachingStudent"
-			
-	>>> t = TeachingStudent()
-	Person
-	Teacher
-	Student
-	TeachingStudent
-	>>> TeachingStudent.__mro__
-	(__main__.TeachingStudent,
-	 __main__.Student,
-     __main__.Teacher,
-	 __main__.Person,
-	 object)
 
 ---
 
-## How super works
+## How to use `super`?
 
-### MRO - method resolution order
+    !python
+    >>> t = TeachingStudent()
+    Person
+    Teacher
+    Student
+    TeachingStudent
+    >>> TeachingStudent.__mro__
+    (__main__.TeachingStudent,
+     __main__.Student,
+     __main__.Teacher,
+     __main__.Person,
+     object)
+
+---
+
+## How `super` works?
+
+**MRO** - method resolution order
 
 In a diamond inheritence model, where all constructors need to be called we need to find a way to order them.
 Python uses an algorithm called `C3`.
@@ -322,17 +405,14 @@ Every constructor will consume the arguments it explicitly defined and pass the 
 	class Person(object):
 		def __init__(self, age):
 			self.age = age
-
 	class Student(Person):
 		def __init__(self, semester, *args, **kwargs):
 			super(Student, self).__init__(*args, **kwargs)
 			self.semester = semester
-	
 	class Teacher(Person):
 		def __init__(self, profession, *args, **kwargs):
 			super(Teacher, self).__init__(*args, **kwargs)
 			self.profession = profession
-
 	class TeachingStudent(Student, Teacher):
 		def __init__(self, *args, **kwargs):
 			super(TeachingStudent, self).__init__(*args, **kwargs)
@@ -352,7 +432,7 @@ Same as:
 
 	!python
 	>>> __import__('os')
-	
+
 The import process searches for modules in directories found in the PYTHONPATH environment variable.
 
 	!bash
@@ -363,20 +443,21 @@ The list of search paths can be modified from within python:
 	!python
     >>> import sys
 	>>> sys.path.append('path')
-	
+
 ---
 
 After looking at the PYTHONPATH, python looks in the package installation path:
-	
+
 	!python
 	>>> import site
 	>>> site.getsitepackages()
-	['/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python',
-     '/Library/Python/2.7/site-packages']
-	 
-Finally python looks at the stdlib directory, In my case its: `/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7`.
+	['/usr/local/lib/python2.7/dist-packages',
+     '/usr/lib/python2.7/dist-packages']
 
-After a module has been found and compiled it is stored in `sys.modules`. 
+Finally python looks at the stdlib directory, On Linux, it's
+`/usr/lib/python2.7/`
+
+After a module has been found and compiled it is stored in `sys.modules`.
 
 Actually, the first step of the import process is looking for the module name in `sys.modules`, making sure each module is compiled and invoked once.
 
@@ -419,24 +500,22 @@ NOTE2: `eval`, `exec` and `execfile` all receive optional `locals` and `globals`
 An immutable object cannot be modified after it is created.
 This is in contrast to a mutable object, which can be modified after it is created.
 
-Examples of immutable objects: ints, strings, tuples etc'.
+Examples of immutable objects: ints, floats, strings, tuples etc'.
 
-Examples of Mutable objects: lists, dicts, objects etc'.
-
-Because immutable objects can't change, They are passed by value.
-This is in contrast to mutable objects, which are passed by reference.
-
-Example:
+Examples of mutable objects: lists, dicts, objects etc'.
 
 	!python
 	>>> string = "foo"
-	>>> copy = string # creates a new string
-	>>> string += "bar" 
+	>>> copy = string
+	>>> copy is string
+	True
+	>>> string += "bar" # creates a new string
+	>>> copy is string
+	False
 	>>> string
 	foobar
 	>>> copy
 	foo
-	
 	>>> l = [1, 2, 3]
 	>>> l2 = l # creates a reference to the same list
 	>>> l.append(4)
@@ -466,7 +545,7 @@ If a custom object has immutable qualities (a user id that will never change), I
 		    return self.id == other.id
 		def __hash__(self):
 			return self.id
-	
+
 That way we can build dictionaries with users as keys, or sets of users.
 
 ---
@@ -483,9 +562,9 @@ The brownie library has an `ImmutableDict` implementation.
 
 ## The stack
 
-The python stack is composed of frames. 
+The python stack is composed of frames.
 
-Each thread has it's own stack. 
+Each thread has it's own stack.
 
 The stack frames points to the code object, local variables, the previous stack frame and various python internal information.
 
@@ -539,7 +618,7 @@ Python functions are simple function objects.
 	!python
 	def func():
 		pass
-	
+
 	>>> print func
 	<function __main__.func>
 
@@ -547,16 +626,16 @@ Python methods are a bit different.
 
 	!python
 	class A(object):
-		def foo(self): 
+		def foo(self):
 			pass
-		
+
 	>>> print A().foo
 	<bound method A.foo of <__main__.A object at 0x101e4aed0>>
 
 ---
 
 There's a reason for that:
-	
+
 	!python
 	>>> a = A()
 	>>> foo = a.foo
@@ -570,9 +649,9 @@ So calling bound methods:
 
 	!python
 	>>> a.foo()
-	
+
 Is implemented roughly like this:
-	
+
 	!python
 	>>> a.foo.im_func(a.foo.im_self)
 
@@ -586,7 +665,7 @@ Unbound methods are methods of the class:
 	>>> print A.foo.im_self # no instance
 	None
 	>>> print A.foo.im_class
-	<class '__main__.A'>
+	<class __main__.A>
 
 One of the reasons the `im_class` attribute exists is this:
 
@@ -596,7 +675,7 @@ One of the reasons the `im_class` attribute exists is this:
 	>>> A.foo(10) # type of self is compared against im_class
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
-    TypeError: unbound method foo() must be called with A instance 
+    TypeError: unbound method foo() must be called with A instance
 	as first argument (got int instance instead)
 
 ---
@@ -617,7 +696,10 @@ Without `__slots__`:
 	>>> sys.getsizeof(A.__dict__)
 	280
 
-	
+---
+
+## `__slots__`
+
 With `__slots__`:
 
 	!python
@@ -629,7 +711,7 @@ With `__slots__`:
 	Traceback (most recent call last):
 	  File "<stdin>", line 1, in <module>
     AttributeError: 'A' object has no attribute '__dict__'
-	
+
 ---
 
 No attributes can be added to classes with `__slots__`:
@@ -643,7 +725,7 @@ No attributes can be added to classes with `__slots__`:
 	Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     AttributeError: 'A' object has no attribute 'c'
-	
+
 Note1: `__slots__` and inheritence - `__dict__` allocation will be prevented only if all classes in the inheritence tree define `__slots__`.
 
 Note2: `__slots__` is implemented using descriptors!
@@ -655,9 +737,9 @@ Note2: `__slots__` is implemented using descriptors!
 Avoid this:
 
 	!python
-	def f(l=[]):
-	    l.append(1)
-		print l
+	def f(x=[]):
+	    x.append(1)
+		print x
 	>>> f()
 	[1]
 	>>> f()
@@ -665,14 +747,18 @@ Avoid this:
 	>>> f.func_defaults # these objects are saved in the function object!
 	([1, 1],)
 
+---
+
+## Function default arguments
+
 Do this:
-	
+
 	!python
-	def f(l=None):
-		if l is None:
-			l = []
-		l.append(1)
-		print l
+	def f(x=None):
+		if x is None:
+			x = []
+		x.append(1)
+		print x
 	>>> f()
 	[1]
 	>>> f()
@@ -683,14 +769,14 @@ Do this:
 ## casting to bool
 
 Avoid this:
-	
+
 	!python
 	def foo(string=None):
 	   if string: # what if an empty string is valid?
 	       ...
-		
+
 Do this:
-	
+
 	!python
 	if x is None:
 		...
@@ -720,3 +806,30 @@ How does it work?
 	>>> cell = _[0] # cell is a reference to a variable in an upper scope
 	>>> cell.cell_contents
 	5
+
+---
+
+## When in doubt...
+
+    >>> import this
+    The Zen of Python, by Tim Peters
+
+    Beautiful is better than ugly.
+    Explicit is better than implicit.
+    Simple is better than complex.
+    Complex is better than complicated.
+    Flat is better than nested.
+    Sparse is better than dense.
+    Readability counts.
+    Special cases aren't special enough to break the rules.
+    Although practicality beats purity.
+    Errors should never pass silently.
+    Unless explicitly silenced.
+    In the face of ambiguity, refuse the temptation to guess.
+    There should be one-- and preferably only one --obvious way to do it.
+    Although that way may not be obvious at first unless you're Dutch.
+    Now is better than never.
+    Although never is often better than *right* now.
+    If the implementation is hard to explain, it's a bad idea.
+    If the implementation is easy to explain, it may be a good idea.
+    Namespaces are one honking great idea -- let's do more of those!

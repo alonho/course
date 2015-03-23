@@ -25,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Generators</title>
+    <title>ctypes</title>
     <!-- Styles -->
     
     <style type="text/css" media="print">
@@ -1291,15 +1291,375 @@ aside {
     </div>
     <div class="slides">
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>ctypes</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Introduction</h2></header>
+            
+            
+            <section><p>This talk is heavily based on the <code>ctypes</code> module's excellent documentation: <a href="https://docs.python.org/library/ctypes.html">https://docs.python.org/library/ctypes.html</a></p>
+<h2>What is <code>ctypes</code>?</h2>
+<p><code>ctypes</code> is a foreign function library for Python.</p>
+<p>It provides C compatible data types, and allows calling functions in DLLs or shared libraries.</p>
+<p>It can be used to wrap these libraries in pure Python.</p>
+<p>It's part of CPython from 2.5 version.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h1>Generators</h1></header>
+            <header><h2>An example</h2></header>
             
             
-            <section><p>Generators can yield values, accept values via send and process exception via throw.</p>
+            <section><h3>Linux</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">c</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="s">&quot;libc.so.6&quot;</span><span class="p">)</span>  <span class="c"># /lib/x86_64-linux-gnu/libc.so.6</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">d</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello Linux World</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">Linux</span> <span class="n">World</span>
+<span class="mi">18</span>
+</pre></div>
+</td></tr></table>
+<h3>Windows</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">c</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="s">&#39;msvcrt&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">d</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello Windows World</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">Windows</span> <span class="n">World</span>
+<span class="mi">20</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Calling functions</h2></header>
+            
+            
+            <section><p>You can access the exported functions via library object's attributes:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">printf1</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">printf</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">printf2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#39;printf&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">assert</span> <span class="n">printf1</span> <span class="ow">is</span> <span class="n">printf2</span>
+</pre></div>
+</td></tr></table>
+<p>IMPORTANT: make sure you pass the right arguments to the library's functions!</p>
+<p>What happens if you are wrong?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Exercise</h2></header>
+            
+            
+            <section><p>What should happen when this code runs?</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;x = </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+<p>And now?</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">45</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;x = </span><span class="si">%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+<p>And now?</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;x = </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Conclusion</h2></header>
+            
+            
+            <section><p>With great power, comes great responsibility :)</p>
+<p><code>ctypes</code> is <strong>very</strong> easy to use, but it also makes it <strong>very</strong> to easy to "shoot yourself in the foot".</p>
+<p>Protect yourself with a good unittest suite, to make sure you are accessing your libraries correctly.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>How <code>ctypes</code> really works?</h2></header>
+            
+            
+            <section><p>In order to call a C function, you should follow some kind of "calling convention".</p>
+<p>It usually involves:</p>
+<ul>
+<li>how the arguments should be stored (registers/stack)</li>
+<li>how the called function knows where to return.</li>
+<li>how the return value should be retrieved.</li>
+</ul>
+<p>To do this correctly, you actually need to "build" the correct stack structure for the function you want to call,
+call it, and parse the returning stack structure to obtain the results.</p>
+<p>This is all done automatically by the compiler each time you call a function.</p>
+<p><code>ctypes</code> knows how to "reproduce" this "magic" from Python, so you can call <strong>any</strong> C function.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Data types</h2></header>
+            
+            
+            <section><p>Note that we called <code>printf</code> with Python's string object, and somehow it worked.</p>
+<p>Under the hood, <code>ctypes</code> converted <code>str</code> into its underlying <code>char *</code> type and passed it to <code>printf</code>.</p>
+<p>It also automatically converts Python's <code>int</code> into <code>signed long int</code> C type.</p>
+<p>In order to be explicit about your arguments' types use <code>c_*</code> type system:</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Data types</h2></header>
+            
+            
+            <section><pre><code>ctypes type     |   C type              | Python type
+--------------------------------------------------------------------
+c_bool          |   _Bool               | bool (1)
+c_char          |   char                | 1-character string
+c_wchar         |   wchar_t             | 1-character unicode string
+c_byte          |   char                | int/long
+c_ubyte         |   unsigned char       | int/long
+c_short         |   short               | int/long
+c_ushort        |   unsigned short      | int/long
+c_int           |   int                 | int/long
+c_uint          |   unsigned int        | int/long
+c_long          |   long                | int/long
+c_ulong         |   unsigned long       | int/long
+c_longlong      |   long long           | int/long
+c_ulonglong     |   unsigned long long  | int/long
+c_float         |   float               | float
+c_double        |   double              | float
+c_longdouble    |   long double         | float
+c_char_p        |   char *              | string or None
+c_wchar_p       |   wchar_t *           | unicode or None
+c_void_p        |   void *              | int/long or None
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>Data types</h2></header>
+            
+            
+            <section><p>An example:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -1318,25 +1678,25 @@ aside {
 16
 17
 18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="mi">1</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="k">yield</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">yield</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;caught {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c"># same as `next(gen)`</span>
-<span class="mi">1</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">2</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">caught</span> <span class="mi">3</span>
+19</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">printf</span> <span class="o">=</span> <span class="n">libc</span><span class="o">.</span><span class="n">printf</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;World&quot;</span><span class="p">)</span>
+<span class="n">Hello</span><span class="p">,</span> <span class="n">World</span>
+<span class="mi">13</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello, %S</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">u&quot;World&quot;</span><span class="p">)</span>
+<span class="n">Hello</span><span class="p">,</span> <span class="n">World</span>
+<span class="mi">13</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s"> bottles of beer</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+<span class="mi">42</span> <span class="n">bottles</span> <span class="n">of</span> <span class="n">beer</span>
+<span class="mi">19</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%f</span><span class="s"> bottles of beer</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mf">42.5</span><span class="p">)</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">StopIteration</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="err">?</span>
+<span class="n">ArgumentError</span><span class="p">:</span> <span class="n">argument</span> <span class="mi">2</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">TypeError</span><span class="p">:</span> \
+            <span class="n">Don</span><span class="s">&#39;t know how to convert parameter 2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;An int </span><span class="si">%d</span><span class="s">, a double </span><span class="si">%f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">c_double</span><span class="p">(</span><span class="mf">3.14</span><span class="p">))</span>
+<span class="n">An</span> <span class="nb">int</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">a</span> <span class="n">double</span> <span class="mf">3.140000</span>
+<span class="mi">31</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1350,322 +1710,41 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
             </aside>
             
             <aside class="page_number">
-              1/12
+              10/16
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/ctypes.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 1 - flatten</h2></header>
+            <header><h2>Return value</h2></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flatten</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">i</span><span class="p">,</span>
-<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              2/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Execrise 1 - solution</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">iterable</span> <span class="ow">in</span> <span class="n">iterables</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">i</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              3/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 2 - find dependencies</h2></header>
-            
-            
-            <section><p>Print every imported module and how many times it is imported for all python modules in a directory (recursive!):</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">print_deps</span><span class="p">(</span><span class="s">&quot;/tmp&quot;</span><span class="p">)</span>
-<span class="n">os</span>      <span class="mi">1</span>
-<span class="n">sys</span>     <span class="mi">2</span>
-<span class="n">csv</span>     <span class="mi">1</span>
-</pre></div>
-</td></tr></table>
-<p>Note: import can be done using <code>import os</code> and <code>from os import environ</code>.</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              4/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Map and filter</h2></header>
-            
-            
-            <section><p>Map and filter provide an alternative for list comprehensions and for loops.</p>
-<p>The following examples show cases where they are preferred over regular for loops and list comprehensions:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">filter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [i for i in ints if is_prime(i)]</span>
-<span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [str(i) for i in ints]</span>
-<span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">]</span>
-</pre></div>
-</td></tr></table>
-<p>The itertools module provides <code>ifilter</code> and <code>imap</code> for generator versions:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">first_prime</span> <span class="o">=</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="c"># no need to process the whole list!</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">first_prime</span>
-<span class="mi">5</span>
-</pre></div>
-</td></tr></table>
-<p>TIP: map and filter are implemented in C. they can be up to twice as fast.</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              5/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Reducers</h2></header>
-            
-            
-            <section><p>Reducers take a sequence and return a single value.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="mi">6</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[])</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">all</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="bp">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">any</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="mi">3</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">])</span>
-<span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              6/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Sorting</h2></header>
-            
-            
-            <section><p>Sorting in python is always for the smallest to the biggest.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="c"># generate a new sorted list</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="c"># original list untouched</span>
-<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="c"># in-place</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">l</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">)]</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              7/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Secondary sort</h2></header>
-            
-            
-            <section><p>Sorting over more than one field can be done by generating a tuple containing them.
-When comparing tuples, all the first items are compared, then all the second items, etc'.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">msg</span><span class="p">[</span><span class="s">&#39;month&#39;</span><span class="p">]))</span>
-<span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
- <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
- <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span> <span class="o">=</span> <span class="n">libc</span><span class="o">.</span><span class="n">strchr</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">))</span>
+<span class="mi">8059983</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_char_p</span> <span class="c"># c_char_p is a pointer to a string</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">))</span>
+<span class="s">&#39;def&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">))</span>
+<span class="bp">None</span>
+<span class="o">&gt;&gt;&gt;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1679,32 +1758,45 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
             </aside>
             
             <aside class="page_number">
-              8/12
+              11/16
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/ctypes.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 3 - primes</h2></header>
+            <header><h2>Passing by reference</h2></header>
             
             
-            <section><p>Print the first N primes. (a prime number is bigger then 1 and divides only by itself and 1).</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">print_first_primes</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="mi">2</span>
+            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">c_int</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">c_float</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">create_string_buffer</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">i</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="mi">0</span> <span class="mf">0.0</span> <span class="s">&#39;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">libc</span><span class="o">.</span><span class="n">sscanf</span><span class="p">(</span><span class="s">&quot;1 3.14 Hello&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s"> </span><span class="si">%f</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="n">byref</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">byref</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">s</span><span class="p">)</span>
 <span class="mi">3</span>
-<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">i</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="mi">1</span> <span class="mf">3.1400001049</span> <span class="s">&#39;Hello&#39;</span>
+<span class="o">&gt;&gt;&gt;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1718,74 +1810,22 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
             </aside>
             
             <aside class="page_number">
-              9/12
+              12/16
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/ctypes.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 4 - primes continued</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">primes</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
-<span class="mi">547</span>
-<span class="mi">557</span>
-<span class="mi">563</span>
-<span class="mi">569</span>
-<span class="mi">571</span>
-<span class="mi">577</span>
-<span class="mi">587</span>
-<span class="mi">593</span>
-<span class="mi">599</span>
-<span class="mi">601</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              10/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 4 - solution</h2></header>
+            <header><h2>Setting types for functions</h2></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -1802,29 +1842,25 @@ When comparing tuples, all the first items are compared, then all the second ite
 12
 13
 14
-15
-16
-17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
-<span class="kn">import</span> <span class="nn">math</span>
-
-<span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-<span class="k">def</span> <span class="nf">prime_generator</span><span class="p">():</span>
-    <span class="n">integers</span> <span class="o">=</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># infinite generator</span>
-    <span class="k">return</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">integers</span><span class="p">)</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span> <span class="o">=</span> <span class="n">libc</span><span class="o">.</span><span class="n">strchr</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_char_p</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">c_char</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">)</span>
+<span class="s">&#39;def&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="s">&quot;def&quot;</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="err">?</span>
+<span class="n">ArgumentError</span><span class="p">:</span> <span class="n">argument</span> <span class="mi">2</span><span class="p">:</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">TypeError</span><span class="p">:</span> \
+        <span class="n">one</span> <span class="n">character</span> <span class="n">string</span> <span class="n">expected</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">)</span>
+<span class="bp">None</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">strchr</span><span class="p">(</span><span class="s">&quot;abcdef&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">)</span>
+<span class="s">&#39;def&#39;</span>
+<span class="o">&gt;&gt;&gt;</span>
 </pre></div>
-</td></tr></table></section>
+</td></tr></table>
+<p>This can be automated by the <code>ctypeslib</code> tool, by generating "wrapper" Python
+code from specified C header files.</p></section>
             
           </div>
           <div class="presenter_notes">
@@ -1836,22 +1872,105 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
             </aside>
             
             <aside class="page_number">
-              11/12
+              13/16
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>More goodies</h2></header>
+            
+            
+            <section><ul>
+<li>pointers</li>
+<li>structures</li>
+<li>unions</li>
+<li>byte-alignment</li>
+<li>byte order</li>
+<li>typed arrays</li>
+<li>callback functions (so you can use stdlib's <code>qsort</code> from Python)</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Exercise</h2></header>
+            
+            
+            <section><p>Use ctypes to generate pseudo-random numbers using a <code>random()</code> function from your C library:</p>
+<pre><code>Macro: int RAND_MAX
+
+    The value of this macro is an integer constant representing the
+    largest value the rand function can return.
+
+    In the GNU C Library, it is 2147483647, which is the largest signed
+    integer representable in 32 bits.
+
+    In other libraries, it may be as low as 32767.
+
+Function: int rand (void)
+
+    The rand function returns the next pseudo-random number in the series.
+    The value ranges from 0 to RAND_MAX.
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/16
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/ctypes.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 4 - solution</h2></header>
+            <header><h2>Solution</h2></header>
             
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -1867,24 +1986,20 @@ When comparing tuples, all the first items are compared, then all the second ite
 11
 12
 13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prime_generator</span><span class="p">())</span>
-
-<span class="k">def</span> <span class="nf">print_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
-
-<span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-    <span class="n">gen</span> <span class="o">=</span> <span class="n">prime_generator</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">take</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-        <span class="k">pass</span>
-    <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">print_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">c</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="s">&quot;libc.so.6&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">RAND_MAX</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">**</span> <span class="mi">31</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="n">RAND_MAX</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="p">[</span><span class="mf">0.6288709244690835</span><span class="p">,</span>
+ <span class="mf">0.36478447262197733</span><span class="p">,</span>
+ <span class="mf">0.5134009099565446</span><span class="p">,</span>
+ <span class="mf">0.9522297247312963</span><span class="p">,</span>
+ <span class="mf">0.916195067577064</span><span class="p">,</span>
+ <span class="mf">0.6357117276638746</span><span class="p">,</span>
+ <span class="mf">0.7172969290986657</span><span class="p">,</span>
+ <span class="mf">0.14160255528986454</span><span class="p">,</span>
+ <span class="mf">0.6069688759744167</span><span class="p">,</span>
+ <span class="mf">0.016300571616739035</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1898,11 +2013,11 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/ctypes.md">doc/ctypes.md</a>
             </aside>
             
             <aside class="page_number">
-              12/12
+              16/16
             </aside>
           </footer>
         </div>
@@ -1917,64 +2032,84 @@ When comparing tuples, all the first items are compared, then all the second ite
       <caption>Table of Contents</caption>
       
       <tr id="toc-row-1">
-        <th><a href="#slide1">Generators</a></th>
+        <th><a href="#slide1">ctypes</a></th>
         <td><a href="#slide1">1</a></td>
       </tr>
       
         
         <tr id="toc-row-2" class="sub">
-          <th><a href="#slide2">Exercise 1 - flatten</a></th>
+          <th><a href="#slide2">Introduction</a></th>
           <td><a href="#slide2">2</a></td>
         </tr>
         
         <tr id="toc-row-3" class="sub">
-          <th><a href="#slide3">Execrise 1 - solution</a></th>
+          <th><a href="#slide3">An example</a></th>
           <td><a href="#slide3">3</a></td>
         </tr>
         
         <tr id="toc-row-4" class="sub">
-          <th><a href="#slide4">Exercise 2 - find dependencies</a></th>
+          <th><a href="#slide4">Calling functions</a></th>
           <td><a href="#slide4">4</a></td>
         </tr>
         
         <tr id="toc-row-5" class="sub">
-          <th><a href="#slide5">Map and filter</a></th>
+          <th><a href="#slide5">Exercise</a></th>
           <td><a href="#slide5">5</a></td>
         </tr>
         
         <tr id="toc-row-6" class="sub">
-          <th><a href="#slide6">Reducers</a></th>
+          <th><a href="#slide6">Conclusion</a></th>
           <td><a href="#slide6">6</a></td>
         </tr>
         
         <tr id="toc-row-7" class="sub">
-          <th><a href="#slide7">Sorting</a></th>
+          <th><a href="#slide7">How <code>ctypes</code> really works?</a></th>
           <td><a href="#slide7">7</a></td>
         </tr>
         
         <tr id="toc-row-8" class="sub">
-          <th><a href="#slide8">Secondary sort</a></th>
+          <th><a href="#slide8">Data types</a></th>
           <td><a href="#slide8">8</a></td>
         </tr>
         
         <tr id="toc-row-9" class="sub">
-          <th><a href="#slide9">Exercise 3 - primes</a></th>
+          <th><a href="#slide9">Data types</a></th>
           <td><a href="#slide9">9</a></td>
         </tr>
         
         <tr id="toc-row-10" class="sub">
-          <th><a href="#slide10">Exercise 4 - primes continued</a></th>
+          <th><a href="#slide10">Data types</a></th>
           <td><a href="#slide10">10</a></td>
         </tr>
         
         <tr id="toc-row-11" class="sub">
-          <th><a href="#slide11">Exercise 4 - solution</a></th>
+          <th><a href="#slide11">Return value</a></th>
           <td><a href="#slide11">11</a></td>
         </tr>
         
         <tr id="toc-row-12" class="sub">
-          <th><a href="#slide12">Exercise 4 - solution</a></th>
+          <th><a href="#slide12">Passing by reference</a></th>
           <td><a href="#slide12">12</a></td>
+        </tr>
+        
+        <tr id="toc-row-13" class="sub">
+          <th><a href="#slide13">Setting types for functions</a></th>
+          <td><a href="#slide13">13</a></td>
+        </tr>
+        
+        <tr id="toc-row-14" class="sub">
+          <th><a href="#slide14">More goodies</a></th>
+          <td><a href="#slide14">14</a></td>
+        </tr>
+        
+        <tr id="toc-row-15" class="sub">
+          <th><a href="#slide15">Exercise</a></th>
+          <td><a href="#slide15">15</a></td>
+        </tr>
+        
+        <tr id="toc-row-16" class="sub">
+          <th><a href="#slide16">Solution</a></th>
+          <td><a href="#slide16">16</a></td>
         </tr>
         
       

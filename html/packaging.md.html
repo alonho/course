@@ -25,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Generators</title>
+    <title>Packaging</title>
     <!-- Styles -->
     
     <style type="text/css" media="print">
@@ -1291,15 +1291,241 @@ aside {
     </div>
     <div class="slides">
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Packaging</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Introduction</h2></header>
+            
+            
+            <section><p>This talk is heavily based on:
+<a href="https://the-hitchhikers-guide-to-packaging.readthedocs.org/en/latest/">https://the-hitchhikers-guide-to-packaging.readthedocs.org/en/latest/</a></p>
+<p>Suppose you have written the best Python package ever (AKA the "TowelStuff" package), and you want other people to use it.</p>
+<p>OR, suppose you have found the "TowelStuff" package on the internet, and you want to use it in your project.</p>
+<p>What are the best practices for creating/using Python packages?</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h2>Basic layout</h2></header>
+            
+            
+            <section><p>Make sure your package's source code is organized correctly:</p>
+<pre><code>TowelStuff/
+    README.txt
+    setup.py
+    towelstuff/
+        __init__.py
+        foo.py
+        bar.py
+        morestuff/
+            __init__.py
+            eggs.py
+            xyzw.py
+    tests/
+        test_foo.py
+        test_bar.py
+        test_more.py
+        utils.py
+</code></pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h1>Generators</h1></header>
+            <header><h2>setup.py</h2></header>
             
             
-            <section><p>Generators can yield values, accept values via send and process exception via throw.</p>
+            <section><p>The bare minimum:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s">&#39;0.1dev&#39;</span>
+
+<span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&#39;TowelStuff&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="n">VERSION</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;towelstuff&#39;</span><span class="p">],</span>
+    <span class="n">license</span><span class="o">=</span><span class="s">&#39;MIT&#39;</span><span class="p">,</span>
+    <span class="n">long_description</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;README.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
+</td></tr></table>
+<p>Prepare an source package by running:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="nv">$ </span>python setup.py sdist
+... Lots of output ...
+</pre></div>
+</td></tr></table>
+<p>It will be created at <code>dist/towelstuff-0.1dev.tar.gz</code></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>setup.py</h2></header>
+            
+            
+            <section><p>Recommended <code>setup()</code> kwargs:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">author</span> <span class="o">=</span> <span class="s">&quot;Foo Bar&quot;</span>
+<span class="n">author_email</span> <span class="o">=</span> <span class="s">&quot;foo.bar@gmail.com&quot;</span><span class="p">,</span>
+<span class="n">maintainer_email</span> <span class="o">=</span> <span class="s">&quot;foo.bar@googlegroups.com&quot;</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://foobar.readthedocs.org&quot;</span>
+
+<span class="n">platforms</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;POSIX&quot;</span><span class="p">,</span> <span class="s">&quot;Windows&quot;</span><span class="p">]</span>
+
+<span class="n">install_requires</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;numpy&quot;</span><span class="p">,</span> <span class="s">&quot;requests&quot;</span><span class="p">]</span>
+
+<span class="n">tests_require</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;nose&quot;</span><span class="p">]</span>
+<span class="n">test_suite</span> <span class="o">=</span> <span class="s">&quot;nose.collector&quot;</span>
+
+<span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;console_scripts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;towel=towelstuff:main&#39;</span><span class="p">]})</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/11
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/packaging.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code">
+          <div class="inner">
+            
+            <header><h2>setup.py</h2></header>
+            
+            
+            <section><p>You can add also metadata classifiers about your package:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -1313,30 +1539,20 @@ aside {
 11
 12
 13
-14
-15
-16
-17
-18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="mi">1</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="k">yield</span>
-    <span class="k">print</span> <span class="n">a</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">yield</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;caught {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>  <span class="c"># same as `next(gen)`</span>
-<span class="mi">1</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="mi">2</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">gen</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">caught</span> <span class="mi">3</span>
-<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">StopIteration</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">classifiers</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">&quot;Development Status :: 5 - Production/Stable&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Intended Audience :: Developers&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Intended Audience :: System Administrators&quot;</span><span class="p">,</span>
+    <span class="s">&quot;License :: OSI Approved :: MIT License&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Operating System :: OS Independent&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Programming Language :: Python :: 2.7&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Programming Language :: Python :: 3.3&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: Internet&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: Software Development :: Libraries :: Python Modules&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: Software Development :: Testing&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: System :: Distributed Computing&quot;</span><span class="p">,</span>
+    <span class="s">&quot;Topic :: System :: Networking&quot;</span><span class="p">,</span>
+<span class="p">],</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1350,31 +1566,37 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              1/12
+              6/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
-            <header><h2>Exercise 1 - flatten</h2></header>
+            <header><h2>Installing a source package:</h2></header>
             
             
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flatten</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">i</span><span class="p">,</span>
-<span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span>
-</pre></div>
-</td></tr></table></section>
+            <section><p>Unpack and run:</p>
+<pre><code>$ tar xf towelstuff-0.1dev.tar.gz
+$ cd towelstuff-0.1dev
+$ python setup.py test
+... runs package's unittest suite ...
+$ python setup.py install [--user]
+</code></pre>
+<p>Or (if you have <code>pip</code> installed):</p>
+<pre><code>$ pip install towelstuff-0.1dev.tar.gz
+</code></pre>
+<p>Or (if you have access to a PyPI server):</p>
+<pre><code>$ pip install towelstuff==0.1dev
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1386,33 +1608,36 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              2/12
+              7/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
-            <header><h2>Execrise 1 - solution</h2></header>
+            <header><h2>Building a binary package:</h2></header>
             
             
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="o">*</span><span class="n">iterables</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">iterable</span> <span class="ow">in</span> <span class="n">iterables</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">i</span>
-</pre></div>
-</td></tr></table></section>
+            <section><p>On Windows, use:</p>
+<pre><code>D:\Projects\towelstuff&gt; python setup.py bdist_wininst
+</code></pre>
+<p>On Linux, use (on RPM-based distro):</p>
+<pre><code>~/Projects/TowelStuff $ python setup.py bdist_rpm
+</code></pre>
+<p>Or (on Debian/Ubuntu):</p>
+<pre><code>$ python setup.py --command-packages=stdeb.command bdist_deb
+</code></pre>
+<p>You should consider using the new <code>egg</code> package format:</p>
+<pre><code>$ python setup.py bdist_egg
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1424,248 +1649,40 @@ aside {
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              3/12
+              8/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
         <div class="slide has_code">
           <div class="inner">
             
-            <header><h2>Exercise 2 - find dependencies</h2></header>
+            <header><h2>virtualenv</h2></header>
             
             
-            <section><p>Print every imported module and how many times it is imported for all python modules in a directory (recursive!):</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">print_deps</span><span class="p">(</span><span class="s">&quot;/tmp&quot;</span><span class="p">)</span>
-<span class="n">os</span>      <span class="mi">1</span>
-<span class="n">sys</span>     <span class="mi">2</span>
-<span class="n">csv</span>     <span class="mi">1</span>
-</pre></div>
-</td></tr></table>
-<p>Note: import can be done using <code>import os</code> and <code>from os import environ</code>.</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              4/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Map and filter</h2></header>
-            
-            
-            <section><p>Map and filter provide an alternative for list comprehensions and for loops.</p>
-<p>The following examples show cases where they are preferred over regular for loops and list comprehensions:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">filter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [i for i in ints if is_prime(i)]</span>
-<span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span> <span class="c"># [str(i) for i in ints]</span>
-<span class="p">[</span><span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">,</span> <span class="s">&#39;7&#39;</span><span class="p">]</span>
-</pre></div>
-</td></tr></table>
-<p>The itertools module provides <code>ifilter</code> and <code>imap</code> for generator versions:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">first_prime</span> <span class="o">=</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">ints</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="c"># no need to process the whole list!</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">first_prime</span>
-<span class="mi">5</span>
-</pre></div>
-</td></tr></table>
-<p>TIP: map and filter are implemented in C. they can be up to twice as fast.</p></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              5/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Reducers</h2></header>
-            
-            
-            <section><p>Reducers take a sequence and return a single value.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="mi">6</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sum</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="p">[])</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">all</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="bp">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">any</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
-<span class="mi">3</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">])</span>
-<span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              6/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Sorting</h2></header>
-            
-            
-            <section><p>Sorting in python is always for the smallest to the biggest.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="c"># generate a new sorted list</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="c"># original list untouched</span>
-<span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span> <span class="c"># in-place</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">l</span>
-<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-
-<span class="o">&gt;&gt;&gt;</span> <span class="n">people</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">)]</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              7/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Secondary sort</h2></header>
-            
-            
-            <section><p>Sorting over more than one field can be done by generating a tuple containing them.
-When comparing tuples, all the first items are compared, then all the second items, etc'.</p>
+            <section><p><code>virtualenv</code> is a tool to create isolated Python environments.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-<span class="o">...</span>             <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">msg</span><span class="p">:</span> <span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="s">&#39;year&#39;</span><span class="p">],</span> <span class="n">msg</span><span class="p">[</span><span class="s">&#39;month&#39;</span><span class="p">]))</span>
-<span class="p">[{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2011</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
- <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;spam&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
- <span class="p">{</span><span class="s">&#39;msg&#39;</span><span class="p">:</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2012</span><span class="p">,</span> <span class="s">&#39;month&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre>/tmp <span class="nv">$ </span>sudo apt-get install python-virtualenv
+/tmp <span class="nv">$ </span>virtualenv .env
+New python executable in .env/bin/python
+Installing setuptools, pip....done.
+
+/tmp <span class="nv">$ </span><span class="nb">source</span> .env/bin/activate
+
+<span class="o">(</span>.env<span class="o">)</span>/tmp <span class="nv">$ </span><span class="c">### &lt;- note the prompt prefix &quot;.env&quot;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1679,34 +1696,42 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              8/12
+              9/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
-            <header><h2>Exercise 3 - primes</h2></header>
+            <header><h2>virtualenv</h2></header>
             
             
-            <section><p>Print the first N primes. (a prime number is bigger then 1 and divides only by itself and 1).</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">print_first_primes</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="mi">2</span>
-<span class="mi">3</span>
-<span class="mi">5</span>
-</pre></div>
-</td></tr></table></section>
+            <section><p>Package installation:</p>
+<pre><code>(.env)/tmp $ pip install argcomplete
+Downloading/unpacking argcomplete
+  Downloading argcomplete-0.8.4.tar.gz
+  Running setup.py (path:/tmp/.env/build/argcomplete/setup.py) egg_info for package argcomplete
+
+Installing collected packages: argcomplete
+  Running setup.py install for argcomplete
+
+...
+
+Successfully installed argcomplete
+Cleaning up...
+</code></pre>
+<p>Usage:</p>
+<pre><code>(.env)/tmp $ python -c "import argcomplete; print(argcomplete.__file__)"
+/tmp/.env/local/lib/python2.7/site-packages/argcomplete/__init__.pyc
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1718,47 +1743,46 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              9/12
+              10/11
             </aside>
           </footer>
         </div>
       </div>
       
-      <!-- slide source: doc/generators.md -->
+      <!-- slide source: doc/packaging.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide">
           <div class="inner">
             
-            <header><h2>Exercise 4 - primes continued</h2></header>
+            <header><h2>Test automation</h2></header>
             
             
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">primes</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">110</span><span class="p">)</span>
-<span class="mi">547</span>
-<span class="mi">557</span>
-<span class="mi">563</span>
-<span class="mi">569</span>
-<span class="mi">571</span>
-<span class="mi">577</span>
-<span class="mi">587</span>
-<span class="mi">593</span>
-<span class="mi">599</span>
-<span class="mi">601</span>
-</pre></div>
-</td></tr></table></section>
+            <section><p>Use <code>tox</code> (from <a href="https://testrun.org/tox/">https://testrun.org/tox/</a>) for checking your package installs correctly with different Python versions
+and running your tests in each of the environments, configuring your test tool of choice,
+acting as a frontend to Continuous Integration servers.</p>
+<p>An example <code>tox.ini</code> file:</p>
+<pre><code>[tox]
+envlist = py27,py34
+[testenv]
+deps = pytest,mock,pep8,coverage,pylint,six
+commands=
+    pep8 towelstuff/ tests/
+    pylint --extension-pkg-whitelist=numpy --report=no towelstuff
+    coverage run --source towelstuff/ -m py.test -v tests/
+    coverage report
+</code></pre>
+<p>Run with:</p>
+<pre><code>$ tox -e py27
+GLOB sdist-make: /tmp/TowelStuff/setup.py
+py27 inst-nodeps: /tmp/TowelStuff/.tox/dist/towelstuff-0.1a.zip
+... Lots of output from all commands ...
+py27: commands succeeded
+congratulations :)
+</code></pre></section>
             
           </div>
           <div class="presenter_notes">
@@ -1770,139 +1794,11 @@ When comparing tuples, all the first items are compared, then all the second ite
           <footer>
             
             <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
+              Source: <a href="doc/packaging.md">doc/packaging.md</a>
             </aside>
             
             <aside class="page_number">
-              10/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 4 - solution</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">ifilter</span><span class="p">,</span> <span class="n">count</span>
-<span class="kn">import</span> <span class="nn">math</span>
-
-<span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">gen</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="c"># 1 is special</span>
-        <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
-
-<span class="k">def</span> <span class="nf">prime_generator</span><span class="p">():</span>
-    <span class="n">integers</span> <span class="o">=</span> <span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># infinite generator</span>
-    <span class="k">return</span> <span class="n">ifilter</span><span class="p">(</span><span class="n">is_prime</span><span class="p">,</span> <span class="n">integers</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              11/12
-            </aside>
-          </footer>
-        </div>
-      </div>
-      
-      <!-- slide source: doc/generators.md -->
-      <div class="slide-wrapper">
-        <div class="slide has_code">
-          <div class="inner">
-            
-            <header><h2>Exercise 4 - solution</h2></header>
-            
-            
-            <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">prime_generator</span><span class="p">())</span>
-
-<span class="k">def</span> <span class="nf">print_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_first_primes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
-
-<span class="k">def</span> <span class="nf">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-    <span class="n">gen</span> <span class="o">=</span> <span class="n">prime_generator</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">take</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">):</span>
-        <span class="k">pass</span>
-    <span class="k">return</span> <span class="n">take</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">print_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">get_primes</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="k">print</span> <span class="n">prime</span>
-</pre></div>
-</td></tr></table></section>
-            
-          </div>
-          <div class="presenter_notes">
-            <header><h1>Presenter Notes</h1></header>
-            <section>
-            
-            </section>
-          </div>
-          <footer>
-            
-            <aside class="source">
-              Source: <a href="doc/generators.md">doc/generators.md</a>
-            </aside>
-            
-            <aside class="page_number">
-              12/12
+              11/11
             </aside>
           </footer>
         </div>
@@ -1917,64 +1813,59 @@ When comparing tuples, all the first items are compared, then all the second ite
       <caption>Table of Contents</caption>
       
       <tr id="toc-row-1">
-        <th><a href="#slide1">Generators</a></th>
+        <th><a href="#slide1">Packaging</a></th>
         <td><a href="#slide1">1</a></td>
       </tr>
       
         
         <tr id="toc-row-2" class="sub">
-          <th><a href="#slide2">Exercise 1 - flatten</a></th>
+          <th><a href="#slide2">Introduction</a></th>
           <td><a href="#slide2">2</a></td>
         </tr>
         
         <tr id="toc-row-3" class="sub">
-          <th><a href="#slide3">Execrise 1 - solution</a></th>
+          <th><a href="#slide3">Basic layout</a></th>
           <td><a href="#slide3">3</a></td>
         </tr>
         
         <tr id="toc-row-4" class="sub">
-          <th><a href="#slide4">Exercise 2 - find dependencies</a></th>
+          <th><a href="#slide4">setup.py</a></th>
           <td><a href="#slide4">4</a></td>
         </tr>
         
         <tr id="toc-row-5" class="sub">
-          <th><a href="#slide5">Map and filter</a></th>
+          <th><a href="#slide5">setup.py</a></th>
           <td><a href="#slide5">5</a></td>
         </tr>
         
         <tr id="toc-row-6" class="sub">
-          <th><a href="#slide6">Reducers</a></th>
+          <th><a href="#slide6">setup.py</a></th>
           <td><a href="#slide6">6</a></td>
         </tr>
         
         <tr id="toc-row-7" class="sub">
-          <th><a href="#slide7">Sorting</a></th>
+          <th><a href="#slide7">Installing a source package:</a></th>
           <td><a href="#slide7">7</a></td>
         </tr>
         
         <tr id="toc-row-8" class="sub">
-          <th><a href="#slide8">Secondary sort</a></th>
+          <th><a href="#slide8">Building a binary package:</a></th>
           <td><a href="#slide8">8</a></td>
         </tr>
         
         <tr id="toc-row-9" class="sub">
-          <th><a href="#slide9">Exercise 3 - primes</a></th>
+          <th><a href="#slide9">virtualenv</a></th>
           <td><a href="#slide9">9</a></td>
         </tr>
         
         <tr id="toc-row-10" class="sub">
-          <th><a href="#slide10">Exercise 4 - primes continued</a></th>
+          <th><a href="#slide10">virtualenv</a></th>
           <td><a href="#slide10">10</a></td>
         </tr>
         
         <tr id="toc-row-11" class="sub">
-          <th><a href="#slide11">Exercise 4 - solution</a></th>
+          <th><a href="#slide11">Test automation</a></th>
           <td><a href="#slide11">11</a></td>
-        </tr>
-        
-        <tr id="toc-row-12" class="sub">
-          <th><a href="#slide12">Exercise 4 - solution</a></th>
-          <td><a href="#slide12">12</a></td>
         </tr>
         
       

@@ -4,7 +4,7 @@
 
 ## Projects with no unittest
 
-You start by writing small functions and modules. Test everything manually and fast. You don't need automatic tests. 
+You start by writing small functions and modules. Test everything manually and fast. You don't need automatic tests.
 
 A month passes. You have tons of code. What happens if you change this? how does it affect other parts? how long does it take to test the code manually? is it even possible to test it manually?
 
@@ -47,33 +47,29 @@ Integration tests also have downsides:
 		return x / y
 
 	class TestDiv(TestCase):
-		
+
 		def test_sanity(self):
 			self.assertEquals(div(10, 2), 5)
-		
+
 		def test_0(self):
 			with self.assertRaises(ZeroDivisionError):
 				div(3, 0)
-		
+
 The builtin unittest module can run tests:
 
-	!bash
-	python -m unittest test.py
-	
+	$ python -m unittest test.py
+
 Or use nose, which is a smart test runner:
-	
-	!bash
-	nosetests test
+
+	$ nosetests test
 
 ---
 
 ## Mock
 
 Mocking is a technique used when in unittests for replacing external dependencies with fake objects or functions. Here's an example of code which is hard to test:
-	
+
 	!python
-	import os, errno, mock, unittest
-	
 	def log(data):
 		try:
 			with open("log", "a") as f:
@@ -82,43 +78,43 @@ Mocking is a technique used when in unittests for replacing external dependencie
 			if e.errno == errno.ENOSPC:
 				return False
 		return True
-	
+
 	class TestLog(unittest.TestCase):
 		def test_no_space(self):
 			with mock.patch('__builtin__.open') as open_func:
 				error = IOError()
 				error.errno = errno.ENOSPC
 				open_func.side_effect = error
-				self.assertEquals(False, log("some data"))
+				self.assertEquals(False, log("foobar"))
 		def test(self):
 			with mock.patch('__builtin__.open') as open_func:
-				self.assertEquals(True, log("some data"))
-				open_func.return_value.write.assert_called_with("some data")
-				
+				self.assertEquals(True, log("foobar"))
+				open_func.return_value.write.assert_called_with("foobar")
+
 ---
 
 ## Mocking objects
 
 	!python
 	class EmailServer(object):
-		
+
 		def __init___(self, ip, port):
 			...
-			
+
 		def send_email(self, recipient, message):
 			...
-			
+
 	def send_emails(email_server, recipients, message):
 		for recipient in recipients:
 			email_server.send_email(recipient, message)
-		
+
 	class TestSendMessages(TestCase):
-	
+
 		def test(self):
-	        email_server_mock = mock.create_autospec(EmailServer)
-			send_emails(email_server_mock, ["joe", "mike"], "help!")
-			email_server_mock.send_email.assert_called_with("joe", "help!")
-			email_server_mock.send_email.assert_called_with("mike", "help!")
+	        m = mock.create_autospec(EmailServer)
+			send_emails(m, ["joe", "mike"], "help!")
+			m.send_email.assert_called_with("joe", "help!")
+			m.send_email.assert_called_with("mike", "help!")
 
 ---
 
@@ -128,24 +124,24 @@ By mocking `self` we can test a method in complete isolation. No need to initial
 
 	!python
 	class EmailServer(object):
-		
+
 		def __init___(self, ip, port):
 			...
-			
+
 		def send_email(self, recipient, message):
 			...
-			
+
 		def send_emails(self, recipients, message):
 			for recipient in recipients:
 				self.send_email(recipient, message)
-			
+
 	class TestSendMessages(TestCase):
-	
+
 		def test(self):
-	        email_server_mock = mock.create_autospec(EmailServer)
-			EmailServer.send_emails(email_server_mock, ["joe", "mike"], "help!")
-			email_server_mock.send_email.assert_called_with("joe", "help!")
-			email_server_mock.send_email.assert_called_with("mike", "help!")
+	        m = mock.create_autospec(EmailServer)
+			EmailServer.send_emails(m, ["joe", "mike"], "help!")
+			m.send_email.assert_called_with("joe", "help!")
+			m.send_email.assert_called_with("mike", "help!")
 
 ---
 
@@ -165,11 +161,70 @@ Use `mock` to test the following code:
 		if data == '':
 			raise socket.error('socket closed')
 		return data
-		
+
+---
+## Solution
+
+    !python
+    def test_sleep():
+        with mock.patch('time.sleep') as s:
+            f = mock.Mock()
+            sleep_and_execute(f)
+            f.assert_called_with()
+            s.assert_called_with(60)
+
+    class TestSocket(unittest.TestCase):
+
+        def test_read_sock(self):
+            sock = mock.Mock()
+            sock.recv.return_value = 'foo'
+            self.assertEquals(read(sock), 'foo')
+
+        def test_read_error(self):
+            bad_sock = mock.Mock()
+            bad_sock.recv.side_effect = IOError
+
+            with self.assertRaises(IOError):
+                read(bad_sock)
+
 ---
 
 ## Coverage testing
 
 By using the pycoverage module we can generate reports showing exactly which line of code has been tested.
 
-After installing both pycoverage and nose, they can be invoked together: `nosetests --with-coverage --cover-html test.py`.
+After installing both `coverage` and `nose`, they can be invoked together:
+
+	$ nosetests --with-coverage --cover-package=amodem --cover-html \
+		tests/test_dsp.py
+	......
+	Name              Stmts   Miss  Cover   Missing
+	-----------------------------------------------
+	amodem                2      0   100%
+	amodem.common        55      0   100%
+	amodem.config        40      0   100%
+	amodem.dsp           89      0   100%
+	amodem.sampling      63      0   100%
+	-----------------------------------------------
+	TOTAL               249      0   100%
+	----------------------------------------------------------------------
+	Ran 6 tests in 0.457s
+
+
+You should aim for maximal code coverage, so that each change in the code will be tested by your unittest suite.
+This is especially true in Python, where there is no compiler to validate your type system.
+
+---
+
+## Continuous Integration
+
+If you have a good unittest suite, it is recommended to have a CI server that
+will run the tests automaticall on each commit, and present the build results
+together with code coverage statistics.
+
+For example, see:
+
+* <https://travis-ci.org>, for build automation
+* <https://coveralls.io/features>, for code coverage visualization
+
+You should be notified automatically if a test fails or when you have code coverage degradation.
