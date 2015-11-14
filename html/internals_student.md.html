@@ -494,6 +494,7 @@ blockquote {
   border-left: solid 8px #778;
   padding: .1ex 1ex;
   font-style: italic;
+  font-size: 20px;
 }
 
 li {
@@ -687,6 +688,10 @@ aside {
   height: 100%;
   z-index: 64;
   display: none;
+}
+
+.image-reference {
+  display: inline;
 }
 
     </style>
@@ -1293,7 +1298,7 @@ aside {
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-1">
           <div class="inner">
             
             <header><h1>Python Internals</h1></header>
@@ -1321,7 +1326,7 @@ aside {
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-2">
           <div class="inner">
             
             <header><h2>Everything is a dict</h2></header>
@@ -1378,7 +1383,7 @@ aside {
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-3">
           <div class="inner">
             
             
@@ -1433,7 +1438,7 @@ aside {
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-4">
           <div class="inner">
             
             <header><h2>locals and globals</h2></header>
@@ -1501,7 +1506,7 @@ globals() returns global variables.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-5">
           <div class="inner">
             
             
@@ -1533,7 +1538,7 @@ and therefore, local variable access is faster. </p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-6">
           <div class="inner">
             
             <header><h2>The mighty '.'</h2></header>
@@ -1582,7 +1587,7 @@ and therefore, local variable access is faster. </p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-7">
           <div class="inner">
             
             <header><h2>Exercise 1 - case insensitive object</h2></header>
@@ -1620,7 +1625,7 @@ and therefore, local variable access is faster. </p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-8">
           <div class="inner">
             
             
@@ -1654,7 +1659,7 @@ and therefore, local variable access is faster. </p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-9">
           <div class="inner">
             
             <header><h2>Descriptors</h2></header>
@@ -1724,7 +1729,7 @@ it's useful for calculated values and readonly attributes.</p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-10">
           <div class="inner">
             
             <header><h2>The descriptor protocol</h2></header>
@@ -1802,7 +1807,7 @@ it's useful for calculated values and readonly attributes.</p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-11">
           <div class="inner">
             
             <header><h2>Exercise 2 - typesafe</h2></header>
@@ -1852,7 +1857,7 @@ it's useful for calculated values and readonly attributes.</p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-12">
           <div class="inner">
             
             <header><h2>Inheritence, super and the MRO</h2></header>
@@ -1907,7 +1912,7 @@ it's useful for calculated values and readonly attributes.</p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-13">
           <div class="inner">
             
             <header><h2>How to user super</h2></header>
@@ -1991,7 +1996,7 @@ it's useful for calculated values and readonly attributes.</p></section>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-14">
           <div class="inner">
             
             <header><h2>How super works</h2></header>
@@ -2029,7 +2034,7 @@ Python uses an algorithm called <code>C3</code>.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-15">
           <div class="inner">
             
             <header><h2>super and constructor arguments</h2></header>
@@ -2099,7 +2104,7 @@ Python uses an algorithm called <code>C3</code>.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-16">
           <div class="inner">
             
             <header><h2>The import mechanism</h2></header>
@@ -2146,7 +2151,7 @@ Python uses an algorithm called <code>C3</code>.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-17">
           <div class="inner">
             
             
@@ -2186,7 +2191,7 @@ Python uses an algorithm called <code>C3</code>.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-18">
           <div class="inner">
             
             <header><h2>Import hooks</h2></header>
@@ -2222,7 +2227,7 @@ Python uses an algorithm called <code>C3</code>.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-19">
           <div class="inner">
             
             <header><h2>eval and exec</h2></header>
@@ -2265,7 +2270,7 @@ Python uses an algorithm called <code>C3</code>.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-20">
           <div class="inner">
             
             <header><h2>Mutability</h2></header>
@@ -2328,7 +2333,7 @@ This is in contrast to mutable objects, which are passed by reference.</p>
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-21">
           <div class="inner">
             
             <header><h2>Dictionaries and <code>__hash__</code></h2></header>
@@ -2382,7 +2387,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-22">
           <div class="inner">
             
             <header><h2>Immutable data structures</h2></header>
@@ -2414,7 +2419,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-23">
           <div class="inner">
             
             <header><h2>The stack</h2></header>
@@ -2469,7 +2474,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-24">
           <div class="inner">
             
             <header><h2>Printing the stack</h2></header>
@@ -2534,7 +2539,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-25">
           <div class="inner">
             
             <header><h2>Functions and methods</h2></header>
@@ -2589,7 +2594,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-26">
           <div class="inner">
             
             
@@ -2640,7 +2645,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-27">
           <div class="inner">
             
             
@@ -2697,7 +2702,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-28">
           <div class="inner">
             
             <header><h2><code>__slots__</code></h2></header>
@@ -2762,7 +2767,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-29">
           <div class="inner">
             
             
@@ -2809,7 +2814,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-30">
           <div class="inner">
             
             <header><h2>Function default arguments</h2></header>
@@ -2878,7 +2883,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-31">
           <div class="inner">
             
             <header><h2>casting to bool</h2></header>
@@ -2925,7 +2930,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
       
       <!-- slide source: doc/internals_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-32">
           <div class="inner">
             
             <header><h2>nested scopes - closures</h2></header>

@@ -494,6 +494,7 @@ blockquote {
   border-left: solid 8px #778;
   padding: .1ex 1ex;
   font-style: italic;
+  font-size: 20px;
 }
 
 li {
@@ -687,6 +688,10 @@ aside {
   height: 100%;
   z-index: 64;
   display: none;
+}
+
+.image-reference {
+  display: inline;
 }
 
     </style>
@@ -1293,7 +1298,7 @@ aside {
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-1">
           <div class="inner">
             
             <header><h1>Concurrency</h1></header>
@@ -1321,7 +1326,7 @@ aside {
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-2">
           <div class="inner">
             
             <header><h2>Exercise - CPU-bound example</h2></header>
@@ -1357,7 +1362,7 @@ aside {
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-3">
           <div class="inner">
             
             <header><h2>Exercise - solution</h2></header>
@@ -1427,7 +1432,7 @@ aside {
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-4">
           <div class="inner">
             
             <header><h2>I/O-bound concurrency</h2></header>
@@ -1473,7 +1478,7 @@ $ netcat localhost 5000
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-5">
           <div class="inner">
             
             <header><h3>Naive implementation</h3></header>
@@ -1545,7 +1550,7 @@ $ netcat localhost 5000
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-6">
           <div class="inner">
             
             <header><h3>Naive threaded implementation</h3></header>
@@ -1619,7 +1624,7 @@ $ netcat localhost 5000
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-7">
           <div class="inner">
             
             <header><h2>Let's test it!</h2></header>
@@ -1651,15 +1656,15 @@ $ netcat localhost 5000
 <span class="nv">$ </span>nc localhost 5000
 &lt;2, took 17.5 ms&gt;
 
-<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+<span class="nv">$ </span><span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span> <span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span>
 &lt;3, took 62.8 ms&gt;
 &lt;3, took 61.3 ms&gt;
 
-<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+<span class="nv">$ </span><span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span> <span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span>
 &lt;4, took 66.1 ms&gt;
 &lt;4, took 64.4 ms&gt;
 
-<span class="nv">$ </span><span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>; <span class="o">(</span>nc localhost 5000 &amp;<span class="o">)</span>;
+<span class="nv">$ </span><span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span> <span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span> <span class="o">(</span>nc localhost <span class="m">5000</span> <span class="p">&amp;</span><span class="o">)</span><span class="p">;</span>
 &lt;5, took 105.6 ms&gt;
 &lt;5, took 111.5 ms&gt;
 &lt;5, took 110.3 ms&gt;
@@ -1691,7 +1696,7 @@ $ netcat localhost 5000
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-8">
           <div class="inner">
             
             <header><h2>Discussion</h2></header>
@@ -1732,7 +1737,7 @@ our tasks to cooperate around I/O events.</p>
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-9">
           <div class="inner">
             
             <header><h2>Yes, we can!</h2></header>
@@ -1791,7 +1796,7 @@ our tasks to cooperate around I/O events.</p>
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-10">
           <div class="inner">
             
             <header><h2>Concurrent requests</h2></header>
@@ -1840,7 +1845,7 @@ our tasks to cooperate around I/O events.</p>
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-11">
           <div class="inner">
             
             <header><h2>Exceptions</h2></header>
@@ -1888,7 +1893,7 @@ socket.error: [Errno 111] Connection refused
       
       <!-- slide source: doc/concurrency.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-12">
           <div class="inner">
             
             <header><h2>gevent-based server</h2></header>

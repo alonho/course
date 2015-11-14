@@ -494,6 +494,7 @@ blockquote {
   border-left: solid 8px #778;
   padding: .1ex 1ex;
   font-style: italic;
+  font-size: 20px;
 }
 
 li {
@@ -687,6 +688,10 @@ aside {
   height: 100%;
   z-index: 64;
   display: none;
+}
+
+.image-reference {
+  display: inline;
 }
 
     </style>
@@ -1293,7 +1298,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-1">
           <div class="inner">
             
             <header><h1>Unittests</h1></header>
@@ -1321,7 +1326,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-2">
           <div class="inner">
             
             <header><h2>Projects with no unittest</h2></header>
@@ -1352,7 +1357,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-3">
           <div class="inner">
             
             <header><h2>Why unittest</h2></header>
@@ -1388,7 +1393,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-4">
           <div class="inner">
             
             <header><h2>Integration tests</h2></header>
@@ -1430,7 +1435,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-5">
           <div class="inner">
             
             <header><h2>Example</h2></header>
@@ -1464,7 +1469,7 @@ aside {
 </pre></div>
 </td></tr></table>
 <p>The builtin unittest module can run tests:</p>
-<pre><code>$ python -m unittest test.py
+<pre><code>$ python -m unittest test
 </code></pre>
 <p>Or use nose, which is a smart test runner:</p>
 <pre><code>$ nosetests test
@@ -1492,7 +1497,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-6">
           <div class="inner">
             
             <header><h2>Mock</h2></header>
@@ -1563,7 +1568,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-7">
           <div class="inner">
             
             <header><h2>Mocking objects</h2></header>
@@ -1631,7 +1636,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-8">
           <div class="inner">
             
             <header><h2>Mocking <code>self</code></h2></header>
@@ -1700,7 +1705,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-9">
           <div class="inner">
             
             <header><h2>Exercise</h2></header>
@@ -1753,7 +1758,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-10">
           <div class="inner">
             
             <header><h2>Solution</h2></header>
@@ -1823,7 +1828,7 @@ aside {
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-11">
           <div class="inner">
             
             <header><h2>Coverage testing</h2></header>
@@ -1871,7 +1876,7 @@ This is especially true in Python, where there is no compiler to validate your t
       
       <!-- slide source: doc/unittests.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-12">
           <div class="inner">
             
             <header><h2>Continuous Integration</h2></header>

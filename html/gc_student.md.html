@@ -494,6 +494,7 @@ blockquote {
   border-left: solid 8px #778;
   padding: .1ex 1ex;
   font-style: italic;
+  font-size: 20px;
 }
 
 li {
@@ -687,6 +688,10 @@ aside {
   height: 100%;
   z-index: 64;
   display: none;
+}
+
+.image-reference {
+  display: inline;
 }
 
     </style>
@@ -1293,7 +1298,7 @@ aside {
       
       <!-- slide source: doc/gc_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-1">
           <div class="inner">
             
             <header><h1>Garbage Collection</h1></header>
@@ -1352,7 +1357,7 @@ aside {
       
       <!-- slide source: doc/gc_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-2">
           <div class="inner">
             
             <header><h2>Analyzing references</h2></header>
@@ -1401,7 +1406,7 @@ aside {
       
       <!-- slide source: doc/gc_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-3">
           <div class="inner">
             
             <header><h2><code>__del__</code> is bad - swallows exception</h2></header>
@@ -1450,7 +1455,7 @@ aside {
       
       <!-- slide source: doc/gc_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-4">
           <div class="inner">
             
             <header><h2><code>__del__</code> is bad - cyclic references</h2></header>
@@ -1510,7 +1515,7 @@ aside {
       
       <!-- slide source: doc/gc_student.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-5">
           <div class="inner">
             
             <header><h2>Exercise - Memory stats</h2></header>
