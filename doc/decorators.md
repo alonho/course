@@ -188,13 +188,14 @@ Adding some type safety
 			def decorated(*args):
 				n_args = len(args)
 				n_types = len(types)
-				if n_args != n_types:
-					raise ValueError("invalid num of args. expected {}, got {}".format(
-					                                                  n_types, n_args))
+				if n_args != n_types:				
+					fmt = "invalid num of args. expected {}, got {}"
+					raise ValueError(fmt.format(n_types, n_args)))
+
 				for arg, arg_type in zip(args, types):
 					if not isinstance(arg, arg_type):
-						raise TypeError("expected {} got {} for argument {}".format(
-						                                  arg_type, type(arg), arg))
+						fmt = "expected {} got {} for argument {}"
+						raise TypeError(fmt.format(arg_type, type(arg), arg))
 				return func(*args)
 			return decorated
 		return decorator
