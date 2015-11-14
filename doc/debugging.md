@@ -108,7 +108,7 @@ Run the script:
 * `!` -  execute shell commands
 * `!!` - execute shell commands and returns results
 * `timeit` - `timeit [1] * 1000` will print the run time of the statement.
-* !ps - run "ps" as a shell command.
+* `!ps` - run "ps" as a shell command.
 
 ---
 
