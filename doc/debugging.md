@@ -48,6 +48,7 @@ If you really (REALLY) need to, do the following:
         log.exception('make sure this error is viewed and acted upon')
 
 Or, use `traceback.print_exc()` to print the exception to stderr.
+
 ---
 
 ## IPython
