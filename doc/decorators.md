@@ -336,3 +336,10 @@ Bonus - add a 'timeout' parameter to the cached decorator, indicating how long s
                 args_to_result[args] = func(*args)
             return args_to_result[args]
         return decorated
+
+Note: due to Python's inability to separate variable definition from variable assignment,
+you may NOT assign to the non-local variable (e.g. `args_to_result`) inside the inner scope.
+
+Failing to observe this will result in an `UnboundLocalError` exception.
+
+You MAY use any other member function, including `__in__`, `__setitem__` and `__getitem__` (as shown above).
