@@ -57,7 +57,7 @@ Integration tests also have downsides:
 
 The builtin unittest module can run tests:
 
-	$ python -m unittest test.py
+	$ python -m unittest test
 
 Or use nose, which is a smart test runner:
 

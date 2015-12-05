@@ -188,13 +188,14 @@ Adding some type safety
 			def decorated(*args):
 				n_args = len(args)
 				n_types = len(types)
-				if n_args != n_types:
-					raise ValueError("invalid num of args. expected {}, got {}".format(
-					                                                  n_types, n_args))
+				if n_args != n_types:				
+					fmt = "invalid num of args. expected {}, got {}"
+					raise ValueError(fmt.format(n_types, n_args)))
+
 				for arg, arg_type in zip(args, types):
 					if not isinstance(arg, arg_type):
-						raise TypeError("expected {} got {} for argument {}".format(
-						                                  arg_type, type(arg), arg))
+						fmt = "expected {} got {} for argument {}"
+						raise TypeError(fmt.format(arg_type, type(arg), arg))
 				return func(*args)
 			return decorated
 		return decorator
@@ -336,3 +337,10 @@ Bonus - add a 'timeout' parameter to the cached decorator, indicating how long s
                 args_to_result[args] = func(*args)
             return args_to_result[args]
         return decorated
+
+Note: due to Python's inability to separate variable definition from variable assignment,
+you may NOT assign to the non-local variable (e.g. `args_to_result`) inside the inner scope.
+
+Failing to observe this will result in an `UnboundLocalError` exception.
+
+You MAY use any other member function, including `__in__`, `__setitem__` and `__getitem__` (as shown above).

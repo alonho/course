@@ -494,6 +494,7 @@ blockquote {
   border-left: solid 8px #778;
   padding: .1ex 1ex;
   font-style: italic;
+  font-size: 20px;
 }
 
 li {
@@ -687,6 +688,10 @@ aside {
   height: 100%;
   z-index: 64;
   display: none;
+}
+
+.image-reference {
+  display: inline;
 }
 
     </style>
@@ -1293,7 +1298,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-1">
           <div class="inner">
             
             <header><h1>Decorators</h1></header>
@@ -1357,7 +1362,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-2">
           <div class="inner">
             
             <header><h2>Syntax</h2></header>
@@ -1404,7 +1409,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-3">
           <div class="inner">
             
             <header><h2>The debug decorator</h2></header>
@@ -1459,7 +1464,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-4">
           <div class="inner">
             
             <header><h2>Exercise 1 - a better debug decorator</h2></header>
@@ -1527,7 +1532,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-5">
           <div class="inner">
             
             <header><h2>Execise 1 - solution</h2></header>
@@ -1581,7 +1586,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-6">
           <div class="inner">
             
             <header><h2>Decorators as classes</h2></header>
@@ -1648,7 +1653,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-7">
           <div class="inner">
             
             <header><h2>Decorator factories</h2></header>
@@ -1711,7 +1716,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-8">
           <div class="inner">
             
             <header><h2>Exercise 2 - type checker</h2></header>
@@ -1758,7 +1763,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-9">
           <div class="inner">
             
             <header><h2>Exercise 2 - solution</h2></header>
@@ -1778,18 +1783,20 @@ aside {
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">typesafe</span><span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">):</span>
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">typesafe</span><span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="n">n_args</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
             <span class="n">n_types</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_args</span> <span class="o">!=</span> <span class="n">n_types</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;invalid num of args. expected {}, got {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                                                  <span class="n">n_types</span><span class="p">,</span> <span class="n">n_args</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">n_args</span> <span class="o">!=</span> <span class="n">n_types</span><span class="p">:</span>               
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;invalid num of args. expected {}, got {}&quot;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_types</span><span class="p">,</span> <span class="n">n_args</span><span class="p">)))</span>
+
             <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">arg_type</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">arg_type</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;expected {} got {} for argument {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                                                      <span class="n">arg_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="n">arg</span><span class="p">))</span>
+                    <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;expected {} got {} for argument {}&quot;</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="n">arg</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">decorated</span>
     <span class="k">return</span> <span class="n">decorator</span>
@@ -1818,7 +1825,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-10">
           <div class="inner">
             
             <header><h2>Class decorator</h2></header>
@@ -1863,7 +1870,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide">
+        <div class="slide slide-11">
           <div class="inner">
             
             <header><h2>gotcha #1</h2></header>
@@ -1893,7 +1900,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-12">
           <div class="inner">
             
             <header><h2>gotcha #2</h2></header>
@@ -1941,7 +1948,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-13">
           <div class="inner">
             
             <header><h2>gotcha #3</h2></header>
@@ -2007,7 +2014,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-14">
           <div class="inner">
             
             
@@ -2076,7 +2083,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-15">
           <div class="inner">
             
             <header><h2>Exercise 3 - cached</h2></header>
@@ -2135,7 +2142,7 @@ aside {
       
       <!-- slide source: doc/decorators.md -->
       <div class="slide-wrapper">
-        <div class="slide has_code">
+        <div class="slide has_code slide-16">
           <div class="inner">
             
             <header><h2>Exercise 3 - solution</h2></header>
@@ -2155,7 +2162,11 @@ aside {
         <span class="k">return</span> <span class="n">args_to_result</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">decorated</span>
 </pre></div>
-</td></tr></table></section>
+</td></tr></table>
+<p>Note: due to Python's inability to separate variable definition from variable assignment,
+you may NOT assign to the non-local variable (e.g. <code>args_to_result</code>) inside the inner scope.</p>
+<p>Failing to observe this will result in an <code>UnboundLocalError</code> exception.</p>
+<p>You MAY use any other member function, including <code>__in__</code>, <code>__setitem__</code> and <code>__getitem__</code> (as shown above).</p></section>
             
           </div>
           <div class="presenter_notes">

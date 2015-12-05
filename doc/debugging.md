@@ -48,6 +48,7 @@ If you really (REALLY) need to, do the following:
         log.exception('make sure this error is viewed and acted upon')
 
 Or, use `traceback.print_exc()` to print the exception to stderr.
+
 ---
 
 ## IPython
@@ -108,7 +109,7 @@ Run the script:
 * `!` -  execute shell commands
 * `!!` - execute shell commands and returns results
 * `timeit` - `timeit [1] * 1000` will print the run time of the statement.
-* !ps - run "ps" as a shell command.
+* `!ps` - run "ps" as a shell command.
 
 ---
 

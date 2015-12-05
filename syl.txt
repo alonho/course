@@ -6,26 +6,25 @@ staticmethod/classmethod
 generators pdf [lunch break]
 generators (http://pymotw.com/2/itertools/)
 contextmanagers (http://pymotw.com/2/contextlib/)
-internals
+unittest (pytest)
+debugging
 
 --- day 2 ---
 
 internals
-debugging
 concurrency pdf
 greenlets [lunch break]
 stl
 
 --- day 3 ---
 
-gevent [exercises]
+gevent (sdiehl.github.io/gevent-tutorial/)
 rpyc
 metaclasses
 logging (logbook)
-unittest (pytest)
 coverage
 gc
-CI (buildbot: http://www.youtube.com/watch?v=7HLtPKU0-vE)
+CI (https://www.youtube.com/watch?v=BUmBQ2JiNqI)
 re (http://pymotw.com/2/re/)
 
 --- day 4 ---
