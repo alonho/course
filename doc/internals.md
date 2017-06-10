@@ -118,7 +118,7 @@ The `__getattr__` method is called for non-existent members.
 
     >>> f = Foo()
     >>> f.x
-    getting helloworld
+    getting x
     1
     >>> f.helloworld
     getting helloworld
@@ -141,7 +141,7 @@ The `__getattribute__` method is called for any members.
 
     >>> f = Foo()
     >>> f.x
-    getting helloworld
+    getting x
     1
     >>> f.helloworld
     getting helloworld

@@ -1337,10 +1337,10 @@ aside {
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">a</span>
 <span class="mi">10</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="nb">locals</span><span class="p">()[</span><span class="s">&#39;a&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="nb">locals</span><span class="p">()[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
 <span class="mi">10</span>
 </pre></div>
 </td></tr></table>
@@ -1351,12 +1351,12 @@ aside {
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="o">...</span>         <span class="k">pass</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">Foo</span><span class="o">.</span><span class="n">bar</span>
 <span class="o">&lt;</span><span class="n">unbound</span> <span class="n">method</span> <span class="n">Foo</span><span class="o">.</span><span class="n">bar</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">Foo</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;bar&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">Foo</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s1">&#39;bar&#39;</span><span class="p">]</span>
 <span class="o">&lt;</span><span class="n">unbound</span> <span class="n">method</span> <span class="n">Foo</span><span class="o">.</span><span class="n">bar</span><span class="o">&gt;</span>
 </pre></div>
 </td></tr></table></section>
@@ -1393,10 +1393,10 @@ aside {
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">__dict__</span>
-<span class="p">{}</span> <span class="c"># the methods are kept at the class&#39;s __dict__</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="p">{}</span> <span class="c1"># the methods are kept at the class&#39;s __dict__</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">a</span>
 <span class="mi">100</span>
 </pre></div>
@@ -1404,15 +1404,15 @@ aside {
 <p>Even module attribute are stored in a dict:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="p">[</span><span class="s">&#39;setrecursionlimit&#39;</span><span class="p">,</span> <span class="s">&#39;dont_write_bytecode&#39;</span><span class="p">,</span> <span class="s">&#39;getrefcount&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;setrecursionlimit&#39;</span><span class="p">,</span> <span class="s1">&#39;dont_write_bytecode&#39;</span><span class="p">,</span> <span class="s1">&#39;getrefcount&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </td></tr></table>
 <p>And the module cache (makes sure modules are loaded once) is also a dict:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s">&#39;sys&#39;</span><span class="p">]</span>
-<span class="o">&lt;</span><span class="n">module</span> <span class="s">&#39;sys&#39;</span> <span class="p">(</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span><span class="p">)</span><span class="o">&gt;</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;sys&#39;</span><span class="p">]</span>
+<span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;sys&#39;</span> <span class="p">(</span><span class="n">built</span><span class="o">-</span><span class="ow">in</span><span class="p">)</span><span class="o">&gt;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1463,9 +1463,9 @@ globals() returns global variables.</p>
 15
 16
 17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">glob</span> <span class="o">=</span> <span class="mi">100</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">glob</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="k">def</span> <span class="nf">global_test</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">glob</span> <span class="c"># locals() won&#39;t contain &#39;glob&#39; but globals() will</span>
+    <span class="k">return</span> <span class="n">glob</span> <span class="c1"># locals() won&#39;t contain &#39;glob&#39; but globals() will</span>
 
 <span class="k">def</span> <span class="nf">local_test</span><span class="p">():</span>
     <span class="n">loc</span> <span class="o">=</span> <span class="mi">100</span>
@@ -1553,12 +1553,12 @@ and therefore, local variable access is faster.</p></section>
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">,</span> <span class="mf">1.23</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;member&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">setattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="mf">1.23</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;member&#39;</span><span class="p">)</span>
 <span class="mf">1.23</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">member</span>
 <span class="mf">1.23</span>
@@ -1608,14 +1608,14 @@ and therefore, local variable access is faster.</p></section>
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s1">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span>
-<span class="n">getting</span> <span class="n">helloworld</span>
+<span class="n">getting</span> <span class="n">x</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">helloworld</span>
 <span class="n">getting</span> <span class="n">helloworld</span>
@@ -1670,14 +1670,14 @@ and therefore, local variable access is faster.</p></section>
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s1">&#39;getting {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span>
-<span class="n">getting</span> <span class="n">helloworld</span>
+<span class="n">getting</span> <span class="n">x</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">helloworld</span>
 <span class="n">getting</span> <span class="n">helloworld</span>
@@ -1728,9 +1728,9 @@ and therefore, local variable access is faster.</p></section>
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&#39;setting {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s1">&#39;setting {} = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1780,7 +1780,7 @@ and therefore, local variable access is faster.</p></section>
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">CaseInsensitive</span><span class="p">()</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">CaseInsensitive</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span>
 <span class="mi">1</span>
@@ -1790,7 +1790,7 @@ and therefore, local variable access is faster.</p></section>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">xyz</span>
 <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">__dict__</span>
-<span class="p">{</span><span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;xyz&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1826,7 +1826,7 @@ and therefore, local variable access is faster.</p></section>
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">CaseInsensitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CaseInsensitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">value</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -1916,7 +1916,7 @@ will trigger an infinite recursion of <code>__getattr__/__setattr__</code>.</p><
 14
 15
 16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">math</span>
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
 
 <span class="k">class</span> <span class="nc">Angle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degrees</span><span class="p">):</span>
@@ -1929,10 +1929,10 @@ will trigger an infinite recursion of <code>__getattr__/__setattr__</code>.</p><
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="mi">180</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">radians</span>
 <span class="mf">3.141592653589793</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">radians</span> <span class="o">=</span> <span class="mi">100</span> <span class="c"># read only attribute!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">radians</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># read only attribute!</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s">&#39;t set attribute</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s1">&#39;t set attribute</span>
 </pre></div>
 </td></tr></table>
 <p>property is a built-in utility decorator that generates descriptor objects.
@@ -1987,27 +1987,27 @@ it's useful for calculated values and readonly attributes.</p></section>
 19
 20
 21
-22</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">const</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">const</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
         <span class="k">print</span> <span class="n">obj</span><span class="p">,</span> <span class="nb">type</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span> <span class="c"># indicates a read only</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span> <span class="c1"># indicates a read only</span>
     <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="c"># no allocation, nothing to do.</span>
+        <span class="c1"># no allocation, nothing to do.</span>
         <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="n">a</span> <span class="o">=</span> <span class="n">const</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">a</span>  <span class="c"># class attr translates to:</span>
-         <span class="c"># A.__dict__[&#39;a&#39;].__get__(None, A)</span>
-<span class="bp">None</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">const</span><span class="s">&#39;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">a</span>  <span class="c1"># class attr translates to:</span>
+         <span class="c1"># A.__dict__[&#39;a&#39;].__get__(None, A)</span>
+<span class="bp">None</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">const</span><span class="s1">&#39;&gt;</span>
 <span class="mi">100</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">()</span><span class="o">.</span><span class="n">a</span> <span class="c"># instance attr translates to:</span>
-          <span class="c"># type(obj).__dict__[&#39;a&#39;].__get__(obj, type(obj))</span>
-<span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">A</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103449e90</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">const</span><span class="s">&#39;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">()</span><span class="o">.</span><span class="n">a</span> <span class="c1"># instance attr translates to:</span>
+          <span class="c1"># type(obj).__dict__[&#39;a&#39;].__get__(obj, type(obj))</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">A</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x103449e90</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">__main__</span><span class="o">.</span><span class="n">const</span><span class="s1">&#39;&gt;</span>
 <span class="mi">100</span>
 </pre></div>
 </td></tr></table></section>
@@ -2049,16 +2049,16 @@ it's useful for calculated values and readonly attributes.</p></section>
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">typesafe</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">age</span> <span class="o">=</span> <span class="n">typesafe</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Alon&quot;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="s">&quot;Horev&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Alon&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="s2">&quot;Horev&quot;</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">TypeError</span><span class="p">:</span> <span class="n">Expected</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;int&#39;</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">got</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;str&#39;</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">Horev</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">TypeError</span><span class="p">:</span> <span class="n">Expected</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;int&#39;</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">got</span> <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;str&#39;</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">Horev</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -2103,7 +2103,7 @@ it's useful for calculated values and readonly attributes.</p></section>
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">typesafe</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">typesafe</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cls</span> <span class="o">=</span> <span class="n">cls</span>
@@ -2114,7 +2114,7 @@ it's useful for calculated values and readonly attributes.</p></section>
 
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cls</span><span class="p">):</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;Expected {}, got {} ({})&quot;</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Expected {}, got {} ({})&quot;</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
 </pre></div>
@@ -2154,7 +2154,7 @@ There are two ways of calling parent methods. the explicit:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">object</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
@@ -2164,7 +2164,7 @@ There are two ways of calling parent methods. the explicit:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Person</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
@@ -2250,24 +2250,24 @@ There are two ways of calling parent methods. the explicit:</p>
 15
 16
 17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;Person&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;Person&quot;</span>
 
 <span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="k">print</span> <span class="s">&quot;Student&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;Student&quot;</span>
 
 <span class="k">class</span> <span class="nc">Teacher</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Teacher</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="k">print</span> <span class="s">&quot;Teacher&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;Teacher&quot;</span>
 
 <span class="k">class</span> <span class="nc">TeachingStudent</span><span class="p">(</span><span class="n">Student</span><span class="p">,</span> <span class="n">Teacher</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TeachingStudent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="k">print</span> <span class="s">&quot;TeachingStudent&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;TeachingStudent&quot;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -2309,7 +2309,7 @@ There are two ways of calling parent methods. the explicit:</p>
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">TeachingStudent</span><span class="p">()</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">TeachingStudent</span><span class="p">()</span>
 <span class="n">Person</span>
 <span class="n">Teacher</span>
 <span class="n">Student</span>
@@ -2406,7 +2406,7 @@ Python uses an algorithm called <code>C3</code>.</p>
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
 <span class="k">class</span> <span class="nc">Student</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
@@ -2421,7 +2421,7 @@ Python uses an algorithm called <code>C3</code>.</p>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TeachingStudent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">TeachingStudent</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">profession</span><span class="o">=</span><span class="s">&quot;math&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">TeachingStudent</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">profession</span><span class="o">=</span><span class="s2">&quot;math&quot;</span><span class="p">,</span> <span class="n">semester</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -2454,21 +2454,21 @@ Python uses an algorithm called <code>C3</code>.</p>
             
             
             <section><p>The import statement:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
 </pre></div>
 </td></tr></table>
 <p>Same as:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">__import__</span><span class="p">(</span><span class="s">&#39;os&#39;</span><span class="p">)</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;os&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 <p>The import process searches for modules in directories found in the PYTHONPATH environment variable.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="nb">export </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/projects/proj:/home/alon/utils
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span>/projects/proj:/home/alon/utils
 </pre></div>
 </td></tr></table>
 <p>The list of search paths can be modified from within python:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;path&#39;</span><span class="p">)</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -2502,10 +2502,10 @@ Python uses an algorithm called <code>C3</code>.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">site</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">site</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">site</span><span class="o">.</span><span class="n">getsitepackages</span><span class="p">()</span>
-<span class="p">[</span><span class="s">&#39;/usr/local/lib/python2.7/dist-packages&#39;</span><span class="p">,</span>
- <span class="s">&#39;/usr/lib/python2.7/dist-packages&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;/usr/local/lib/python2.7/dist-packages&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;/usr/lib/python2.7/dist-packages&#39;</span><span class="p">]</span>
 </pre></div>
 </td></tr></table>
 <p>Finally python looks at the stdlib directory, On Linux, it's
@@ -2580,13 +2580,13 @@ Python uses an algorithm called <code>C3</code>.</p>
             <section><p><code>exec</code> - execute code:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">exec</span><span class="p">(</span><span class="s">&quot;print 10&quot;</span><span class="p">)</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">exec</span><span class="p">(</span><span class="s2">&quot;print 10&quot;</span><span class="p">)</span>
 <span class="mi">1</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">execfile</span><span class="p">(</span><span class="s">&quot;/tmp/bla.py&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">execfile</span><span class="p">(</span><span class="s2">&quot;/tmp/bla.py&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 <p><code>eval</code> - evaluate an expression:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">eval</span><span class="p">(</span><span class="s">&quot;1 + 1&quot;</span><span class="p">)</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;1 + 1&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 <p>NOTE: <code>eval</code> and <code>exec</code> can be a serious security risk, try to avoid them.</p>
@@ -2639,11 +2639,11 @@ This is in contrast to a mutable object, which can be modified after it is creat
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="o">=</span> <span class="n">string</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="ow">is</span> <span class="n">string</span>
 <span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">+=</span> <span class="s">&quot;bar&quot;</span> <span class="c"># creates a new string</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">+=</span> <span class="s2">&quot;bar&quot;</span> <span class="c1"># creates a new string</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span> <span class="ow">is</span> <span class="n">string</span>
 <span class="bp">False</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span>
@@ -2651,7 +2651,7 @@ This is in contrast to a mutable object, which can be modified after it is creat
 <span class="o">&gt;&gt;&gt;</span> <span class="n">copy</span>
 <span class="n">foo</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">l</span> <span class="c"># creates a reference to the same list</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">l</span> <span class="c1"># creates a reference to the same list</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">l2</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -2699,7 +2699,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
@@ -2785,17 +2785,17 @@ The hash function maps a value (lets say, a string) to a number. The same string
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">print_stack</span><span class="p">():</span>
-<span class="o">...</span>     <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c"># first frame</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">print_stack</span><span class="p">():</span>
+<span class="o">...</span>     <span class="n">frame</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># first frame</span>
 <span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span> <span class="c"># the code object</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span> <span class="c"># locals()</span>
-<span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span>  <span class="c"># previous frame</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_code</span> <span class="c1"># the code object</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_locals</span> <span class="c1"># locals()</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="n">frame</span><span class="o">.</span><span class="n">f_back</span>  <span class="c1"># previous frame</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">print_stack</span><span class="p">()</span>
 <span class="o">&lt;</span><span class="n">frame</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x100379df0</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="n">print_stack</span> <span class="n">at</span> <span class="mh">0x100437830</span><span class="p">,</span> <span class="nb">file</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="o">&gt;</span>
-<span class="p">{</span><span class="s">&#39;frame&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">frame</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x100379df0</span><span class="o">&gt;</span><span class="p">}</span> <span class="c"># locals()</span>
-<span class="o">&lt;</span><span class="n">frame</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x100379c40</span><span class="o">&gt;</span> <span class="c"># previous frame</span>
+<span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="n">print_stack</span> <span class="n">at</span> <span class="mh">0x100437830</span><span class="p">,</span> <span class="nb">file</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="o">&gt;</span>
+<span class="p">{</span><span class="s1">&#39;frame&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">frame</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x100379df0</span><span class="o">&gt;</span><span class="p">}</span> <span class="c1"># locals()</span>
+<span class="o">&lt;</span><span class="n">frame</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x100379c40</span><span class="o">&gt;</span> <span class="c1"># previous frame</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -2832,12 +2832,12 @@ The hash function maps a value (lets say, a string) to a number. The same string
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">traceback</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">traceback</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
 <span class="o">...</span>     <span class="n">traceback</span><span class="o">.</span><span class="n">print_stack</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">foo</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">foo</span>
 </pre></div>
 </td></tr></table>
 <p>Useful for exception analysis:</p>
@@ -2850,15 +2850,15 @@ The hash function maps a value (lets say, a string) to a number. The same string
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
 <span class="o">...</span>     <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
 <span class="o">...</span>     <span class="n">foo</span><span class="p">()</span>
 <span class="o">...</span> <span class="k">except</span><span class="p">:</span>
 <span class="o">...</span>     <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">foo</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="n">foo</span>
 <span class="ne">ZeroDivisionError</span><span class="p">:</span> <span class="n">integer</span> <span class="n">division</span> <span class="ow">or</span> <span class="n">modulo</span> <span class="n">by</span> <span class="n">zero</span>
 </pre></div>
 </td></tr></table>
@@ -2897,7 +2897,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
     <span class="k">pass</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">func</span>
@@ -2910,7 +2910,7 @@ The hash function maps a value (lets say, a string) to a number. The same string
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
@@ -2952,9 +2952,9 @@ The hash function maps a value (lets say, a string) to a number. The same string
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span> <span class="c"># where is &#39;self&#39;?</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">()</span> <span class="c1"># where is &#39;self&#39;?</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">foo</span><span class="o">.</span><span class="n">im_func</span>
 <span class="o">&lt;</span><span class="n">function</span> <span class="n">__main__</span><span class="o">.</span><span class="n">foo</span><span class="o">&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">foo</span><span class="o">.</span><span class="n">im_self</span>
@@ -2962,11 +2962,11 @@ The hash function maps a value (lets say, a string) to a number. The same string
 </pre></div>
 </td></tr></table>
 <p>So calling bound methods:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="p">()</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="p">()</span>
 </pre></div>
 </td></tr></table>
 <p>Is implemented roughly like this:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_func</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_self</span><span class="p">)</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_func</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_self</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -3002,9 +3002,9 @@ The hash function maps a value (lets say, a string) to a number. The same string
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span>
 <span class="o">&lt;</span><span class="n">unbound</span> <span class="n">method</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="o">&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_self</span> <span class="c"># no instance</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_self</span> <span class="c1"># no instance</span>
 <span class="bp">None</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">im_class</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="nc">__main__</span><span class="o">.</span><span class="n">A</span><span class="o">&gt;</span>
@@ -3017,11 +3017,11 @@ The hash function maps a value (lets say, a string) to a number. The same string
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c"># type of self is compared against im_class</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># type of self is compared against im_class</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="ne">TypeError</span><span class="p">:</span> <span class="n">unbound</span> <span class="n">method</span> <span class="n">foo</span><span class="p">()</span> <span class="n">must</span> <span class="n">be</span> <span class="n">called</span> <span class="k">with</span> <span class="n">A</span> <span class="n">instance</span>
 <span class="k">as</span> <span class="n">first</span> <span class="n">argument</span> <span class="p">(</span><span class="n">got</span> <span class="nb">int</span> <span class="n">instance</span> <span class="n">instead</span><span class="p">)</span>
 </pre></div>
@@ -3064,7 +3064,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sys</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">pass</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">A</span><span class="p">())</span>
@@ -3110,14 +3110,14 @@ by defining a list of member names, a small and fixed amount of memory per objec
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="o">...</span>     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">A</span><span class="p">())</span>
 <span class="mi">16</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">A</span><span class="p">()</span><span class="o">.</span><span class="n">__dict__</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">AttributeError</span><span class="p">:</span> <span class="s">&#39;A&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">&#39;__dict__&#39;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;__dict__&#39;</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -3155,14 +3155,14 @@ by defining a list of member names, a small and fixed amount of memory per objec
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="o">...</span>     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">)</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="o">...</span>     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">AttributeError</span><span class="p">:</span> <span class="s">&#39;A&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">&#39;c&#39;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s1">&#39;c&#39;</span>
 </pre></div>
 </td></tr></table>
 <p>Note1: <code>__slots__</code> and inheritence - <code>__dict__</code> allocation will be prevented only if all classes in the inheritence tree define <code>__slots__</code>.</p>
@@ -3205,14 +3205,14 @@ by defining a list of member names, a small and fixed amount of memory per objec
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[]):</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[]):</span>
     <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">print</span> <span class="n">x</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="p">()</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="p">()</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">func_defaults</span> <span class="c"># these objects are saved in the function object!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">func_defaults</span> <span class="c1"># these objects are saved in the function object!</span>
 <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],)</span>
 </pre></div>
 </td></tr></table></section>
@@ -3254,7 +3254,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -3297,8 +3297,8 @@ by defining a list of member names, a small and fixed amount of memory per objec
             <section><p>Avoid this:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-   <span class="k">if</span> <span class="n">string</span><span class="p">:</span> <span class="c"># what if an empty string is valid?</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">string</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">string</span><span class="p">:</span> <span class="c1"># what if an empty string is valid?</span>
        <span class="o">...</span>
 </pre></div>
 </td></tr></table>
@@ -3306,9 +3306,9 @@ by defining a list of member names, a small and fixed amount of memory per objec
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
     <span class="o">...</span>
-<span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </td></tr></table></section>
@@ -3348,7 +3348,7 @@ by defining a list of member names, a small and fixed amount of memory per objec
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">addx</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">addx</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
 <span class="o">...</span>         <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 <span class="o">...</span>     <span class="k">return</span> <span class="n">add</span>
@@ -3362,9 +3362,9 @@ by defining a list of member names, a small and fixed amount of memory per objec
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">add5</span><span class="o">.</span><span class="n">func_closure</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">add5</span><span class="o">.</span><span class="n">func_closure</span>
 <span class="p">(</span><span class="o">&lt;</span><span class="n">cell</span> <span class="n">at</span> <span class="mh">0x10ccc1360</span><span class="p">:</span> <span class="nb">int</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7fea11413110</span><span class="o">&gt;</span><span class="p">,)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c"># cell is a reference to a variable in an upper scope</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cell</span> <span class="o">=</span> <span class="n">_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># cell is a reference to a variable in an upper scope</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cell</span><span class="o">.</span><span class="n">cell_contents</span>
 <span class="mi">5</span>
 </pre></div>
