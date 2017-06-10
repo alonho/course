@@ -1323,17 +1323,17 @@ aside {
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># raises an exception if the user is not logged in</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># raises an exception if the user is not logged in</span>
 <span class="nd">@login_required</span>
 <span class="k">def</span> <span class="nf">change_password</span><span class="p">():</span>
     <span class="k">pass</span>
 
-<span class="c"># displays a warning when used for the first time</span>
+<span class="c1"># displays a warning when used for the first time</span>
 <span class="nd">@deprecated</span>
 <span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
     <span class="k">pass</span>
 
-<span class="c"># python can be type safe!</span>
+<span class="c1"># python can be type safe!</span>
 <span class="nd">@typecheck</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="k">pass</span>
@@ -1354,7 +1354,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              1/16
+              1/19
             </aside>
           </footer>
         </div>
@@ -1370,7 +1370,7 @@ aside {
             
             <section><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="nd">@decorator</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@decorator</span>
 <span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
     <span class="k">pass</span>
 </pre></div>
@@ -1378,7 +1378,7 @@ aside {
 <p>Equivalent to:</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
     <span class="k">pass</span>
 <span class="n">func</span> <span class="o">=</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
 </pre></div>
@@ -1401,7 +1401,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              2/16
+              2/19
             </aside>
           </footer>
         </div>
@@ -1427,9 +1427,9 @@ aside {
  9
 10
 11
-12</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;calling&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">print</span> <span class="s2">&quot;calling&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">decorated</span>
 
@@ -1456,7 +1456,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              3/16
+              3/19
             </aside>
           </footer>
         </div>
@@ -1489,7 +1489,7 @@ aside {
 15
 16
 17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="nd">@debug</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@debug</span>
 <span class="k">def</span> <span class="nf">div0</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">0</span>
 
@@ -1505,7 +1505,7 @@ aside {
 <span class="n">div0</span> <span class="n">got</span> <span class="p">(</span><span class="mi">10</span><span class="p">,)</span> <span class="p">{}</span>
 <span class="n">raised</span><span class="p">:</span> <span class="n">integer</span> <span class="n">division</span> <span class="ow">or</span> <span class="n">modulo</span> <span class="n">by</span> <span class="n">zero</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="ne">ZeroDivisionError</span><span class="p">:</span> <span class="n">integer</span> <span class="n">division</span> <span class="ow">or</span> <span class="n">modulo</span> <span class="n">by</span> <span class="n">zero</span>
 </pre></div>
 </td></tr></table></section>
@@ -1524,7 +1524,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              4/16
+              4/19
             </aside>
           </footer>
         </div>
@@ -1549,16 +1549,16 @@ aside {
  9
 10
 11
-12</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">new_func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;{} got &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">k</span>
+        <span class="k">print</span> <span class="s2">&quot;{} got &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__name__</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">k</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s">&quot;raised: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">print</span> <span class="s2">&quot;raised: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s">&quot;returned: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+            <span class="k">print</span> <span class="s2">&quot;returned: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ret</span>
     <span class="k">return</span> <span class="n">new_func</span>
 </pre></div>
@@ -1578,7 +1578,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              5/16
+              5/19
             </aside>
           </footer>
         </div>
@@ -1610,7 +1610,7 @@ aside {
 15
 16
 17
-18</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">InvocationCounter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">InvocationCounter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_func</span> <span class="o">=</span> <span class="n">func</span>
@@ -1645,7 +1645,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              6/16
+              6/19
             </aside>
           </footer>
         </div>
@@ -1675,7 +1675,7 @@ aside {
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">ignore_exceptions</span><span class="p">(</span><span class="n">exception_types</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ignore_exceptions</span><span class="p">(</span><span class="n">exception_types</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
@@ -1708,7 +1708,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              7/16
+              7/19
             </aside>
           </footer>
         </div>
@@ -1730,13 +1730,13 @@ aside {
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="nd">@typesafe</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@typesafe</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">&quot;bla&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;bla&quot;</span><span class="p">)</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-  <span class="n">File</span> <span class="s">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="ne">TypeError</span><span class="p">:</span> <span class="n">invalid</span> <span class="nb">type</span> <span class="k">for</span> <span class="n">argument</span> <span class="n">y</span><span class="o">.</span> <span class="n">expected</span> <span class="nb">int</span><span class="p">,</span> <span class="n">got</span> <span class="nb">str</span>
 </pre></div>
 </td></tr></table></section>
@@ -1755,7 +1755,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              8/16
+              8/19
             </aside>
           </footer>
         </div>
@@ -1784,18 +1784,18 @@ aside {
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">typesafe</span><span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">):</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">typesafe</span><span class="p">(</span><span class="o">*</span><span class="n">types</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="n">n_args</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
             <span class="n">n_types</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">n_args</span> <span class="o">!=</span> <span class="n">n_types</span><span class="p">:</span>               
-                <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;invalid num of args. expected {}, got {}&quot;</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;invalid num of args. expected {}, got {}&quot;</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_types</span><span class="p">,</span> <span class="n">n_args</span><span class="p">)))</span>
 
             <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">arg_type</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">arg_type</span><span class="p">):</span>
-                    <span class="n">fmt</span> <span class="o">=</span> <span class="s">&quot;expected {} got {} for argument {}&quot;</span>
+                    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;expected {} got {} for argument {}&quot;</span>
                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">arg</span><span class="p">),</span> <span class="n">arg</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">decorated</span>
@@ -1817,7 +1817,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              9/16
+              9/19
             </aside>
           </footer>
         </div>
@@ -1838,7 +1838,7 @@ aside {
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="nd">@decorate_methods</span><span class="p">(</span><span class="n">debug</span><span class="p">)</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@decorate_methods</span><span class="p">(</span><span class="n">debug</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Calculator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
@@ -1862,7 +1862,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              10/16
+              10/19
             </aside>
           </footer>
         </div>
@@ -1892,7 +1892,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              11/16
+              11/19
             </aside>
           </footer>
         </div>
@@ -1915,14 +1915,14 @@ aside {
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># The retry decorator returns a function that gets a &#39;retries&#39; argument indicating</span>
-<span class="c"># how many times to invoke the decorated function in case an exception occured.</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># The retry decorator returns a function that gets a &#39;retries&#39; argument indicating</span>
+<span class="c1"># how many times to invoke the decorated function in case an exception occured.</span>
 
 <span class="nd">@retry</span>
 <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
     <span class="k">pass</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">(</span><span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c"># how can a fresh coder know this argument exists?</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="p">(</span><span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># how can a fresh coder know this argument exists?</span>
 </pre></div>
 </td></tr></table></section>
             
@@ -1940,7 +1940,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              12/16
+              12/19
             </aside>
           </footer>
         </div>
@@ -1972,9 +1972,9 @@ aside {
 14
 15
 16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;calling&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">print</span> <span class="s2">&quot;calling&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">decorated</span>
 
@@ -2006,7 +2006,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              13/16
+              13/19
             </aside>
           </footer>
         </div>
@@ -2038,12 +2038,12 @@ aside {
 17
 18
 19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;calling&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">print</span> <span class="s2">&quot;calling&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">decorated</span>
 
@@ -2075,7 +2075,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              14/16
+              14/19
             </aside>
           </footer>
         </div>
@@ -2103,15 +2103,15 @@ aside {
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="nd">@cached</span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@cached</span>
 <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="k">print</span> <span class="s">&quot;performing a long computation...&quot;</span>
+    <span class="k">print</span> <span class="s2">&quot;performing a long computation...&quot;</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">calc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 <span class="n">performing</span> <span class="n">a</span> <span class="nb">long</span> <span class="n">computation</span><span class="o">...</span>
 <span class="mi">30</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">calc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="c"># cache hit!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">calc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="c1"># cache hit!</span>
 <span class="mi">30</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">calc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">performing</span> <span class="n">a</span> <span class="nb">long</span> <span class="n">computation</span><span class="o">...</span>
@@ -2134,7 +2134,7 @@ aside {
             </aside>
             
             <aside class="page_number">
-              15/16
+              15/19
             </aside>
           </footer>
         </div>
@@ -2154,7 +2154,7 @@ aside {
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">cached</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cached</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="n">args_to_result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">def</span> <span class="nf">decorated</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">args</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args_to_result</span><span class="p">:</span>
@@ -2166,7 +2166,46 @@ aside {
 <p>Note: due to Python's inability to separate variable definition from variable assignment,
 you may NOT assign to the non-local variable (e.g. <code>args_to_result</code>) inside the inner scope.</p>
 <p>Failing to observe this will result in an <code>UnboundLocalError</code> exception.</p>
-<p>You MAY use any other member function, including <code>__in__</code>, <code>__setitem__</code> and <code>__getitem__</code> (as shown above).</p></section>
+<p>You MAY use any other member function, including <code>__in__</code>, <code>__setitem__</code> and <code>__getitem__</code> (as shown above).</p>
+<h2>Builtin property decorator</h2>
+<p>The builtin property decorator allows us to create a read only attribute or a just in time calculated value</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">double_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">double_value</span>
+<span class="n">barbar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">double_value</span> <span class="o">=</span> <span class="s1">&#39;foobar&#39;</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s1">&#39;t set attribute</span>
+</pre></div>
+</td></tr></table></section>
             
           </div>
           <div class="presenter_notes">
@@ -2182,7 +2221,202 @@ you may NOT assign to the non-local variable (e.g. <code>args_to_result</code>) 
             </aside>
             
             <aside class="page_number">
-              16/16
+              16/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/decorators.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-17">
+          <div class="inner">
+            
+            <header><h2>Builtin property decorator - setter</h2></header>
+            
+            
+            <section><p>If we wish we can create a "magic" setter for our value by using property decorator setter</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+    <span class="nd">@value.setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">value</span>
+<span class="n">bar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;foobar&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">value</span>
+<span class="n">foobar</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/decorators.md">doc/decorators.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/decorators.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-18">
+          <div class="inner">
+            
+            <header><h2>Exercise 4 - why doesn't it work? (code)</h2></header>
+            
+            
+            <section><p>First let's write some classes</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;No value here&#39;</span><span class="p">)</span>
+
+    <span class="nd">@value.setter</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+
+<span class="k">class</span> <span class="nc">FooBar</span><span class="p">(</span><span class="n">Foo</span><span class="p">):</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/decorators.md">doc/decorators.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/19
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: doc/decorators.md -->
+      <div class="slide-wrapper">
+        <div class="slide has_code slide-19">
+          <div class="inner">
+            
+            <header><h2>Exercise 4 - why doesn't it work? (usage)</h2></header>
+            
+            
+            <section><p>Let's use them now</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="s1">&#39;Hello foo&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">value</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">NotImplementedError</span><span class="p">:</span> <span class="n">No</span> <span class="n">value</span> <span class="n">here</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foo</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;blah&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foobar</span> <span class="o">=</span> <span class="n">FooBar</span><span class="p">(</span><span class="s1">&#39;Hello foobar&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foobar</span><span class="o">.</span><span class="n">value</span>
+<span class="n">Hello</span> <span class="n">foobar</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">foobar</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;blah&#39;</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s1">&#39;t set attribute</span>
+</pre></div>
+</td></tr></table></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="doc/decorators.md">doc/decorators.md</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/19
             </aside>
           </footer>
         </div>
@@ -2278,6 +2512,21 @@ you may NOT assign to the non-local variable (e.g. <code>args_to_result</code>) 
         <tr id="toc-row-16" class="sub">
           <th><a href="#slide16">Exercise 3 - solution</a></th>
           <td><a href="#slide16">16</a></td>
+        </tr>
+        
+        <tr id="toc-row-17" class="sub">
+          <th><a href="#slide17">Builtin property decorator - setter</a></th>
+          <td><a href="#slide17">17</a></td>
+        </tr>
+        
+        <tr id="toc-row-18" class="sub">
+          <th><a href="#slide18">Exercise 4 - why doesn't it work? (code)</a></th>
+          <td><a href="#slide18">18</a></td>
+        </tr>
+        
+        <tr id="toc-row-19" class="sub">
+          <th><a href="#slide19">Exercise 4 - why doesn't it work? (usage)</a></th>
+          <td><a href="#slide19">19</a></td>
         </tr>
         
       
